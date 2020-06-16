@@ -1,0 +1,10 @@
+.auth-forms {
+  width: 100%;
+  max-width: 330px;
+
+  &__nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

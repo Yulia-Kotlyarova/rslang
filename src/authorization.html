@@ -7,6 +7,37 @@
         <title>Authorization | RS Lang</title>
     </head>
     <body>
-        <h1>Authorization</h1>
+        <div class="auth-forms">
+            <div class="nav nav-tabs auth-forms__nav" role="tablist">
+                <a class="nav-item nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab"
+                   aria-controls="signin" aria-selected="true">Sign In</a>
+                <a class="nav-item nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab"
+                   aria-controls="signup" aria-selected="false">Sign Up</a>
+            </div>
+            <div class="tab-content auth-forms__tabs" id="nav-tabContent">
+                <section class="tab-pane fade border border-top-0 rounded-bottom bg-white active show px-3 py-5 auth-forms__tab" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                    <form class="auth-forms__signin text-center">
+                        <label for="signin__email" class="sr-only">Email address</label>
+                        <input id="signin__email" class="form-control mb-3" type="email" placeholder="Email address" required autofocus>
+                        <label for="signin__password" class="sr-only">Password</label>
+                        <input id="signin__password" class="form-control mb-5" type="password" placeholder="Password" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <p class="mt-4 mb-0 text-muted">© 2020</p>
+                    </form>
+                </section>
+                <section class="tab-pane fade border border-top-0 rounded-bottom bg-white px-3 py-5 auth-forms__tab" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                    <form class="auth-forms__signup text-center">
+                        <label for="signup__email" class="sr-only">Email address</label>
+                        <input id="signup__email" class="form-control mb-3" type="email" placeholder="Email address" required autofocus>
+                        <label for="signup__password" class="sr-only">Password</label>
+                        <input id="signup__password" class="form-control mb-3" type="password" placeholder="Password" required>
+                        <label for="signup__password-repeat" class="sr-only">Repeat password</label>
+                        <input id="signup__password-repeat" class="form-control mb-5" type="password" placeholder="Repeat password" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                        <p class="mt-4 mb-0 text-muted">© 2020</p>
+                    </form>
+                </section>
+            </div>
+        </div>
     </body>
 </html>
