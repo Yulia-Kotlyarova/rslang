@@ -11,10 +11,19 @@ const javascript = {
 };
 
 module.exports = {
-  entry: [
-    path.resolve(__dirname, '../src/js/index.js'),
-    path.resolve(__dirname, '../src/sass/styles.scss'),
-  ],
+  entry: {
+    audioCall: path.resolve(__dirname, '../src/js/blocks/AudioCall/audioCall.js'),
+    authorization: path.resolve(__dirname, '../src/js/blocks/Authorization/authorization.js'),
+    dictionary: path.resolve(__dirname, '../src/js/blocks/Dictionary/dictionary.js'),
+    index: path.resolve(__dirname, '../src/js/blocks/Index/index.js'),
+    promo: path.resolve(__dirname, '../src/js/blocks/Promo/promo.js'),
+    puzzle: path.resolve(__dirname, '../src/js/blocks/Puzzle/puzzle.js'),
+    savannah: path.resolve(__dirname, '../src/js/blocks/Savannah/savannah.js'),
+    speakIt: path.resolve(__dirname, '../src/js/blocks/SpeakIt/speakIt.js'),
+    sprint: path.resolve(__dirname, '../src/js/blocks/Sprint/sprint.js'),
+    statistics: path.resolve(__dirname, '../src/js/blocks/Statistics/statistics.js'),
+    team: path.resolve(__dirname, '../src/js/blocks/Team/team.js'),
+  },
   output: {
     path: path.resolve(__dirname, '../dist'),
   },
@@ -25,9 +34,63 @@ module.exports = {
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
     }),
+
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../src/index.html'),
+      filename: '../dist/audioCall.html',
+      template: path.resolve(__dirname, '../src/audioCall.html'),
+      chunks: ['audioCall'],
     }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/authorization.html',
+      template: path.resolve(__dirname, '../src/authorization.html'),
+      chunks: ['authorization'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/dictionary.html',
+      template: path.resolve(__dirname, '../src/dictionary.html'),
+      chunks: ['dictionary'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/index.html',
+      template: path.resolve(__dirname, '../src/index.html'),
+      chunks: ['index'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/puzzle.html',
+      template: path.resolve(__dirname, '../src/puzzle.html'),
+      chunks: ['puzzle'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/promo.html',
+      template: path.resolve(__dirname, '../src/promo.html'),
+      chunks: ['promo'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/savannah.html',
+      template: path.resolve(__dirname, '../src/savannah.html'),
+      chunks: ['savannah'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/speakIt.html',
+      template: path.resolve(__dirname, '../src/speakIt.html'),
+      chunks: ['speakIt'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/sprint.html',
+      template: path.resolve(__dirname, '../src/sprint.html'),
+      chunks: ['sprint'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/statistics.html',
+      template: path.resolve(__dirname, '../src/statistics.html'),
+      chunks: ['statistics'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/team.html',
+      template: path.resolve(__dirname, '../src/team.html'),
+      chunks: ['team'],
+    }),
+
     new CopyPlugin([
       { from: 'src/favicon.ico', to: 'favicon.ico' },
     ]),
