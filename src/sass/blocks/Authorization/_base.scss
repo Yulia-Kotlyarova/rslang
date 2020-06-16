@@ -1,0 +1,12 @@
+.authorization {
+  &__html {
+    height: 100%;
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
