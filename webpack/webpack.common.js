@@ -14,6 +14,7 @@ module.exports = {
   entry: {
     audioCall: path.resolve(__dirname, '../src/js/blocks/AudioCall/audioCall.js'),
     authorization: path.resolve(__dirname, '../src/js/blocks/Authorization/authorization.js'),
+    cards: path.resolve(__dirname, '../src/js/blocks/Cards/cards.js'),
     dictionary: path.resolve(__dirname, '../src/js/blocks/Dictionary/dictionary.js'),
     index: path.resolve(__dirname, '../src/js/blocks/Index/index.js'),
     promo: path.resolve(__dirname, '../src/js/blocks/Promo/promo.js'),
@@ -49,6 +50,11 @@ module.exports = {
       filename: '../dist/dictionary.html',
       template: path.resolve(__dirname, '../src/dictionary.html'),
       chunks: ['dictionary'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/cards.html',
+      template: path.resolve(__dirname, '../src/cards.html'),
+      chunks: ['cards'],
     }),
     new HtmlWebpackPlugin({
       filename: '../dist/index.html',
