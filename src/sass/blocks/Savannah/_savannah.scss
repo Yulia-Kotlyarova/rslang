@@ -55,7 +55,7 @@ html {
 
 .game__active-word {
     position: absolute;
-    top: 0;
+    top: -100px;
     width: 150px;
     height: 30px;
     display: flex;
@@ -70,6 +70,7 @@ html {
 .game__answers {
     width: 100%;
     display: flex;
+    user-select: none;
     // flex-direction: row;
 }
 
@@ -77,6 +78,7 @@ html {
     flex: 1 1 25%;
     height: 30px;
     border: 1px solid black;
+    cursor: pointer;
 }
 
 .game__answer-number {

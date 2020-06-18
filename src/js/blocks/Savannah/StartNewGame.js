@@ -1,9 +1,6 @@
-// import Answer from './Answer';
-
 export default class StartNewGame {
   constructor(savannahState, startNewRound) {
     this.startNewRound = startNewRound;
-
     this.activeWord = '';
     this.savannahState = savannahState;
     this.level = 0;
@@ -19,8 +16,6 @@ export default class StartNewGame {
     this.savannahState.wordsOrder = this.setWordsOrder();
     this.savannahState.wordAndAnswers.length = 0;
     this.savannahState.wordAndAnswers = this.combineWordsAndAnswers();
-    console.log(this.savannahState.wordAndAnswers);
-    // this.distributeAnswers();
     this.startNewRound.startRound();
   }
 

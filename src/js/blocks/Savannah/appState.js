@@ -7,6 +7,7 @@ export const savannahState = {
   wordsCollection: [],
   wordsOrder: [],
   wordAndAnswers: [],
+  isAnswered: false,
 };
 
 export const QUESTION = 'WhatShoulIDoWithExprtsOfConsts';
