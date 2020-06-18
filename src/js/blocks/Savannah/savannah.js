@@ -1,18 +1,17 @@
 import '../../../sass/styles.scss';
 import { savannahState } from './appState';
 
-import {
-  defineActiveRound, getWordsCollection, setWordsOrder, combineWordsAndAnswers,
-} from './getActiveWord';
+import StartNewGame from './StartNewGame';
+import StartNewRound from './StartNewRound';
+// import CheckAnswer from './ProceedAnswer';
+// import Answer from './StartNewGame';
 
 window.onload = async function onload() {
-  const [level, page] = defineActiveRound();
-  savannahState.lastPlayedRound = [level, page].join('.');
-  savannahState.currentLevel = level;
-  savannahState.currentPage = page;
-  savannahState.wordsCollection = await getWordsCollection();
-  savannahState.wordsOrder = setWordsOrder();
-  savannahState.wordAndAnswers.length = 0;
-  savannahState.wordAndAnswers = combineWordsAndAnswers();
-  // console.log(savannahState.wordAndAnswers);
+  const startNewRound = new StartNewRound(savannahState);
+  const startNewGame = new StartNewGame(savannahState, startNewRound);
+  // const checkAnswer = new CheckAnswer(savannahState);
+  startNewGame.startGame();
 };
+
+document.body.addEventListener('keydown', () => {
+});

@@ -1,7 +1,9 @@
 export const savannahState = {
-  lastPlayedRound: '0.0',
+  lastPlayedRound: '',
   currentLevel: '',
   currentPage: '',
+  activeWord: 0,
+  correctAnswerID: 0,
   wordsCollection: [],
   wordsOrder: [],
   wordAndAnswers: [],
