@@ -58,6 +58,12 @@ html {
     top: 0;
     width: 150px;
     height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: 600;
     border: 1px solid black;
 }
 
@@ -71,6 +77,15 @@ html {
     flex: 1 1 25%;
     height: 30px;
     border: 1px solid black;
+}
+
+.game__answer-number {
+    color: green;
+}
+
+.game__answer-word {
+    font-size: 2rem;
+    color: blue;
 }
 
 .game__correct-answer-catcher {
