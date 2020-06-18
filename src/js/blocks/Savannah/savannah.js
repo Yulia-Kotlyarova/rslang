@@ -14,3 +14,6 @@ window.onload = async function onload() {
   proceedAnswer.setEventListeners();
   startNewGame.startGame();
 };
+
+document.body.addEventListener('keydown', () => {
+});
