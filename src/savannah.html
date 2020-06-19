@@ -4,29 +4,55 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
         <title>Savannah | RS Lang</title>
     </head>
     <body class="savannah__body">
         <div class="control-panel">
             <div class="control-panel__container wrapper">
                 <div class="control__sound">d</div>
-                <div class="control__lifes">o o o o o</div>
-                <div class="control__close">X</div>
+                <div class="control__lifes">
+                    <!-- <i class="fas fa-heart"></i>
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-heart"></i> -->
+                </div>
+                <div class="control__close"><i class="fas fa-times"></i></div>
             </div>
         </div>
         <div class="savannah__game wrapper">
-<<<<<<< HEAD
             <div class="game__active-word"></i></div>
-=======
-            <div class="game__active-word"></div>
->>>>>>> 19d14adc5114787b224e7e951e946fe053c83f10
             <div class="game__answers">
                 <div class="game__answer" id="answer_1" correct="false"></div>
                 <div class="game__answer" id="answer_2" correct="false"></div>
                 <div class="game__answer" id="answer_3" correct="false"></div>
                 <div class="game__answer" id="answer_4" correct="false"></div>
             </div>
-            <div class="game__correct-answer-catcher"></div>
+        </div>
+        <div class="results hidden">
+            <div class="results__container">
+                <div class="scrollbar scrollbar-primary">
+                    <div class="results__knowledge">
+                        <div class="results__mistakes">
+                            <div class="mistakes__count"><span>Mistakes</span><span class="mistakes__number"></span></div>
+                            <div class="mistakes__words"></div>
+                        </div>
+                        <div class="results__correct">
+                            <div class="correct__count"><span>Correct</span><span class="correct__number"></span></div>
+                            <div class="correct__words"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="results__buttons">
+                    <button type="button" class="btn btn-secondary results__button button__play-again">play again</button>
+                    <button type="button" class="btn btn-secondary results__button button__play-next-game">play next game</button>
+                </div>
+            </div>
+        </div>
+        <audio></audio>
+        <div class="attribution">
+            Sound from <a href="https://www.zapsplat.com">https://www.zapsplat.com</a>
         </div>
     </body>
 </html>

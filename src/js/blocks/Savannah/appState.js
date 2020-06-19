@@ -3,11 +3,13 @@ export const savannahState = {
   currentLevel: '',
   currentPage: '',
   activeWord: 0,
-  correctAnswerID: 0,
+  activeWordID: 0,
   wordsCollection: [],
   wordsOrder: [],
   wordAndAnswers: [],
   isAnswered: false,
+  answeredCorrect: [],
+  answeredWrong: [],
 };
 
-export const QUESTION = 'WhatShoulIDoWithExprtsOfConsts';
+export const QUESTION = 'WhatShoulIDoWithExprtsOfConsts???';

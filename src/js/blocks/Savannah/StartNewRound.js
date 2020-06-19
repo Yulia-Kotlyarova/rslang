@@ -1,4 +1,5 @@
 import Answer from './Answer';
+import ProceedAnswer from './ProceedAnswer';
 
 export default class StartNewRound {
   constructor(savannahState) {
@@ -6,12 +7,20 @@ export default class StartNewRound {
     this.answersArea = document.querySelector('.game__answers');
     this.activeWordContainer = document.querySelector('.game__active-word');
     this.isAnswered = false;
+    this.timerId = 0;
+    this.wordLimit = this.answersArea.getBoundingClientRect().top;
   }
 
   startRound() {
+    clearInterval(this.timerId);
+    this.returnActiveWordPosition();
     this.distributeAnswers();
     this.displayActiveWord();
-    this.startMoveActiveWord();
+    this.timerId = setInterval(this.moveDownActiveWord.bind(this), 10);
+  }
+
+  returnActiveWordPosition() {
+    this.activeWordContainer.style.top = '-50px';
   }
 
   distributeAnswers() {
@@ -30,15 +39,17 @@ export default class StartNewRound {
     const activeWord = temp.wordsCollection[temp.wordsOrder[temp.activeWord]].word;
     this.activeWordContainer.innerText = activeWord;
     this.savannahState.isAnswered = false;
+    this.savannahState.activeWordID = temp.wordsOrder[temp.activeWord];
   }
 
-  startMoveActiveWord() {
+  moveDownActiveWord() {
     const fromTop = this.activeWordContainer.offsetTop;
-    this.activeWordContainer.style.top = `${fromTop + 1}px`;
-    if (fromTop < 500 && !this.savannahState.isAnswered) {
-      setTimeout(() => {
-        this.startMoveActiveWord();
-      }, 10);
+    if (fromTop < this.wordLimit && !this.savannahState.isAnswered) {
+      this.activeWordContainer.style.top = `${fromTop + 1}px`; // 1px
+    } else {
+      clearInterval(this.timerId);
+      const proceedAnswer = new ProceedAnswer(this.savannahState, this);
+      proceedAnswer.catchWrongAnswer();
     }
   }
 

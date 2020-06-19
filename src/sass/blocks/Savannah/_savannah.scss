@@ -1,3 +1,6 @@
+@import './abstract/consts';
+@import './components/results';
+
 * {
     padding: 0;
     margin: 0;
@@ -9,7 +12,8 @@ html {
 }
 
 .savannah__body {
-    background-color: yellowgreen;
+    background-color: #67CCC0;
+    font-family: 'Lato', sans-serif;
 }
 
 .wrapper {
@@ -19,7 +23,7 @@ html {
 
 .control-panel__container {
     width: 100%;
-    height: 60px;
+    height: 40px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -33,66 +37,84 @@ html {
 }
 
 .control__lifes {
-    width: 150px;
-    height: 20px;
     margin-right: 10px;
-    background-color: red;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.control__lifes > svg {
+    margin: 0 2px;
 }
 
 .control__close {
-    width: 20px;
-    height: 20px;
-    background-color: red;
+    font-size: 3rem;
+    color: white;
 }
 
 .savannah__game {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 40px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .game__active-word {
     position: absolute;
-    top: -100px;
+    top: -50px;
     width: 150px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
-    font-size: 2rem;
+    font-size: 3.5rem;
     font-weight: 600;
-    border: 1px solid black;
+    color: white;
+    // transition: all ease 0.1s;
+    // border: 1px solid black;
 }
 
 .game__answers {
     width: 100%;
     display: flex;
+    justify-content: space-around;
     user-select: none;
     // flex-direction: row;
 }
 
 .game__answer {
-    flex: 1 1 25%;
+    // flex: 1 1 25%;
     height: 30px;
-    border: 1px solid black;
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    // border: 1px solid black;
     cursor: pointer;
 }
 
 .game__answer-number {
-    color: green;
+    margin-right: 5px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: grey;
 }
 
 .game__answer-word {
-    font-size: 2rem;
-    color: blue;
+    font-size: 3rem;
+    font-weight: 300;
+    color: white;
 }
 
-.game__correct-answer-catcher {
-    width: 30px;
-    height: 30px;
-    margin-bottom: 30px;
-    border: 1px solid black;
+.attribution {
+    width: 0px;
+    height: 0px;
+    font-size: 0;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+.hidden {
+    display: none;
 }

@@ -1,3 +1,5 @@
+import { heartFill } from './consts';
+
 export default class StartNewGame {
   constructor(savannahState, startNewRound) {
     this.startNewRound = startNewRound;
@@ -5,6 +7,8 @@ export default class StartNewGame {
     this.savannahState = savannahState;
     this.level = 0;
     this.page = 0;
+    this.heartFill = heartFill;
+    this.heartContainer = document.querySelector('.control__lifes');
   }
 
   async startGame() {
@@ -16,6 +20,7 @@ export default class StartNewGame {
     this.savannahState.wordsOrder = this.setWordsOrder();
     this.savannahState.wordAndAnswers.length = 0;
     this.savannahState.wordAndAnswers = this.combineWordsAndAnswers();
+    this.heartContainer.innerHTML = heartFill.repeat(5);
     this.startNewRound.startRound();
   }
 
