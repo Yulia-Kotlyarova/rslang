@@ -41,6 +41,7 @@ module.exports = {
 
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
+      cleanOnceBeforeBuildPatterns: ['**/*', '!files*', '!files/*.jpg', '!files/*.mp3'],
     }),
 
     new HtmlWebpackPlugin({
