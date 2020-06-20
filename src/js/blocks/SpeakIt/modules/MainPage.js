@@ -1,5 +1,5 @@
 import Card from './Card';
-// import apiKeys from '../../../constants/api-keys';
+import apiKeys from '../../../constants/api-keys';
 
 class MainPage {
   constructor(mainPageElement, app) {
@@ -89,7 +89,7 @@ class MainPage {
 
   // eslint-disable-next-line class-methods-use-this
   async getTranslation(word) {
-    const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=as&text= ${word} &lang=en-ru`;
+    const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${apiKeys.KEY}&text= ${word} &lang=en-ru`;
     const res = await fetch(url);
     const data = await res.json();
     return data.text[0];
