@@ -1,5 +1,6 @@
 const path = require('path');
 
+const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -32,6 +33,12 @@ module.exports = {
     rules: [javascript],
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+    }),
+
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
     }),
