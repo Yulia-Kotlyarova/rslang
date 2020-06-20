@@ -1,0 +1,87 @@
+@import "../abstract/constants";
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: $cards-indent;
+}
+
+.card {
+  $p: &;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: $card-min-width;
+  min-height: $card-min-height;
+  margin: $card-margin;
+  padding: $card-padding;
+  border: $card-border;
+  border-radius: $card-border-radius;
+  line-height: 1.4;
+  background-color: $background-color-1;
+  cursor: pointer;
+  transition: .3s;
+
+  &:hover {
+    box-shadow: $card-hover-shadow;
+  }
+
+  &_active {
+    border: $card-active-border;
+    background-color: $card-active-background;
+  }
+
+  &_result {
+    flex-direction: row;
+    min-height: $card-result-min-height;
+    margin: $card-result-margin;
+    padding: $card-result-padding;
+    border: $card-result-border;
+    box-shadow: none;
+
+    #{$p}__audio-icon {
+      top: $audio-icon-result-top;
+      left: $audio-icon-result-left;
+    }
+
+    #{$p}__translation {
+      display: block;
+      color: rgba(14, 30, 37, .7);
+      text-align: center;
+      margin-left: 10px;
+    }
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  &__audio-icon {
+    position: absolute;
+    top: $audio-icon-top;
+    left: $audio-icon-left;
+    width: $audio-icon-width;
+    height: $audio-icon-height;
+  }
+
+  &__word {
+    margin: $card-text-margin;
+    padding: $card-text-padding;
+    color: $card-text-color;
+  }
+
+  &__transcription {
+    margin: $card-text-margin;
+    padding: $card-text-padding;
+    color: $card-text-color;
+    font-size: $font-size-base * 0.8;
+    opacity: 0.7;
+  }
+
+  &__translation {
+    display: none;
+  }
+}

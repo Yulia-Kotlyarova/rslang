@@ -1,0 +1,64 @@
+@import "../abstract/constants";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: $header-height;
+  margin: $header-margin;
+}
+
+.star {
+  width: 40px;
+  height: 40px;
+  background-image: url(img/star.svg);
+  background-size: 40px 40px;
+
+  &_hide {
+    display: none;
+  }
+}
+
+.levels {
+  display: flex;
+  margin: 0;
+  padding: $levels-padding;
+
+  &__level {
+    position: relative;
+    width: $level-width;
+    height: $level-height;
+    margin-top: $level-margin-top;
+    margin-right: $level-margin-right;
+    padding: $level-padding;
+    border-radius: $level-border-radius;
+    box-shadow: $level-shadow;
+    background: $level-background;
+    cursor: pointer;
+    transition: .5s;
+
+    &:not(&_active):hover {
+      box-shadow: $level-hover-shadow;
+    }
+
+    &_active {
+      box-shadow: $level-active-shadow;
+    }
+
+    &:not(:first-child)::before {
+      position: absolute;
+      top: $level-line-top;
+      right: $level-line-right;
+      width: $level-line-width;
+      height: $level-line-height;
+      background-color: $level-line-background;
+      content: "";
+    }
+  }
+}
+
+.score {
+  display: flex;
+  justify-content: flex-end;
+  height: $score-height;
+}
