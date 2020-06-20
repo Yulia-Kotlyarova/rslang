@@ -41,10 +41,8 @@ class Authorization {
       throw new Error('The user is not signed up. Can not refresh token.');
     }
 
-    const token = localStorage.getItem('token');
-
     if (!this.isTokenExpired()) {
-      return token;
+      return localStorage.getItem('token');
     }
 
     const user = {
@@ -133,7 +131,6 @@ class Authorization {
       const user = Authorization.getUserDataFromForm(this.signupForm);
       await Authorization.signupUser(user);
 
-      this.signupForm.reset();
       if (!window.location.href.endsWith('index.html')) {
         window.location.href = 'index.html';
       }
@@ -152,7 +149,6 @@ class Authorization {
       const user = Authorization.getUserDataFromForm(this.signinForm);
       await Authorization.signinUser(user);
 
-      this.signinForm.reset();
       if (!window.location.href.endsWith('index.html')) {
         window.location.href = 'index.html';
       }
