@@ -124,6 +124,12 @@ class Authorization {
       event.preventDefault();
       event.stopPropagation();
 
+      this.signupForm.classList.add('was-validated');
+
+      if (!this.signupForm.checkValidity()) {
+        return;
+      }
+
       const user = Authorization.getUserDataFromForm(this.signupForm);
       await Authorization.signupUser(user);
 
@@ -136,6 +142,12 @@ class Authorization {
     this.signinForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       event.stopPropagation();
+
+      this.signinForm.classList.add('was-validated');
+
+      if (!this.signinForm.checkValidity()) {
+        return;
+      }
 
       const user = Authorization.getUserDataFromForm(this.signinForm);
       await Authorization.signinUser(user);
