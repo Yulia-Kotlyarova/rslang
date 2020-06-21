@@ -93,6 +93,7 @@ module.exports = {
 
     new CopyPlugin([
       { from: 'src/favicon.ico', to: 'favicon.ico' },
+      { from: 'src/icons', to: 'icons' },
     ]),
   ],
 };

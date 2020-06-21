@@ -1,0 +1,175 @@
+.game {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game__game-line {
+    position: relative;
+    width: $puzzle-width;
+    height: $puzzle-height / 10;
+    margin: 5px 0;
+
+    .game__line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: $puzzle-width;
+        padding-left: $puzzlePadding;
+        display: flex;
+    }
+
+    .game__line_overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: $color-main-background;
+        box-shadow: 0 0 2px 2px $color-puzzles-background;
+        border-radius: $small-border-radius;
+    }
+
+    .game__line_painting-info {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4rem;
+        line-height: 1.5rem;
+        background-color: $color-puzzle-background;
+        z-index: 10;
+    }
+}
+
+.game_line_indexZ_1 {
+    z-index: 1;
+}
+
+.puzzle__element {
+    position: relative;
+    height: 100%;
+    margin-left: -$puzzlePadding;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+
+    .puzzle__element__canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .puzzle__element__word {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: $color-puzzle-text;
+        text-shadow: 1px 1px 2px black,
+        -1px -1px 2px black, 
+        -1px 1px 2px black, 
+        1px -1px 2px black; 
+        user-select: none;    
+        position: absolute;
+    }
+
+    .puzzle__element__overlay_green {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: green;
+        opacity: 0.2;
+    }
+
+    .puzzle__element__overlay_red {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: red;
+        opacity: 0.2;
+    }
+}
+
+.puzzle {
+    position: relative;
+    width: $puzzle-width;
+    height: $puzzle-height;
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-puzzle-background;
+}
+
+.puzzle__painting {
+    position: absolute;
+    z-index: 10;
+}
+
+.puzzle__painting > img {
+    width: $puzzle-width;
+    height: $puzzle-height;
+}
+
+.puzzle__line-numbers {
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    left: -40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+
+    div {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        font-weight: 700;
+        border-radius: 15px;
+        background-color: #FFF;
+    }
+}
+
+.line-number_wrong {
+    box-shadow: 0 0 2px 2px $color-shadow-wrong;
+}
+
+.line-number_correct {
+    box-shadow: 0 0 2px 2px $color-shadow-correct;
+}
+
+.puzzle__line {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    padding-left: $puzzlePadding;
+}
+
+.dropzone-highlight {
+    box-shadow: 0 0 2px 2px $color-line-shadow inset;
+}
+
+.game__buttons {
+    display: flex;
+}
+
+.game__button {
+    width: $width-control-button;
+    height: $button-height;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.game__button:hover {
+    border: 1px solid white;
+}
