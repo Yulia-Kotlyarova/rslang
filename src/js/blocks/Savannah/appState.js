@@ -10,6 +10,7 @@ export const savannahState = {
   isAnswered: false,
   answeredCorrect: [],
   answeredWrong: [],
+  timerId: 0,
 };
 
 export const QUESTION = 'WhatShoulIDoWithExprtsOfConsts???';

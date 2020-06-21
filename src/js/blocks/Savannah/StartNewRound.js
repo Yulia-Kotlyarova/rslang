@@ -16,7 +16,7 @@ export default class StartNewRound {
     this.returnActiveWordPosition();
     this.distributeAnswers();
     this.displayActiveWord();
-    this.timerId = setInterval(this.moveDownActiveWord.bind(this), 10);
+    this.savannahState.timerId = setInterval(this.moveDownActiveWord.bind(this), 10);
   }
 
   returnActiveWordPosition() {
@@ -47,7 +47,8 @@ export default class StartNewRound {
     if (fromTop < this.wordLimit && !this.savannahState.isAnswered) {
       this.activeWordContainer.style.top = `${fromTop + 1}px`; // 1px
     } else {
-      clearInterval(this.timerId);
+      this.savannahState.isAnswered = true;
+      clearInterval(this.savannahState.timerId);
       const proceedAnswer = new ProceedAnswer(this.savannahState, this);
       proceedAnswer.catchWrongAnswer();
     }

@@ -13,6 +13,7 @@ export default class ProceedAnswer {
   }
 
   checkClickedAnswer(event) {
+    clearInterval(this.savannahState.timerId);
     this.savannahState.isAnswered = true;
     const clickedAnswer = event.target.closest('.game__answer');
     if (clickedAnswer) {
@@ -56,6 +57,8 @@ export default class ProceedAnswer {
       const sound = '/src/sass/blocks/Savannah/answer-wrong.mp3';
       ProceedAnswer.audioPlay(sound);
       this.savannahState.answeredWrong.push(this.savannahState.activeWordID);
+      this.continueGame();
+    } else {
       this.continueGame();
     }
   }

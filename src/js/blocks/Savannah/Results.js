@@ -20,6 +20,7 @@ export default class Results {
         this.audioPlay(clickedIcon);
       }
     });
+    // this.buttonPlayAgain.addEventListener('click', () => this.playSameRound());
   }
 
   audioPlay(clickedIcon) {
@@ -29,6 +30,10 @@ export default class Results {
     audio.src = soundToPlay;
     audio.autoplay = true;
   }
+
+  // playSameRound() {
+  //   this.savannahState.lastPlayedRound = []
+  // }
 
   showResults() {
     this.resultsContainer.classList.remove('hidden');
