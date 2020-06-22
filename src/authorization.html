@@ -16,22 +16,34 @@
             </div>
             <div class="tab-content auth-forms__tabs" id="nav-tabContent">
                 <section class="tab-pane fade border border-top-0 rounded-bottom bg-white active show px-3 py-5 auth-forms__tab" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                    <form class="auth-forms__signin text-center">
-                        <label for="signin__email" class="sr-only">Email address</label>
-                        <input id="signin__email" class="form-control mb-3" type="email" name="email" placeholder="Email address" required autofocus>
-                        <label for="signin__password" class="sr-only">Password</label>
-                        <input id="signin__password" class="form-control mb-5" type="password" name="password" placeholder="Password" required>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    <form class="auth-forms__signin text-center" novalidate>
+                        <div>
+                            <label for="signin__email" class="sr-only">Email address</label>
+                            <input id="signin__email" class="form-control" type="email" name="email" placeholder="Email address" required autofocus pattern="\S+@\S+\.\S+">
+                            <div class="invalid-feedback">Please, provide a valid email address.</div>
+                        </div>
+                        <div>
+                            <label for="signin__password" class="sr-only">Password</label>
+                            <input id="signin__password" class="form-control mt-3" type="password" name="password" placeholder="Password" required minlength="8" pattern="(?=.*[+\-_@$!%*?&#.,;:{}])(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[+-_@$!%*?&#.,;:{}\da-zA-Z]{8,}$">
+                            <div class="invalid-feedback">At least 8 characters long. Must include at least one lowercase character, one uppercase character, one digit and one special character from set: +-_@$!%*?&#.,;:[]{}.</div>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Sign in</button>
                         <p class="mt-4 mb-0 text-muted">© 2020</p>
                     </form>
                 </section>
                 <section class="tab-pane fade border border-top-0 rounded-bottom bg-white px-3 py-5 auth-forms__tab" id="signup" role="tabpanel" aria-labelledby="signup-tab">
-                    <form class="auth-forms__signup text-center">
-                        <label for="signup__email" class="sr-only">Email address</label>
-                        <input id="signup__email" class="form-control mb-3" type="email" name="email" placeholder="Email address" required autofocus>
-                        <label for="signup__password" class="sr-only">Password</label>
-                        <input id="signup__password" class="form-control mb-5" type="password" name="password" placeholder="Password" required>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                    <form class="auth-forms__signup text-center" novalidate>
+                        <div>
+                            <label for="signup__email" class="sr-only">Email address</label>
+                            <input id="signup__email" class="form-control" type="email" name="email" placeholder="Email address" required autofocus pattern="\S+@\S+\.\S+">
+                            <div class="invalid-feedback">Please, provide a valid email address.</div>
+                        </div>
+                        <div>
+                            <label for="signup__password" class="sr-only">Password</label>
+                            <input id="signup__password" class="form-control mt-3" type="password" name="password" placeholder="Password" required minlength="8" pattern="(?=.*[+\-_@$!%*?&#.,;:{}])(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[+-_@$!%*?&#.,;:{}\da-zA-Z]{8,}$">
+                            <div class="invalid-feedback">At least 8 characters long. Must include at least one lowercase character, one uppercase character, one digit and one special character from set: +-_@$!%*?&#.,;:[]{}.</div>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Sign up</button>
                         <p class="mt-4 mb-0 text-muted">© 2020</p>
                     </form>
                 </section>
