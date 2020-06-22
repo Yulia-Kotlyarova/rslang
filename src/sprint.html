@@ -1,12 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sprint | RS Lang</title>
-    </head>
-    <body>
-        <h1>Sprint</h1>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/748e06960e.js" crossorigin="anonymous"></script>
+    <title>Sprint | RS Lang</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="game">
+            <div class="game__points">
+                <p class="game__points-point"></p>
+            </div>
+            <div class="game__board">
+                <div class="game__board-top">
+                    <div class="game__board-top_score_checks">
+                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle"></i>
+                        <!-- <i class="fas fa-check-circle"></i> -->
+                    </div>
+
+                    <p class="game__board-top-point"> <span id="game__board_top-point_num"></span> очков за слово</p>
+                </div>
+                <div class="game__board-middle">
+                    <div id="game__board-middle-img"></div>
+                    <p id="game__board-middle-en" class="game__board-middle-check_eng"></p>
+                    <p id="game__board-middle-ru" class="game__board-middle-check_ru"></p>
+                </div>
+                <div class="game__board-bottom">
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-times-circle"></i>
+                    <button type="button" class="btn btn-danger">Неверно</button>
+                    <button type="button" class="btn btn-success">Верно</button>
+                </div>
+            </div>
+        </div>
+        <div class="score">
+            <div class="score__score" id="app"></div>
+        </div>
+        <div class="button">
+            <button type="button" class="btn btn-light" id="button_left""><i
+                    class=" fa fa-arrow-left" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-light" id="button_right"><i class="fa fa-arrow-right"
+                    aria-hidden="true"></i></button>
+        </div>
+        <div class="footer">
+            <div class="footer__level">
+                <p>Уровень</p>
+                <p class="footer__level-number">
+                    14
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="simpleModal" class="modalSimple">
+        <div class="modal-content">
+            <div class="modal-content__header">
+                <h4>Твой результат</h4>
+                <span class="closeBtn">&times;</span>
+            </div>
+            <div class="modal-content__body">
+                <p>here we put scores</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
 </html>
