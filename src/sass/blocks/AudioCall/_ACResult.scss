@@ -1,19 +1,10 @@
 .a-c-result-wrapper {
-  width: 30vw;
   height: 170px;
   position: absolute;
   top: 40px;
   left: 29%;
   overflow: auto;
     li {
-      font-size: 1.6rem;
-      font-weight: 500;
-    }
-    span {
-      font-size: 1.7rem;
-    }
-  }
-  
   .a-c-result-wrong,
   .a-c-result-right {
     font-size: 1.7rem;
@@ -31,17 +22,18 @@
     }
 
   }
+}
+}
+.a-c-result-wrong > a {
+  border-radius: 7px;
+  padding: 0px 6px;
+  color: white;
+  background-color: rgb(245, 51, 51);
+}
 
-  .a-c-result-wrong > a {
-    border-radius: 7px;
-    padding: 0px 6px;
-    color: white;
-    background-color: rgb(245, 51, 51);
-  }
-
-  .a-c-result-right > a {
-    border-radius: 7px;
-    padding: 0px 6px;
-    color: white;
-    background-color: rgb(19, 150, 19);
-  }
+.a-c-result-right > a {
+  border-radius: 7px;
+  padding: 0px 6px;
+  color: white;
+  background-color: rgb(19, 150, 19);
+}
