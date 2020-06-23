@@ -32,9 +32,8 @@ function play(song) {
   audio.play();
 }
 
-play('bong.wav');
-
 const addWordToCard = () => {
+  play('bong.wav');
   wordCardEn.textContent = wordArray[Math.floor(Math.random() * wordArray.length)];
   wordCardRu.textContent = translatedArray[Math.floor(Math.random() * wordArray.length)];
   if (letsCount.length === 5 || letsCount.length === 10 || letsCount.length === 15
@@ -164,6 +163,7 @@ const addWordToCardOnKeyPress = () => {
     }
   })
 }
+export default addWordToCardOnKeyPress;
 
 const addWordToCardOnPress = () => {
   yesOrNoButton.addEventListener('click', (e) => {
@@ -236,8 +236,14 @@ const yanTranslate = {
   },
 } // end of object yanTranslate
 
-window.addEventListener('load', () => {
+// window.addEventListener('load', () => {
+//   addWordToCardOnKeyPress();
+//   yanTranslate.translate();
+//   addWordToCardOnPress();
+// })
+
+export const init = () => {
   addWordToCardOnKeyPress();
   yanTranslate.translate();
   addWordToCardOnPress();
-})
+}
