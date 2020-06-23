@@ -44,8 +44,8 @@ export default class StartNewRound {
 
   moveDownActiveWord() {
     const fromTop = this.activeWordContainer.offsetTop;
-    if (fromTop < this.wordLimit && !this.savannahState.isAnswered) {
-      this.activeWordContainer.style.top = `${fromTop + 1}px`; // 1px
+    if (fromTop < this.wordLimit + 50 && !this.savannahState.isAnswered) {
+      this.activeWordContainer.style.top = `${fromTop + 1}px`;
     } else {
       this.savannahState.isAnswered = true;
       clearInterval(this.savannahState.timerId);

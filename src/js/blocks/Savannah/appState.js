@@ -1,4 +1,4 @@
-export const savannahState = {
+const savannahState = {
   lastPlayedRound: '',
   currentLevel: '',
   currentPage: '',
@@ -13,4 +13,4 @@ export const savannahState = {
   timerId: 0,
 };
 
-export const QUESTION = 'WhatShoulIDoWithExprtsOfConsts???';
+export default savannahState;

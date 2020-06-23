@@ -1,23 +1,20 @@
-import '../../../sass/styles.scss';
-import { savannahState } from './appState';
 import '@fortawesome/fontawesome-free/js/all.min';
+import '../../../sass/styles.scss';
+import savannahState from './appState';
 
 import StartNewGame from './StartNewGame';
 import StartNewRound from './StartNewRound';
 import ProceedAnswer from './ProceedAnswer';
-// import Results from './Results';
-// import Answer from './StartNewGame';
 
 window.onload = async function onload() {
-  // console.log(results)
   const startNewRound = new StartNewRound(savannahState);
   const startNewGame = new StartNewGame(savannahState, startNewRound);
-  // const myResults = new Results(savannahState);
   const proceedAnswer = new ProceedAnswer(savannahState, startNewRound);
   proceedAnswer.setEventListeners();
-  startNewGame.startGame();
-  // results.setEventListeners();
+  const buttonStart = document.querySelector('.button__start');
+  buttonStart.addEventListener('click', () => {
+    const startPage = document.querySelector('.start-page');
+    startPage.classList.add('hidden');
+    startNewGame.startGame();
+  });
 };
-
-document.body.addEventListener('keydown', () => {
-});

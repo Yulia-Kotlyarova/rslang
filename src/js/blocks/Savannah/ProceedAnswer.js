@@ -19,23 +19,23 @@ export default class ProceedAnswer {
     if (clickedAnswer) {
       const clickedWordID = clickedAnswer.getAttribute('id');
       if (!Number(clickedWordID)) {
-        this.catchCorrectAnswer();
+        this.catchCorrectAnswer(clickedAnswer);
       } else {
-        this.catchWrongAnswer();
+        this.catchWrongAnswer(clickedAnswer);
       }
     }
   }
 
   checkPressedButton(event) {
-    this.savannahState.isAnswered = true;
     const keyPressed = event.key;
     if (['1', '2', '3', '4'].includes(keyPressed)) {
+      this.savannahState.isAnswered = true;
       const selectedAnswer = this.answersArea.querySelectorAll('.game__answer')[Number(keyPressed) - 1];
       const selectedAnswerID = selectedAnswer.getAttribute('id');
       if (!Number(selectedAnswerID)) {
-        this.catchCorrectAnswer();
+        this.catchCorrectAnswer(selectedAnswer);
       } else {
-        this.catchWrongAnswer();
+        this.catchWrongAnswer(selectedAnswer);
       }
     }
   }
@@ -45,19 +45,33 @@ export default class ProceedAnswer {
     document.body.addEventListener('keydown', (event) => this.checkPressedButton(event));
   }
 
-  catchCorrectAnswer() {
-    const sound = '/src/sass/blocks/Savannah/answer-correct.mp3';
+  catchCorrectAnswer(answer) {
+    answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
+    const sound = '/src/audio/blocks/Savannah/answer-correct.mp3';
     ProceedAnswer.audioPlay(sound);
     this.savannahState.answeredCorrect.push(this.savannahState.activeWordID);
-    this.continueGame();
+    setTimeout(() => {
+      this.continueGame();
+    }, 1000);
   }
 
-  catchWrongAnswer() {
+  catchWrongAnswer(selectedAnswer) {
     if (this.savannahState.answeredWrong.length < 6) {
-      const sound = '/src/sass/blocks/Savannah/answer-wrong.mp3';
+      const answers = this.answersArea.querySelectorAll('.game__answer');
+      answers.forEach((answer) => {
+        if (answer.id === '0') {
+          answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
+        }
+      });
+      if (selectedAnswer) {
+        selectedAnswer.querySelector('.answer__overlay-wrong').classList.remove('hidden');
+      }
+      const sound = '/src/audio/blocks/Savannah/answer-wrong.mp3';
       ProceedAnswer.audioPlay(sound);
       this.savannahState.answeredWrong.push(this.savannahState.activeWordID);
-      this.continueGame();
+      setTimeout(() => {
+        this.continueGame();
+      }, 1000);
     } else {
       this.continueGame();
     }
