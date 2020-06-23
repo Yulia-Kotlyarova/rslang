@@ -1,0 +1,103 @@
+@import "ACconst";
+@import "ACResult";
+@import "ACButton";
+@import "AC-back";
+
+html {
+    height: 100%;
+    font-family: $font;
+    font-size: 10px;
+  }
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: $main_font_color;
+  }
+
+  .audio-call-h2 {
+    display: none;
+  }
+
+  .Audio-Call-Wrapper {
+    width: 70vw;
+    height: 75vh;
+    background-color:$card-background-day;
+    box-shadow: 10px 10px 15px $shadow-color;
+    border-radius: 15px;
+  }
+
+  .a-c-pic-wrapper {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    width: 115px;
+    height: 115px;
+    top: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 10px $shadow-color;
+  }
+
+  .volume-up {
+    margin: 10px;
+  }
+
+  .volume-up {
+    margin: 27px;
+  }
+
+  .fa-volume-up {
+    font-size: 6rem;
+    cursor: pointer;
+  }
+
+  .audio-call-photo {
+    width: 110%;
+    z-index: 999;
+  }
+
+
+  .a-c-little-volume {
+    position: absolute;
+    height: 2em;
+    width: 2em;
+    top: 220px;
+    left: 42vw;
+  }
+
+  .a-c-translate {
+    font-size: 1.8em;
+    letter-spacing: 1px;
+    font-weight: 600;
+    position: absolute;
+    left: 47vw;
+    top: 214px;
+  }
+
+  .word-list {
+    position: relative;
+    top: 200px;
+    width: 96%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.8em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+
+.word::before {
+  content: "\2714";
+}
+
+.hidden {
+  display: none!important;
+}
+
+  
