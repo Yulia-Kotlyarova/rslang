@@ -11,8 +11,10 @@ div {
     margin: 0;
 }
 
+
 body {
-    background: url(sprint_background.png) no-repeat center center fixed;
+    background: url(mainPage.PNG) no-repeat center center fixed;
+    //background: url(sprint_background.png) no-repeat center center fixed;
     background-size: cover;
     height: 100%;
     overflow: hidden;
@@ -25,12 +27,12 @@ body {
         border-radius: 5px;
         background: url(sprint-game-board.png) no-repeat center center;
         background-size: cover;
-        display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: center;
         position: absolute;
         bottom: 0;
+        display: none;
 
         .game {
             margin-top: 2%;
@@ -293,6 +295,72 @@ body {
             }
         }
     }
+    
+    .gameStart {
+        width: 20%;
+        height: 20%;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        align-items: center;
+        right: 40%;
+        top: 34%;
+
+        .score__score2 {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+
+
+            .base-timer2 {
+                position: relative;
+                height: 120px;
+                width: 120px;
+                
+                .base-timer__svg2 {
+                    transform: scaleX(-1);
+                  }
+
+                .base-timer__label2 {
+                    position: absolute;
+                    width: 120px;
+                    height: 120px;
+                    top: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 28px;
+                    color: white;
+                }
+
+                .base-timer__circle2 {
+                    fill: none;
+                    stroke: none;
+
+                    .base-timer__path-remaining2 {
+                        stroke-width: 2px;
+                        stroke-linecap: round;
+                        transform: rotate(90deg);
+                        transform-origin: center;
+                        transition: 1s linear all;
+                        stroke: currentColor;
+                    }
+                     .base-timer__path-remaining2.green {
+                        color: rgb(65, 184, 131);
+                    }
+                    .base-timer__path-elapsed2 {
+                        stroke-width: 2px;
+                        stroke: #183949
+
+                    }
+                }
+
+
+            }
+        }
+    }
+
+    
 }
 
 

@@ -7,7 +7,11 @@ const closeBtn = document.getElementsByClassName('closeBtn')[0];
 
 const openModal = () => {
   simpleModel.style.display = 'block';
+  document.onkeydown = (e) => {
+    e.preventDefault();
+  };
 };
+
 export { openModal as default };
 
 const closeModal = () => {
