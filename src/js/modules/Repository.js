@@ -241,7 +241,7 @@ class Repository {
 
     const settings = await Repository.getSettings();
     const newSettings = {
-      learnedWords: settings.wordsPerDay,
+      wordsPerDay: settings.wordsPerDay,
       optional: { ...settings.optional, ...updatedValues },
     };
 
