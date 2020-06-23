@@ -148,8 +148,6 @@
   display: none!important;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 .a-c-loader {
   width: 95%;
   height: 4px;
@@ -161,11 +159,6 @@
 @media (max-width: 992px) {
   .a-c-pic-wrapper {
     top: 2px;
-=======
-@media (max-width: 992px) {
-  .a-c-pic-wrapper {
-    top: 50px;
->>>>>>> fix: resolve conflicts
   }
 
   .Audio-Call-Wrapper {
@@ -186,7 +179,6 @@
   }
 
   .a-c-translate {
-<<<<<<< HEAD
     top: 140px; 
 }
 
@@ -211,31 +203,6 @@
   .a-c-again-btn {
     top: 120px;
   }
-=======
-    top: 173px;  
-}
-
-.a-c-little-volume {
-  left: 43vw;
-  top: 171px;
-}
-
-.audio-call-photo {
-  top: -15px;
-}
-
-.a-c-result-wrapper {
-  top: 55px;
-}
-
-.a-c-another-game-btn {
-  top: 80px;
-}
-
-.a-c-again-btn {
-  top: 120px;
-}
->>>>>>> fix: resolve conflicts
 }
 
 
@@ -244,28 +211,20 @@
     top: 100px;
   }
 
-<<<<<<< HEAD
   .Audio-Call-Wrapper,
   .a-c-hello-screen {
     margin: 35px 0 0 115px
   }
 
-=======
->>>>>>> fix: resolve conflicts
   .a-c-translate {
     top: 163px;  
   }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> fix: resolve conflicts
 }
 
 @media (max-width: 320px) {
   .word-list {
     flex-direction: column;
-<<<<<<< HEAD
     top: 180px;
     left: 12px;
   }
@@ -283,22 +242,6 @@
   .a-c-dont-know,
   .bi-arrow-right-circle {
     top: 90px;
-=======
-    top: 154px;
-  }
-
-  .Audio-Call-Wrapper {
-    height: 337px;
-    margin: 30px 0 0 0;
-  }
-
-  .a-c-dont-know {
-    top: 59px;
-  }
-
-  .bi-arrow-right-circle {
-    top: 59px;
->>>>>>> fix: resolve conflicts
   }
 
   .a-c-translate {
@@ -306,7 +249,6 @@
   }
 
   .a-c-little-volume {
-<<<<<<< HEAD
     left: 8vw;
     top: 146px;
   }
@@ -339,11 +281,3 @@
     top: 180px;
   }
 }
-=======
-    left: 35vw;
-    top: 209px;
-  }
-
-}
-
->>>>>>> fix: resolve conflicts
