@@ -1,5 +1,7 @@
 import Authorization from './Authorization';
 
+import defaultSettings from '../constants/defaultSettings';
+
 class Repository {
   static async getAllUserWords(group = '', wordsPerPage = '') {
     const userId = localStorage.getItem('userId');
@@ -221,9 +223,12 @@ class Repository {
     });
 
     if (rawResponse.status.toString() === '404') {
+      const { wordsPerDay } = defaultSettings;
+      delete defaultSettings.wordsPerDay;
+
       return {
-        wordsPerDay: 50, // todo: do we have default values and where do we store them
-        optional: {},
+        wordsPerDay,
+        optional: defaultSettings,
       };
     }
 
