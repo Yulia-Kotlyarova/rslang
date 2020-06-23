@@ -8,33 +8,48 @@
     </head>
     <body class = "a-c-body">
         <h2 class="audio-call-h2">Audio Call</h2>
-        <div class="Audio-Call-Wrapper">
-            <div class="a-c-pic-wrapper">
-                <img src="./img/icons/volume.svg" class = "volume-up" alt = "volume icon">
-                <img src="" class = "audio-call-photo">
-            </div>
-            <img src="./img/icons/volume.svg" class = "a-c-little-volume">
-            <a class = "a-c-translate"> </a>
-            <ul>
-                <li> word </li>
-                <li> word </li>
-                <li> word </li>
-                <li> word </li>
-                <li> word </li>
-            </ul>
-            <div class="a-c-result-wrapper">
-                <ul class = "a-c-result-wrong"> Mistakes:
-                    <li class="a-c-result-li-wrong"></li>
-                </ul>
-                <ul class = "a-c-result-right"> Right:
-                    <li class="a-c-result-li-right"></li>
-                </ul>
-            </div>
-            <div class="a-c-btn-wrapper">
-                <img  src="./img/icons/arrow-right.svg" class="a-c-next">
-                <button class="a-c-don't-know"> I don't know( </button>
-                <button class="a-c-another-game-btn"> another game </button>
-                <button class="a-c-again-btn"> play again </button>
+        <div class="a-c-main-wrapper">
+            <div class="Audio-Call-Wrapper">
+                <div class="a-c-pic-wrapper">
+                    <div class = "volume-up"> 
+                        <audio src="" autoplay=""></audio>
+                        <div id="big-volume-up">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                    <img src="" class = "audio-call-photo hidden">
+                </div>
+                <div class="volume-trans hidden">
+                    <div class = "a-c-little-volume">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <a class = "a-c-translate"> translate </a>
+                </div>
+                <ol type="1" class = "word-list">
+                    <li class = "word-list-1"> </li>
+                    <li class = "word-list-2"> </li>
+                    <li class = "word-list-3"> </li>
+                    <li class = "word-list-4"> </li>
+                    <li class = "word-list-5"> </li>
+                </ol>
+                <div class="a-c-result-wrapper hidden">
+                    <ol class = "a-c-result-wrong"> Mistakes: <a></a>
+                    </ol>
+                    <ol class = "a-c-result-right"> Right: <a></a>
+                    </ol>
+                </div>
+                <div class="a-c-btn-wrapper">
+                    <div class="a-c-next">
+                        <svg class="bi bi-arrow-right-circle" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
+                            <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                    </div>
+                    <button class="a-c-dont-know"> I don't know( </button>
+                    <button class="a-c-another-game-btn hidden"> another game </button>
+                    <button class="a-c-again-btn hidden"> play again </button>
+                </div>
             </div>
         </div>
     </body>
