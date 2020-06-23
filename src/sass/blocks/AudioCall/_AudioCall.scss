@@ -2,6 +2,7 @@
 @import "ACResult";
 @import "ACButton";
 @import "AC-back";
+@import "../Header/header";
 
 .a-c-html {
     height: 100%;
@@ -56,6 +57,7 @@
   }
 
   .audio-call-photo {
+<<<<<<< HEAD
     width: 110%;
     z-index: 999;
   }
@@ -67,6 +69,29 @@
     width: 2em;
     top: 220px;
     left: 42vw;
+=======
+    max-width: 195%;
+    background-size: cover;
+    z-index: 999;
+    position: absolute;
+    top: -30px;
+  }
+
+  .a-c-little-volume {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    padding: 5px;
+    left: 44vw;
+    top: 214px;
+    cursor: pointer;
+  }
+
+  .a-c-little-volume > .fa-volume-up {
+    position: absolute;
+    height: 0.4em;
+    width: 0.4em;
+>>>>>>> refactor: change structure
   }
 
   .a-c-translate {
@@ -104,4 +129,8 @@
   display: none!important;
 }
 
+<<<<<<< HEAD
   
+=======
+  
+>>>>>>> refactor: change structure
