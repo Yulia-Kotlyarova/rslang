@@ -1,5 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
+import defaultSettings from '../constants/defaultSettings';
+
 class Authorization {
   constructor() {
     this.signinForm = document.querySelector('.auth-forms__signin');
@@ -68,7 +70,27 @@ class Authorization {
       // eslint-disable-next-line no-alert
       alert(content.error.errors[0].message);
     } else {
-      await Authorization.signinUser(user);
+      localStorage.setItem('settings', JSON.stringify(defaultSettings));
+
+      const token = await Authorization.signinUser(user);
+
+      const userId = localStorage.getItem('userId');
+
+      const settings = {
+        wordsPerDay: defaultSettings.wordsPerDay,
+      };
+      delete defaultSettings.wordsPerDay;
+      settings.optional = defaultSettings;
+
+      await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(settings),
+      });
     }
   }
 
@@ -89,6 +111,26 @@ class Authorization {
       localStorage.setItem('token', content.token);
       localStorage.setItem('email', user.email);
       localStorage.setItem('password', user.password);
+
+      if (!localStorage.getItem('settings')) {
+        const settingsRawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${content.userId}/settings`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${content.token}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const settings = await settingsRawResponse.json();
+
+        const settingsToSave = {
+          wordsPerDay: settings.wordsPerDay,
+          ...settings.optional,
+        };
+
+        localStorage.setItem('settings', JSON.stringify(settingsToSave));
+      }
     }
 
     return content.token;
