@@ -38,13 +38,10 @@ function play(song) {
 }
 
 function formatTime(time) {
-  // const minutes = Math.floor(time / 60);
   let seconds = time % 60;
-
   if (seconds < 10) {
     seconds = `0${seconds}`;
   }
-
   return `${seconds}`;
 }
 
@@ -100,7 +97,6 @@ export default function startTimer() {
       if (runItOnce) {
         play('clock.wav');
         runItOnce = false;
-        console.log('bang');
       }
     }
   }, 1000);
@@ -129,5 +125,6 @@ document.getElementById('app').innerHTML = `
   )}</span>
 </div>
 `;
-
-startTimer();
+setTimeout(() => {
+  startTimer();
+}, 6000);

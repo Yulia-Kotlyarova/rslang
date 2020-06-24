@@ -21,7 +21,17 @@ const changingScore = document.querySelector('.game__points-point')
 const scoreChange = document.getElementById('game__board_top-point_num');
 const changeColorOnScore = document.querySelector('.game__board-top');
 const fistTick = document.querySelector('.game__board-top_score_checks');
-const tickAppearOnScore = document.querySelectorAll('.game__board-top_score_checks .fa-check-circle')
+const tickAppearOnScore = document.querySelectorAll('.game__board-top_score_checks .fa-check-circle');
+
+export const objForCorrectWord = {
+  eng: [],
+  ru: [],
+};
+export const objForInCorrectWord = {
+  eng: [],
+  ru: [],
+};
+
 let ii = 0;
 
 let equal = true;
@@ -33,14 +43,12 @@ function play(song) {
 }
 
 const addWordToCard = () => {
-  play('bong.wav');
   wordCardEn.textContent = wordArray[Math.floor(Math.random() * wordArray.length)];
   wordCardRu.textContent = translatedArray[Math.floor(Math.random() * wordArray.length)];
   if (letsCount.length === 5 || letsCount.length === 10 || letsCount.length === 15
     || letsCount.length === 20) {
     play('phiu2.wav');
   }
-
   setTimeout(() => {
     leftPress.classList.remove('colorLeft')
     rightPress.classList.remove('colorRight')
@@ -115,6 +123,8 @@ const addWordToCardOnKeyPress = () => {
       leftPress.classList.add('colorLeft')
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51'
+      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
         ii += 1;
@@ -130,7 +140,9 @@ const addWordToCardOnKeyPress = () => {
       play('error.wav');
       rightPress.classList.add('colorRight')
       tickAppearOnWrong.style.display = 'block';
-      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)'
+      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
+      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
       scoreLogicInCorrect()
       addWordToCard()
       checkCorrectOrNot()
@@ -140,6 +152,8 @@ const addWordToCardOnKeyPress = () => {
       rightPress.classList.add('colorRight')
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51';
+      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
       fistTick.getElementsByTagName('i')[0].style.color = '#5A7E51'
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
@@ -156,21 +170,25 @@ const addWordToCardOnKeyPress = () => {
       play('error.wav');
       leftPress.classList.add('colorLeft')
       tickAppearOnWrong.style.display = 'block';
-      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)'
+      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
+      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
       scoreLogicInCorrect()
       addWordToCard()
       checkCorrectOrNot()
     }
   })
 }
-export default addWordToCardOnKeyPress;
+// export default addWordToCardOnKeyPress;
 
 const addWordToCardOnPress = () => {
   yesOrNoButton.addEventListener('click', (e) => {
     if (e.target.className === 'btn btn-danger' && equal === false) {
       play('phiu.wav');
       tickAppearOnCorrect.style.display = 'block';
-      borderOnCorrect.style.border = '4px solid #5A7E51'
+      borderOnCorrect.style.border = '4px solid #5A7E51';
+      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
         ii += 1;
@@ -185,7 +203,9 @@ const addWordToCardOnPress = () => {
     if (e.target.className === 'btn btn-success' && equal === false) {
       play('error.wav');
       tickAppearOnWrong.style.display = 'block';
-      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)'
+      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
+      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
       scoreLogicInCorrect()
       addWordToCard()
       checkCorrectOrNot()
@@ -194,7 +214,9 @@ const addWordToCardOnPress = () => {
     if (e.target.className === 'btn btn-success' && equal === true) {
       play('phiu.wav');
       tickAppearOnCorrect.style.display = 'block';
-      borderOnCorrect.style.border = '4px solid #5A7E51'
+      borderOnCorrect.style.border = '4px solid #5A7E51';
+      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
         ii += 1;
@@ -209,7 +231,9 @@ const addWordToCardOnPress = () => {
     if (e.target.className === 'btn btn-danger' && equal === true) {
       play('error.wav');
       tickAppearOnWrong.style.display = 'block';
-      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)'
+      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
+      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
+      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
       scoreLogicInCorrect()
       addWordToCard()
       checkCorrectOrNot()
@@ -243,7 +267,10 @@ const yanTranslate = {
 // })
 
 export const init = () => {
+  play('bong.wav');
   addWordToCardOnKeyPress();
   yanTranslate.translate();
   addWordToCardOnPress();
-}
+};
+
+// export default init();
