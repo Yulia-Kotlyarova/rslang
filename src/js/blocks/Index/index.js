@@ -13,4 +13,4 @@ window.onload = () => {
   const settingsModal = new SettingsModal();
 
   settingsModal.initiate();
-};s
+};
