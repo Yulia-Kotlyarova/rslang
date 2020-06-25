@@ -44,7 +44,10 @@ class Card {
 
     this.isTranscription = true;
     this.isWordImage = true;
+<<<<<<< HEAD
     this.isAutoplayAudio = true;
+=======
+>>>>>>> d2659d0... feat: add word transcription and translation logic
   }
 
   wordsHandler() {
