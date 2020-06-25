@@ -5,6 +5,8 @@ import 'bootstrap/js/dist/tab';
 
 import '@fortawesome/fontawesome-free/js/all.min';
 
+import random from 'lodash.random';
+
 const dontKnowBtn = document.querySelector('.a-c-dont-know');
 const volumeUp = document.querySelector('#big-volume-up');
 
@@ -49,11 +51,8 @@ function getCard(taskWord) {
     })
     .then(() => wrongAnswer())
     .then(() => {
-      const randPlace = randomInteger(0, 4);
-      console.log(randPlace);
-      console.log(taskWord.word);
+      const randPlace = _.random(0, 4);
       wordList[randPlace].textContent = taskWord.wordTranslate;
-      console.log(wordList[randPlace].textContent);
       wordList[randPlace].removeEventListener('click', wrong);
       wordList[randPlace].addEventListener('click', right);
       document.querySelector('.audio-call-photo').src = taskWord.image;
@@ -66,7 +65,6 @@ function getCard(taskWord) {
 }
 
 function soundClick(taskWord) {
-  console.log(taskWord);
   volumeUpIcon.src = taskWord.audio;
   volumeUpIcon.attributes.autoplay = 'autoplay';
   const sound = taskWord.audio;
@@ -82,7 +80,7 @@ function getWords() {
   fetch('https://afternoon-falls-25894.herokuapp.com/words?page=3&group=5')
     .then((response) => response.json())
     .then((response) => {
-      const rand = randomInteger(1, 19);
+      const rand = _.random(1, 19);
       const taskWord = response[rand];
       return taskWord;
     })
