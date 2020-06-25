@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-console */
 /* eslint-disable no-plusplus */
 import '../../../sass/styles.scss';
 
@@ -28,8 +26,8 @@ function randomInteger(min, max) {
 // wrong / right answer
 
 const wrong = (event) => {
-  // eslint-disable-next-line no-param-reassign
-  event.target.style.textDecoration = 'line-through';
+  const element = event.target;
+  element.style.textDecoration = 'line-through';
   volumeUp.classList.add('hidden');
   wordList.forEach((el) => {
     el.removeEventListener('click', wrong);
