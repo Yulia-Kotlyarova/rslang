@@ -13,11 +13,6 @@ const volumeUp = document.querySelector('#big-volume-up');
 const volumeUpIcon = document.querySelector('.volume-up > audio');
 const wordList = document.querySelectorAll('.word-list > li');
 
-function randomInteger(min, max) {
-  const rand = min + Math.random() * (max + 1 - min);
-  return Math.floor(rand);
-}
-
 // wrong / right answer
 
 const wrong = (event) => {
