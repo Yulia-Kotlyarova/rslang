@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import $ from 'jquery';
 
-=======
->>>>>>> dfc5529... feat: prefill settings form
 import Repository from '../../../modules/Repository';
 
 class SettingsModal {
