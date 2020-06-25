@@ -1,8 +1,6 @@
 /* eslint-disable no-plusplus */
 import '../../../sass/styles.scss';
 
-import 'bootstrap/js/dist/tab';
-
 import '@fortawesome/fontawesome-free/js/all.min';
 
 import random from 'lodash.random';
