@@ -37,22 +37,22 @@
                                 <div class="mb-3">
                                     <div class="form-group row settings__number-row">
                                         <div class="col settings__number-container">
-                                            <input type="number" class="form-control settings__number" id="wordsPerDay" min="1" max="999" required>
+                                            <input type="number" class="form-control settings__number" id="wordsPerDay" min="1" max="999" name="wordsPerDay" required>
                                             <div class="invalid-feedback">
                                                 Required input.
                                             </div>
                                         </div>
-                                        <label for="wordsPerDay" class="col-form-label settings__number-label">Maximum words per day</label>
+                                        <label for="wordsPerDay" class="col-form-label settings__number-label">Words per day</label>
                                         
                                     </div>
                                     <div class="form-group row settings__number-row">
                                         <div class="col settings__number-container">
-                                            <input type="number" class="form-control settings__number" id="cardsPerDay" min="1" max="999" required>
+                                            <input type="number" class="form-control settings__number" id="maxCardsPerDay" min="1" max="999" name="maxCardsPerDay" required>
                                             <div class="invalid-feedback">
                                                 Required input.
                                             </div>
                                         </div>
-                                        <label for="cardsPerDay" class="col-form-label settings__number-label">Maximum cards per day</label>
+                                        <label for="maxCardsPerDay" class="col-form-label settings__number-label">Maximum cards per day</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -82,13 +82,13 @@
                                 <div class="mb-3">
                                     <h6>Additional info</h6>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isTranscriptionVisible" checked>
+                                        <input class="form-check-input" type="checkbox" id="isTranscriptionVisible" name="isTranscriptionVisible" checked>
                                         <label class="form-check-label" for="isTranscriptionVisible">
                                             Show transcription
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isPictureVisible" checked>
+                                        <input class="form-check-input" type="checkbox" id="isPictureVisible" name="isPictureVisible" checked>
                                         <label class="form-check-label" for="isPictureVisible">
                                             Show picture
                                         </label>
@@ -97,25 +97,25 @@
                                 <div class="mb-3">
                                     <h6>Controls</h6>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isShowAnswerButtonVisible" checked>
+                                        <input class="form-check-input" type="checkbox" id="isShowAnswerButtonVisible" name="isShowAnswerButtonVisible" checked>
                                         <label class="form-check-label" for="isShowAnswerButtonVisible">
                                             Show 'Show Answer' button
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isRemoveButtonVisible" checked>
+                                        <input class="form-check-input" type="checkbox" id="isRemoveButtonVisible" name="isRemoveButtonVisible" checked>
                                         <label class="form-check-label" for="isRemoveButtonVisible">
                                             Show 'Remove word' button
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isDifficultButtonVisible" checked>
+                                        <input class="form-check-input" type="checkbox" id="isDifficultButtonVisible" name="isDifficultButtonVisible" checked>
                                         <label class="form-check-label" for="isDifficultButtonVisible">
                                             Show 'Mark as difficult' button
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="areAdditionalButtonsVisible" checked>
+                                        <input class="form-check-input" type="checkbox" id="areAdditionalButtonsVisible" name="areAdditionalButtonsVisible" checked>
                                         <label class="form-check-label" for="areAdditionalButtonsVisible">
                                             Show additional buttons
                                         </label>
@@ -124,19 +124,19 @@
                                 <div>
                                     <h6>What words to show</h6>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="mixed" value="option1" checked>
+                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="mixed" value="mixed" checked>
                                         <label class="form-check-label" for="mixed">
                                             Mixed
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="new" value="option2">
+                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="new" value="new">
                                         <label class="form-check-label" for="new">
                                             Only new words
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="repeat" value="option3">
+                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="repeat" value="repeat">
                                         <label class="form-check-label" for="repeat">
                                             Only words to repeat
                                         </label>

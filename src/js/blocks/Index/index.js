@@ -9,8 +9,8 @@ import 'bootstrap/js/dist/modal';
 
 import SettingsModal from './modules/SettingsModal';
 
-window.onload = () => {
+window.onload = async () => {
   const settingsModal = new SettingsModal();
 
-  settingsModal.initiate();
+  await settingsModal.initiate();
 };
