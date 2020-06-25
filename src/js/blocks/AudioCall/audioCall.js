@@ -25,7 +25,6 @@ const wrong = (event) => {
 
 function wrongAnswer() {
   wordList.forEach((el) => {
-    // eslint-disable-next-line no-param-reassign
     el.classList.add('.li-pale-color');
     el.addEventListener('click', wrong);
   });
