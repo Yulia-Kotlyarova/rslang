@@ -32,18 +32,25 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form class="settings__form">
+                        <form class="settings__form" novalidate>
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <div class="form-group row settings__number-row">
                                         <div class="col settings__number-container">
-                                            <input type="number" class="form-control settings__number" id="wordsPerDay" min="1" max="999">
+                                            <input type="number" class="form-control settings__number" id="wordsPerDay" min="1" max="999" required>
+                                            <div class="invalid-feedback">
+                                                Required input.
+                                            </div>
                                         </div>
                                         <label for="wordsPerDay" class="col-form-label settings__number-label">Maximum words per day</label>
+                                        
                                     </div>
                                     <div class="form-group row settings__number-row">
                                         <div class="col settings__number-container">
-                                            <input type="number" class="form-control settings__number" id="cardsPerDay" min="1" max="999">
+                                            <input type="number" class="form-control settings__number" id="cardsPerDay" min="1" max="999" required>
+                                            <div class="invalid-feedback">
+                                                Required input.
+                                            </div>
                                         </div>
                                         <label for="cardsPerDay" class="col-form-label settings__number-label">Maximum cards per day</label>
                                     </div>
@@ -51,22 +58,25 @@
                                 <div class="mb-3">
                                     <h6>Info (check at least one)</h6>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isTranslationVisible" checked>
+                                        <input class="form-check-input setting__info-basic" type="checkbox" name="isTranslationVisible" id="isTranslationVisible" checked>
                                         <label class="form-check-label" for="isTranslationVisible">
                                             Show translation
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isExplanationVisible" checked>
+                                        <input class="form-check-input setting__info-basic" type="checkbox" name="isExplanationVisible" id="isExplanationVisible" checked>
                                         <label class="form-check-label" for="isExplanationVisible">
                                             Show explanation
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="isExampleVisible" checked>
+                                        <input class="form-check-input setting__info-basic" type="checkbox" name="isExampleVisible" id="isExampleVisible" checked>
                                         <label class="form-check-label" for="isExampleVisible">
                                             Show example
                                         </label>
+                                    </div>
+                                    <div class="invalid-feedback settings__info-basic-invalid-feedback">
+                                        Check at least one.
                                     </div>
                                 </div>
                                 <div class="mb-3">
