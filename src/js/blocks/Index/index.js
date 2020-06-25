@@ -288,12 +288,7 @@ class Card {
   }
 }
 
-<<<<<<< HEAD
 const card = new Card();
 card.showCard();
 card.getWord();
 card.setEventListener();
-=======
-  settingsModal.initiate();
-};
->>>>>>> 5c395d2... feat: form validation
