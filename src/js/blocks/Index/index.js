@@ -8,6 +8,9 @@ class Card {
   constructor(word) {
     this.word = word;
     this.cardWrapper = document.querySelector('.card-wrapper');
+    this.todayProgress = document.querySelector('.progress');
+    this.todayStudiedWordsOutput = document.querySelector('.today-studied-words');
+    this.availabelWordsToStudy = document.querySelector('.max-available-words');
     this.card = null;
     this.todayStudiedWords = (localStorage.getItem('todayStudiedWords')) ? localStorage.getItem('todayStudiedWords') : 0;
     this.numberOfWordsToStudy = 50;
@@ -16,14 +19,17 @@ class Card {
   showCard() {
     this.card = document.createElement('div');
     const checkWordButton = document.createElement('button');
-    const todayStydyProgress = document.createElement('progress');
+    const nextCardButton = document.createElement('button');
     this.card.classList.add('word-card');
-    todayStydyProgress.setAttribute('max', this.numberOfWordsToStudy);
-    todayStydyProgress.setAttribute('value', this.todayStudiedWords);
+    this.todayProgress.setAttribute('max', this.numberOfWordsToStudy);
+    this.todayProgress.setAttribute('value', this.todayStudiedWords);
+    this.todayStudiedWordsOutput.innerText = this.todayStudiedWords;
+    this.availabelWordsToStudy.innerText = this.numberOfWordsToStudy;
     checkWordButton.classList.add('check');
     checkWordButton.innerText = 'Check';
-    console.log(this.card);
-    this.cardWrapper.append(this.card, checkWordButton, todayStydyProgress);
+    nextCardButton.classList.add('next-card-btn', 'hidden');
+    nextCardButton.innerText = 'Next';
+    this.cardWrapper.prepend(this.card, checkWordButton, nextCardButton);
   }
 
   showWordInput() {
@@ -69,11 +75,12 @@ class Card {
         entryField.focus();
       }, 1000);
     } else {
+      const nextCardButton = document.querySelector('.next-card-btn');
+
+      nextCardButton.classList.remove('hidden');
       entryField.classList.add('right-letter');
-      this.clearCard();
       this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
       localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
-      this.showWordInput();
     }
   }
 
@@ -83,11 +90,22 @@ class Card {
     }
   }
 
+  nextCard() {
+    const nextCardButton = document.querySelector('.next-card-btn');
+    nextCardButton.classList.add('hidden');
+    this.todayProgress.setAttribute('value', this.todayStudiedWords);
+    this.todayStudiedWordsOutput.innerText = this.todayStudiedWords;
+    this.clearCard();
+    this.showWordInput();
+  }
+
   setEventListener() {
     const checkWordButton = document.querySelector('.check');
     const entryField = document.querySelector('.word-field');
+    const nextCardButton = document.querySelector('.next-card-btn');
     console.log(entryField);
     checkWordButton.addEventListener('click', this.checkWord.bind(this));
+    nextCardButton.addEventListener('click', this.nextCard.bind(this));
     entryField.addEventListener('input', () => {
       const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
       hiddenRightWord.forEach((item) => {
