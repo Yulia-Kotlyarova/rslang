@@ -1,0 +1,209 @@
+$color-text: #3F5D79;
+$color-button-logout: #FBC65F;
+$color-button-logout-text: #886A30;
+$color-header-main: #F8F8F8;
+
+$button-border-radius-small: 10px;
+$header-border-radius: 30px;
+$button-width: 50px;
+$button-height: 50px;
+$button-border-radius-big: 25px;
+
+$font-size-10px: 10px;
+
+.app-header {
+  width: 100%;
+  padding: 0 20px;
+  color: $color-text;
+
+  a {
+    text-decoration: none;
+  }
+
+  svg {
+    color: $color-text;
+  }
+
+}
+
+.app-header__container {
+  position: relative;
+  height: 112px;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-header-main;
+  border-radius: 0px 0px $header-border-radius $header-border-radius;
+  box-shadow: 5px 20px 20px #67697d40;
+}
+
+.header__burger {
+  display: none;
+  position: absolute;
+  top: 8px;
+  left: 25px;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.burder__line {
+  width: 24px;
+  height: 3px;
+  margin: 2px 0;
+  background-color: $color-text;
+  border-radius: 2px;
+}
+
+.header__burger__menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 50vw;
+  padding: 80px 20px;
+  flex-direction: column;
+  align-items: center;
+  background-color: $color-header-main;
+  border-radius: 0px 0px $header-border-radius $header-border-radius;
+  box-shadow: 5px 20px 20px #67697d40;
+}
+
+.header__promo {
+  display: flex;
+  align-items: center;
+}
+
+.header__buttons {
+  display: flex;
+  align-items: center;
+}
+
+.header__logo {
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text;
+  font-weight: 800;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.header__logo > div {
+  font-size: 26px;
+}
+
+.header__button {
+  width: $button-width;
+  height: $button-height;
+  margin: 5px;
+  border: none;
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: $button-border-radius-big;
+  cursor: pointer;
+}
+
+.header__user-authorization {
+  display: flex;
+  align-items: center;
+}
+
+.header__username {
+  height: 40px;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.button_logout_main {
+  width: 90px;
+  background-color: $color-button-logout;
+  color: $color-button-logout-text;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: $button-border-radius-small;
+}
+
+.button_logout_burger {
+  background-color: $color-button-logout;
+  color: $color-button-logout-text;
+  border-radius: $button-border-radius-big;
+}
+
+.button_logout_burger > svg {
+  color: $color-button-logout-text;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  padding: 20px;
+  display: none;
+  position: absolute;
+  background-color: $color-header-main;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: $header-border-radius;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .wrapper {
+    padding: 0 15px;
+  }
+  .app-header {
+    padding: 0 5px;
+  }
+
+  .header__buttons, .header__user-authorization {
+    display: none;
+  }
+
+  .app-header__container {
+    height: 40px;
+    justify-content: center;
+  }
+
+  .header__burger {
+    display: flex;
+  }
+
+  .header__burger__menu {
+    display: flex;
+  }
+
+  .header__logo > div {
+    font-size: 20px;
+  }
+
+  .dropdown-content {
+    top: 10px;
+    left: 60px;
+  }
+}
