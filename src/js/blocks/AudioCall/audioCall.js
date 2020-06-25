@@ -62,7 +62,7 @@ function getCard(taskWord) {
     .then(() => {
       dontKnowBtn.classList.add('hidden');
     })
-    .catch(() => (console.log('err in getCard')));
+    .catch((error) => (console.error(error)));
 }
 
 function soundClick(taskWord) {
@@ -87,7 +87,7 @@ function getWords() {
       return taskWord;
     })
     .then((taskWord) => soundClick(taskWord))
-    .catch(() => (console.log('err')));
+    .catch((error) => (console.error(error)));
 }
 getWords();
 
