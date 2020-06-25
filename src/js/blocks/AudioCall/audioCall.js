@@ -26,7 +26,7 @@ const wrong = (event) => {
 function wrongAnswer() {
   wordList.forEach((el) => {
     // eslint-disable-next-line no-param-reassign
-    el.style.color = '3F5D79';
+    el.classList.add('.li-pale-color');
     el.addEventListener('click', wrong);
   });
 }
