@@ -3,13 +3,13 @@
 @import "ACButton";
 @import "AC-back";
 
-html {
+.a-c-html {
     height: 100%;
     font-family: $font;
     font-size: 10px;
   }
 
-body {
+.a-c-body {
     display: flex;
     align-items: center;
     justify-content: center;
