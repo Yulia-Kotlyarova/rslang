@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import Repository from '../../../modules/Repository';
 
 class SettingsModal {
@@ -105,6 +107,8 @@ class SettingsModal {
 
         const { wordsPerDay } = newSettings;
         delete newSettings.wordsPerDay;
+
+        $(this.settingsModal).modal('hide');
 
         await Promise.all([
           Repository.updateOptionalSettings(newSettings),
