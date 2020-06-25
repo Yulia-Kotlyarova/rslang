@@ -1,131 +1,132 @@
-.results {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #A7A7F0;
-    background-size: cover;
-    z-index: 15;
-}
+.game-puzzle-main-class {
+    .results {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #A7A7F0;
+        background-size: cover;
+        z-index: 15;
+    }
 
-.results__container {
-    position: relative;
-    top: calc(50vh - 250px);
-    left: calc(50vw - 300px);
-    width: 600px;
-    height: 500px;
-    padding: 15px;
-    background-color: $color-main-background;
-    border-radius: $small-border-radius;
-}
-
-.results__painting {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .results__painting__image > a > img {
-        width: 100px;
-        height: 56px;
+    .results__container {
+        position: relative;
+        top: calc(50vh - 250px);
+        left: calc(50vw - 300px);
+        width: 600px;
+        height: 500px;
+        padding: 15px;
+        background-color: $color-main-background;
         border-radius: $small-border-radius;
     }
 
-    .results__painting__info {
-        margin: 10px 0;
-        font-size: 1rem
-    }
-}
-
-.results__knowledge {
-    display: flex;
-    flex-direction: column;
-
-    .results__dont-know, .results__know {
+    .results__painting {
         display: flex;
         flex-direction: column;
-        font-size: 1.5rem;
-        font-weight: 700;
+        align-items: center;
+
+        .results__painting__image > a > img {
+            width: 100px;
+            height: 56px;
+            border-radius: $small-border-radius;
+        }
+
+        .results__painting__info {
+            margin: 10px 0;
+            font-size: 1rem
+        }
     }
 
-    .dont-know__number, .know__number {
-        width: 20px;
-        margin: 0 5px;
-        padding: 0 10px;
-        color: $color-puzzle-text;
-        background-color: $color-shadow-wrong;
-        border-radius: $small-border-radius;
-    }
-
-    .know__number {
-        background-color: $color-shadow-correct;
-    }
-
-    .dont-know__number {
-        background-color: $color-shadow-wrong;
-    }
-
-    .results__phrases__container {
+    .results__knowledge {
         display: flex;
+        flex-direction: column;
 
-        .results__phrase {
-            width: 100%;
-            margin-left: 5px;
+        .results__dont-know, .results__know {
+            display: flex;
+            flex-direction: column;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .dont-know__number, .know__number {
+            width: 20px;
+            margin: 0 5px;
+            padding: 0 10px;
+            color: $color-puzzle-text;
+            background-color: $color-shadow-wrong;
+            border-radius: $small-border-radius;
+        }
+
+        .know__number {
+            background-color: $color-shadow-correct;
+        }
+
+        .dont-know__number {
+            background-color: $color-shadow-wrong;
+        }
+
+        .results__phrases__container {
+            display: flex;
+
+            .results__phrase {
+                width: 100%;
+                margin-left: 5px;
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                cursor: pointer;
+
+                .phrase_RU {
+                    display: none;
+                    padding: 0 5px;
+                    color: $color-puzzle-text;
+                    background-color: $color-puzzles-background;
+                }
+            }
+
+            .results__phrase:hover {
+                .phrase_RU {
+                    display: flex;
+                }
+                .phrase_EN {
+                    display: none;
+                }
+            }
+
+            .results__audio-play {
+                width: 20px;
+                height: 20px;
+                margin: 3px;
+                background-image: url(./icons/puzzle/speak.svg);
+                background-size: contain;
+                filter: invert(40%);
+                cursor: pointer;
+            }
+
+            .results__audio-play:hover {
+                filter: invert(0%);
+            }
+        }
+    }
+
+    .results__buttons {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+
+        .results__button {
+            width: $width-control-button;
+            height: $button-height;
+            font-size: 2rem;
+            margin: 5px;
             display: flex;
             align-items: center;
-            font-weight: 500;
-            cursor: pointer;
-
-            .phrase_RU {
-                display: none;
-                padding: 0 5px;
-                color: $color-puzzle-text;
-                background-color: $color-puzzles-background;
-            }
+            justify-content: center;
         }
 
-        .results__phrase:hover {
-            .phrase_RU {
-                display: flex;
-            }
-            .phrase_EN {
-                display: none;
-            }
-        }
-
-        .results__audio-play {
-            width: 20px;
-            height: 20px;
-            margin: 3px;
-            background-image: url(./icons/puzzle/speak.svg);
-            background-size: contain;
-            filter: invert(40%);
-            cursor: pointer;
-        }
-
-        .results__audio-play:hover {
-            filter: invert(0%);
+        .results__button:hover {
+            border: 1px solid #FFFFFF;
         }
     }
 }
-
-.results__buttons {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-
-    .results__button {
-        width: $width-control-button;
-        height: $button-height;
-        font-size: 2rem;
-        margin: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .results__button:hover {
-        border: 1px solid #FFFFFF;
-    }
-}
-

@@ -62,9 +62,9 @@ export class GameArea {
     this.buttonContinue.addEventListener('click', () => this.continueGame());
     this.buttonDontKnow.addEventListener('click', () => this.helpPlayerHePressedDontKnow());
     this.gameLine.addEventListener('mousedown', () => GameArea.removeOverlays());
-    this.resultsButtonContinue.addEventListener('click', () => {
+    this.resultsButtonContinue.addEventListener('click', async () => {
       this.results.classList.add('display-none');
-      this.continueGame();
+      await this.continueGame();
     });
   }
 
@@ -110,13 +110,29 @@ export class GameArea {
 
   addPuzzlesEventListeners() {
     const testPuzzleLine = document.getElementById(`game_line_${gameData.activePhrase}`);
-    const puzzlesToMove = testPuzzleLine.querySelectorAll('.puzzle__element');
+    const mainPuzzleLine = document.getElementById(`line_${gameData.activePhrase}`);
     this.puzzlesEventListener = (event) => this.replacePuzzleElement(event);
-    puzzlesToMove.forEach((puzzleToMove) => puzzleToMove.addEventListener('click', this.puzzlesEventListener));
-    puzzlesToMove.forEach((puzzleToMove) => puzzleToMove.addEventListener('mousedown', (event) => {
-      const temp = event;
-      temp.target.closest('.puzzle__element').style.zIndex = '3';
-    }));
+    testPuzzleLine.addEventListener('click', (event) => {
+      const puzzleToMove = event.target.closest('.puzzle__element');
+      if (!puzzleToMove) {
+        return;
+      }
+      this.puzzlesEventListener(event);
+    });
+    mainPuzzleLine.addEventListener('click', (event) => {
+      const puzzleToMove = event.target.closest('.puzzle__element');
+      if (!puzzleToMove) {
+        return;
+      }
+      this.puzzlesEventListener(event);
+    });
+    testPuzzleLine.addEventListener('mousedown', (event) => {
+      const puzzleToMove = event.target.closest('.puzzle__element');
+      if (!puzzleToMove) {
+        return;
+      }
+      puzzleToMove.style.zIndex = '3';
+    });
   }
 
   replacePuzzleElement(event) {
@@ -190,7 +206,7 @@ export class GameArea {
     }
   }
 
-  continueGame() {
+  async continueGame() {
     GameArea.removeOverlays();
     if (gameData.activePhrase < gameData.phrasesToDisplay.length - 1) {
       this.removePuzzlesToMainLine();
@@ -211,7 +227,7 @@ export class GameArea {
       const prevLevel = gameData.level;
       GameArea.defineNextlevelAndPage();
       this.setControlButtons('none');
-      StartNewGame.startGame();
+      await StartNewGame.startGame();
       navigation.updatetNavigationFields(prevLevel);
     }
   }
@@ -257,11 +273,11 @@ export class GameArea {
     }
   }
 
-  helpPlayerHePressedDontKnow() {
+  async helpPlayerHePressedDontKnow() {
     this.removePuzzlesToMainLine();
     gameData.gameResultsWrong.push(gameData.activePhrase);
     GameArea.addShadowToLineNumber('wrong');
-    this.continueGame();
+    await this.continueGame();
   }
 
   removePuzzlesToMainLine() {

@@ -2,7 +2,6 @@
 import StartNewGame from './startNewGame';
 import { gameData } from './appState';
 
-const startNewGame = new StartNewGame();
 export default class Navigation {
   constructor() {
     this.selectLevel = document.querySelector('.level__select');
@@ -20,13 +19,13 @@ export default class Navigation {
     gameData.page = this.selectPage.selectedIndex;
     gameData.level = this.selectLevel.selectedIndex;
     this.selectPage.classList.add(`level_${gameData.level + 1}`);
-    startNewGame.startGame();
+    StartNewGame.startGame();
   }
 
   defineNewGameOptions() {
     gameData.level = this.selectLevel.selectedIndex;
     gameData.page = this.selectPage.selectedIndex;
-    startNewGame.startGame();
+    StartNewGame.startGame();
   }
 
   updatetNavigationFields(prevLevel) {

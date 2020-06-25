@@ -1,7 +1,5 @@
 import { gameData } from './appState';
 
-// import { gameArea } from './GameArea';
-
 export default class Results {
   constructor() {
     this.results = document.querySelector('.results');
@@ -10,7 +8,6 @@ export default class Results {
     this.dontKnowPhrases = document.querySelector('.dont-know__phrases');
     this.knowPhrases = document.querySelector('.know__phrases');
     this.resultsKnowledge = document.querySelector('.results__knowledge');
-    // this.resultsButtonContinue = document.querySelector('.button__continue-results');
     this.resultsButtonStatistic = document.querySelector('.button__statistics');
     this.buttonResults = document.querySelector('.button__results');
   }
@@ -22,14 +19,8 @@ export default class Results {
         Results.audioPlay(clickedIcon);
       }
     });
-    // this.resultsButtonContinue.addEventListener('click', () => this.continueGame());
     this.buttonResults.addEventListener('click', () => this.showResults());
   }
-
-  // continueGame() {
-  //   this.results.classList.add('display-none');
-  //   gameArea.continueGame();
-  // }
 
   static audioPlay(clickedIcon) {
     const phraseNumber = clickedIcon.getAttribute('audioSrcID');
