@@ -3,7 +3,7 @@ import '../../../sass/styles.scss';
 
 import '@fortawesome/fontawesome-free/js/all.min';
 
-import random from 'lodash.random';
+import random from 'lodash/fp/random';
 
 const dontKnowBtn = document.querySelector('.a-c-dont-know');
 const volumeUp = document.querySelector('#big-volume-up');
@@ -37,13 +37,13 @@ function getCard(taskWord) {
     .then((resp) => resp.json())
     .then((resp) => {
       for (let i = 0; i < 5; i++) {
-        const rand = randomInteger(1, 19);
+        const rand = random(1, 19);
         wordList[i].textContent = resp[rand].wordTranslate;
       }
     })
     .then(() => wrongAnswer())
     .then(() => {
-      const randPlace = _.random(0, 4);
+      const randPlace = random(0, 4);
       wordList[randPlace].textContent = taskWord.wordTranslate;
       wordList[randPlace].removeEventListener('click', wrong);
       wordList[randPlace].addEventListener('click', right);
@@ -72,7 +72,7 @@ function getWords() {
   fetch('https://afternoon-falls-25894.herokuapp.com/words?page=3&group=5')
     .then((response) => response.json())
     .then((response) => {
-      const rand = _.random(1, 19);
+      const rand = random(1, 19);
       const taskWord = response[rand];
       return taskWord;
     })
