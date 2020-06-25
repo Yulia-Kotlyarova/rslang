@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 import $ from 'jquery';
 
 import Repository from '../../../modules/Repository';
 
+=======
+>>>>>>> a0754fd... feat: form validation
 class SettingsModal {
   constructor() {
     this.settingsModal = document.querySelector('.settings__modal');
@@ -10,10 +13,13 @@ class SettingsModal {
     this.settingsBasicInputs = this.settingsForm.querySelectorAll('.setting__info-basic');
     this.settingsBasicInvalidFeedback = this.settingsForm.querySelector('.settings__info-basic-invalid-feedback');
     this.inputsRequired = this.settingsForm.querySelectorAll('input:required');
+<<<<<<< HEAD
 
     this.inputsCheckboxes = this.settingsForm.querySelectorAll('input[type=checkbox]');
     this.inputsRadios = this.settingsForm.querySelectorAll('input[type=radio]');
     this.inputsNumbers = this.settingsForm.querySelectorAll('input[type=number]');
+=======
+>>>>>>> a0754fd... feat: form validation
   }
 
   markInputsRequiredInvalid() {
@@ -62,6 +68,7 @@ class SettingsModal {
     return !atLeastOneRequiredMissed && atLeastOneBasicChecked;
   }
 
+<<<<<<< HEAD
   async prefillForm() {
     const settingsRaw = await Repository.getSettings();
     const settings = { wordsPerDay: settingsRaw.wordsPerDay, ...settingsRaw.optional };
@@ -89,11 +96,16 @@ class SettingsModal {
     localStorage.setItem('settings', JSON.stringify(settings));
 
     this.settingsForm.addEventListener('submit', async (event) => {
+=======
+  initiate() {
+    this.settingsForm.addEventListener('submit', (event) => {
+>>>>>>> a0754fd... feat: form validation
       event.preventDefault();
       event.stopPropagation();
 
       this.unmarkSettingsBasicInvalid();
       this.unmarkInputsRequiredInvalid();
+<<<<<<< HEAD
 
       if (this.checkSettingsFormValidity()) {
         const formData = new FormData(this.settingsForm);
@@ -113,6 +125,8 @@ class SettingsModal {
         await Repository.updateWordsPerDay(wordsPerDay);
         await Repository.updateOptionalSettings(newSettings);
       }
+=======
+>>>>>>> a0754fd... feat: form validation
     });
   }
 }
