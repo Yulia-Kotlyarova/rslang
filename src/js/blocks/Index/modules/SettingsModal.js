@@ -1,3 +1,5 @@
+import Repository from '../../../modules/Repository';
+
 class SettingsModal {
   constructor() {
     this.settingsModal = document.querySelector('.settings__modal');
@@ -6,6 +8,10 @@ class SettingsModal {
     this.settingsBasicInputs = this.settingsForm.querySelectorAll('.setting__info-basic');
     this.settingsBasicInvalidFeedback = this.settingsForm.querySelector('.settings__info-basic-invalid-feedback');
     this.inputsRequired = this.settingsForm.querySelectorAll('input:required');
+
+    this.inputsCheckboxes = this.settingsForm.querySelectorAll('input[type=checkbox]');
+    this.inputsRadios = this.settingsForm.querySelectorAll('input[type=radio]');
+    this.inputsNumbers = this.settingsForm.querySelectorAll('input[type=number]');
   }
 
   markInputsRequiredInvalid() {
@@ -54,13 +60,57 @@ class SettingsModal {
     return !atLeastOneRequiredMissed && atLeastOneBasicChecked;
   }
 
-  initiate() {
-    this.settingsForm.addEventListener('submit', (event) => {
+  async prefillForm() {
+    const settingsRaw = await Repository.getSettings();
+    const settings = { wordsPerDay: settingsRaw.wordsPerDay, ...settingsRaw.optional };
+
+    this.inputsCheckboxes.forEach((checkbox) => {
+      const element = checkbox;
+      element.checked = settings[checkbox.id];
+    });
+
+    this.inputsNumbers.forEach((inputNumber) => {
+      const element = inputNumber;
+      element.value = Number(settings[inputNumber.id]);
+    });
+
+    this.inputsRadios.forEach((radio) => {
+      const element = radio;
+      element.checked = settings[radio.name] === radio.value;
+    });
+
+    return settings;
+  }
+
+  async initiate() {
+    const settings = await this.prefillForm();
+    localStorage.setItem('settings', settings);
+
+    this.settingsForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       event.stopPropagation();
 
       this.unmarkSettingsBasicInvalid();
       this.unmarkInputsRequiredInvalid();
+
+      if (this.checkSettingsFormValidity()) {
+        const formData = new FormData(this.settingsForm);
+        const newSettings = Object.fromEntries(formData.entries());
+
+        this.inputsCheckboxes.forEach((checkbox) => {
+          newSettings[checkbox.id] = newSettings[checkbox.id] === 'on';
+        });
+
+        localStorage.setItem('settings', JSON.stringify(newSettings));
+
+        const { wordsPerDay } = newSettings;
+        delete newSettings.wordsPerDay;
+
+        await Promise.all([
+          Repository.updateOptionalSettings(newSettings),
+          Repository.updateWordsPerDay(wordsPerDay),
+        ]);
+      }
     });
   }
 }
