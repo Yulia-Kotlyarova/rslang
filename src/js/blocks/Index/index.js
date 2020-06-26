@@ -31,6 +31,7 @@ class Card {
 
     this.isTranscription = true;
     this.isWordImage = true;
+    this.isAutoplayAudio = true;
   }
 
   wordsHandler() {
@@ -129,7 +130,8 @@ class Card {
   }
 
   showWordInfo(wordInfo) {
-    const dataWithoutWord = wordInfo.split(this.word);
+    const sentenceDelimiter = new RegExp(this.word, 'i');
+    const dataWithoutWord = wordInfo.split(sentenceDelimiter);
     const container = document.createElement('p');
     if (wordInfo === this.wordData.textMeaning) {
       container.classList.add('word-meaning');
@@ -156,6 +158,45 @@ class Card {
     }
   }
 
+  playWordAudio(audiofileIndex) {
+    const wordAudioData = [...document.querySelectorAll('.word-audio')];
+    if (audiofileIndex >= wordAudioData.length) return;
+    wordAudioData[audiofileIndex].addEventListener('ended', () => {
+      const nextAudiofileIndex = audiofileIndex + 1;
+      this.playWordAudio(nextAudiofileIndex);
+    }, { once: true });
+    wordAudioData[audiofileIndex].play();
+  }
+
+  showAudio() {
+    const wordField = document.querySelector('.word-wrapper');
+    const wordAudio = document.createElement('audio');
+    wordAudio.src = this.wordData.audio;
+    wordAudio.classList.add('word-audio');
+    wordAudio.setAttribute('controls', 'controls');
+    wordField.after(wordAudio);
+    if (this.isWordMeaning) {
+      const wordMeaning = document.querySelector('.word-meaning');
+      const wordMeaningAudio = document.createElement('audio');
+      wordMeaningAudio.classList.add('word-audio');
+      wordMeaningAudio.setAttribute('controls', 'controls');
+      wordMeaningAudio.src = this.wordData.audioMeaning;
+      wordMeaning.after(wordMeaningAudio);
+    }
+    if (this.isTextExample) {
+      const wordTextExample = document.querySelector('.word-text-example');
+      const wordTextExampleAudio = document.createElement('audio');
+      wordTextExampleAudio.classList.add('word-audio');
+      wordTextExampleAudio.setAttribute('controls', 'controls');
+      wordTextExampleAudio.src = this.wordData.audioExample;
+      wordTextExample.after(wordTextExampleAudio);
+    }
+    if (this.isAutoplayAudio) {
+      const startIndexAudio = 0;
+      this.playWordAudio(startIndexAudio);
+    }
+  }
+
   showRightAnswer() {
     if (this.isChecked) return;
     this.isChecked = true;
@@ -168,13 +209,14 @@ class Card {
       hiddenWords.forEach((item) => {
         item.classList.remove('hidden-word');
       });
-      this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
-      localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
     }
     entryField.value = this.word;
     if (this.isTranslate) {
       this.showTranslate();
     }
+    this.showAudio();
+    this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
+    localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
   }
 
   checkWord() {
