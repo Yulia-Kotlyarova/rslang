@@ -6,6 +6,13 @@
   display: inline;
 }
 
+.word-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .word-wrapper {
   position: relative;
   background-color: rgb(111, 155, 150);
@@ -22,6 +29,11 @@
   background: transparent;
   outline: none;
   color: black;
+}
+
+.word-audio {
+  display: block;
+  outline: none;
 }
 
 .hidden {
