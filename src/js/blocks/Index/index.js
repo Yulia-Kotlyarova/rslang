@@ -1,7 +1,18 @@
 import '../../../sass/styles.scss';
+
 import '@fortawesome/fontawesome-free/js/all.min';
 
-window.onload = () => {
+import 'bootstrap/js/dist/index';
+import 'bootstrap/js/dist/util';
+import 'bootstrap/js/dist/button';
+import 'bootstrap/js/dist/modal';
+
+import SettingsModal from './modules/SettingsModal';
+
+window.onload = async () => {
+  const settingsModal = new SettingsModal();
+
+  await settingsModal.initiate();
 };
 
 class Card {

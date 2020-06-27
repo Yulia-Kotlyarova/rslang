@@ -270,7 +270,7 @@ class Repository {
       optional: settings.optional,
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',

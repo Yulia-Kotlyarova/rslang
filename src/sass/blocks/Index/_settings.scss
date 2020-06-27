@@ -1,0 +1,19 @@
+.settings {
+  &__number {
+    padding-right: 0;
+    height: 30px;
+  }
+
+  &__number-container {
+    max-width: 120px;
+  }
+
+  &__number-label {
+    padding: 0;
+  }
+
+  &__number-row {
+    align-items: center;
+    margin-bottom: 5px;
+  }
+}
