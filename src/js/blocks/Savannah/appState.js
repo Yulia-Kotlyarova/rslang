@@ -1,4 +1,4 @@
-const savannahState = {
+export const savannahState = {
   lastPlayedRound: '',
   currentLevel: '',
   currentPage: '',
@@ -13,4 +13,10 @@ const savannahState = {
   timerId: 0,
 };
 
-export default savannahState;
+// const savannahSatistics = {
+
+// };
+
+export const savannahSettings = {
+  soundOn: true,
+};

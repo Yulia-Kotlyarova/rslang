@@ -1,5 +1,6 @@
 import Results from './Results';
 import { heartFill, heartStroke } from './consts';
+import { savannahSettings } from './appState';
 
 export default class ProceedAnswer {
   constructor(savannahState, startNewRound) {
@@ -47,8 +48,10 @@ export default class ProceedAnswer {
 
   catchCorrectAnswer(answer) {
     answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
-    const sound = '/src/audio/blocks/Savannah/answer-correct.mp3';
-    ProceedAnswer.audioPlay(sound);
+    if (savannahSettings.soundOn) {
+      const sound = '/src/audio/blocks/Savannah/answer-correct.mp3';
+      ProceedAnswer.audioPlay(sound);
+    }
     this.savannahState.answeredCorrect.push(this.savannahState.activeWordID);
     setTimeout(() => {
       this.continueGame();
@@ -66,8 +69,10 @@ export default class ProceedAnswer {
       if (selectedAnswer) {
         selectedAnswer.querySelector('.answer__overlay-wrong').classList.remove('hidden');
       }
-      const sound = '/src/audio/blocks/Savannah/answer-wrong.mp3';
-      ProceedAnswer.audioPlay(sound);
+      if (savannahSettings.soundOn) {
+        const sound = '/src/audio/blocks/Savannah/answer-wrong.mp3';
+        ProceedAnswer.audioPlay(sound);
+      }
       this.savannahState.answeredWrong.push(this.savannahState.activeWordID);
       setTimeout(() => {
         this.continueGame();
