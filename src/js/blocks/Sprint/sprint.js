@@ -2,6 +2,7 @@ import '../../../sass/styles.scss';
 import openModal from './sprintStat';
 import './sprintStart';
 import './sprintGame';
+import './SprintBackend';
 
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 10;
@@ -36,6 +37,12 @@ function play(song) {
   const audio = new Audio(song);
   audio.play();
 }
+
+function uclicked(song) {
+  const audio = new Audio(song);
+  audio.play();
+}
+window.uclicked = uclicked;
 
 function formatTime(time) {
   let seconds = time % 60;
