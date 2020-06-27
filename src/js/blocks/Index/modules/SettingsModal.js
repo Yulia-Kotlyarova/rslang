@@ -86,7 +86,7 @@ class SettingsModal {
 
   async initiate() {
     const settings = await this.prefillForm();
-    localStorage.setItem('settings', settings);
+    localStorage.setItem('settings', JSON.stringify(settings));
 
     this.settingsForm.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -110,10 +110,8 @@ class SettingsModal {
 
         $(this.settingsModal).modal('hide');
 
-        await Promise.all([
-          Repository.updateOptionalSettings(newSettings),
-          Repository.updateWordsPerDay(wordsPerDay),
-        ]);
+        await Repository.updateWordsPerDay(wordsPerDay);
+        await Repository.updateOptionalSettings(newSettings);
       }
     });
   }
