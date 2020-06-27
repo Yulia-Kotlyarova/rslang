@@ -22,17 +22,17 @@ div {
 
     .modal-content {
         background-color: #f4f4f4;
-        margin: 20% auto;
+        margin: 8% auto;
         padding: 20px;
         width: 50%;
-        height: 50%;
+        height: 70%;
         box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 7px 20px 0 rgba(0, 0, 0, 0.17);
         position: relative;
         animation-name: modalopen;
         animation-duration: 2s;
         display: flex;
         flex-direction: column;
-        overflow-y: scroll;
+        overflow-y: auto;
 
         @keyframes modalopen {
             from {
@@ -45,6 +45,23 @@ div {
         }
         .modal-content__body{
             margin: 10px 20px;
+            #modal-content__body-error-count{
+                background: red;
+                color: #ffff;
+                border-radius: 3px;
+                width: 15px;
+                height: 15px;
+                padding: 0 6px;
+            }
+            #modal-content__body-correct-count{
+                background: green;
+                color: #ffff;
+                border-radius: 3px;
+                width: 15px;
+                height: 15px;
+                padding: 0 6px;
+            }
+            
         }
 
         .modal-content__header {
