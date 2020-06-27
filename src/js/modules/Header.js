@@ -1,5 +1,9 @@
+import Authorization from './Authorization';
+
 export default class Header {
   constructor() {
+    this.isSingedUp = false;
+
     this.iconDictionary = '<i class="fas fa-book fa-2x"></i>';
     this.iconCards = '<i class="far fa-file-word fa-2x"></i>';
     this.iconStatistics = '<i class="fas fa-chart-line fa-2x"></i>';
@@ -9,7 +13,7 @@ export default class Header {
     this.iconLogOut = '<i class="fas fa-sign-out-alt fa-2x"></i>';
     this.iconTeam = '<i class="fas fa-users-cog fa-2x"></i>';
 
-    this.userLogin = 'UserLogin@test.test';
+    this.userLoginName = '';
 
     this.mainURL = './index.html';
     this.promoURL = './promo.html'; // надо добавить страницу
@@ -24,6 +28,47 @@ export default class Header {
     this.gameSprintURL = './sprint.html';
     this.gameSpeakItURL = './speakIt.html';
     this.gamePuzzleURL = './puzzle.html';
+    this.authorizationURL = './authorization.html';
+  }
+
+  run() {
+    this.checkUserAuthorization();
+    this.renderHeader();
+    Header.setEventListeners();
+  }
+
+  checkUserAuthorization() {
+    if (Authorization.isSignedUp()) {
+      this.isSingedUp = true;
+      this.userLoginName = localStorage.getItem('email');
+    }
+  }
+
+  static setEventListeners() {
+    const authorizationButtonMain = document.querySelector('.button_authorization_main');
+    const authorizationButtonBurger = document.querySelector('.button_authorization_burger');
+    const headerBurger = document.querySelector('.header__burger');
+    authorizationButtonMain.addEventListener('click', () => Header.signOfUser());
+    authorizationButtonBurger.addEventListener('click', () => Header.signOfUser());
+    headerBurger.addEventListener('click', () => Header.burgerMenuOpenClose(headerBurger));
+  }
+
+  static signOfUser() {
+    Authorization.logOut();
+  }
+
+  static burgerMenuOpenClose(headerBurger) {
+    const burgerMenu = document.querySelector('.header__burger__menu');
+    const isOpen = headerBurger.classList.contains('header__burger_rotate');
+    if (isOpen) {
+      headerBurger.classList.remove('header__burger_rotate');
+      burgerMenu.classList.add('burger__menu_hide');
+      burgerMenu.classList.remove('burger__menu_show');
+    } else {
+      headerBurger.classList.add('header__burger_rotate');
+      burgerMenu.classList.add('burger__menu_show');
+      burgerMenu.classList.remove('burger__menu_hide');
+    }
   }
 
   renderHeader() {
@@ -64,22 +109,33 @@ export default class Header {
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
     const settingsButton = `<a href=${this.settingsURL}><button class="header__button button_settings">${this.iconSettings}</button></a>`;
     const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
-    const logOutButtonBurgerMenu = `<button class="header__button button_logout button_logout_burger">${this.iconLogOut}</button>`;
-    const logOutButtonMain = '<button class="header__button button_logout_main">LOG OUT</button>';
-    const userLogin = `<div class="header__username"><span>${this.userLogin}</span></div>`;
+    const logOutButtonBurgerMenu = `<button class="header__button button_authorization button_authorization_burger">${this.iconLogOut}</button>`;
+    const logInButtonBurgerMenu = '<button class="header__button button_authorization button_authorization_burger">Log In</button>';
+    const logOutButtonMain = '<button class="header__button button_authorization_main">LOG OUT</button>';
+    const logInButtonMain = '<button class="header__button button_authorization_main">LOG IN</button>';
+    const userLoginName = `<div class="header__username"><span>${this.userLoginName}</span></div>`;
 
-    const userAutherizationArea = ` <div class="header__user-authorization">${userLogin}${logOutButtonMain}</div>`;
+    let userAutherizationArea;
+    if (this.isSingedUp) {
+      userAutherizationArea = ` <div class="header__user-authorization">${userLoginName}${logOutButtonMain}</div>`;
+    } else {
+      userAutherizationArea = ` <div class="header__user-authorization">${logInButtonMain}</div>`;
+    }
+
     const buttonsGroup = `<div class="header__buttons">${cardsButton}${gamesButton}
           ${dictionaryButton}${statisticsButton}${settingsButton}${teamButton}</div>`;
 
-    const headerBurgerMenu = `<div class="header__burger__menu">
-        ${userLogin}${cardsButton}
+    const burgerAuthorizationBtn = this.isSingedUp ? logOutButtonBurgerMenu : logInButtonBurgerMenu;
+
+    const headerBurgerMenu = `<div class="header__burger__menu burger__menu_hide">
+        ${userLoginName}
+        ${cardsButton}
         ${gamesButton}
         ${dictionaryButton}
         ${statisticsButton}
         ${settingsButton}
         ${teamButton}
-        ${logOutButtonBurgerMenu}
+        ${burgerAuthorizationBtn}
         </div>`;
 
     const headerContainer = `<div class="app-header__container">${headerBurger}${promoButton}
@@ -87,10 +143,5 @@ export default class Header {
 
     const headerHTML = `${headerBurgerMenu}${headerContainer}`;
     header.innerHTML = headerHTML;
-  }
-
-  setEventListenetrs() {
-    const logOutButtonMain = document.querySelector('.button_logout_main');
-    logOutButtonMain.addEventListener('click', () => this.signOfUser());
   }
 }
