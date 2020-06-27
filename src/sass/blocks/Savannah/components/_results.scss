@@ -40,16 +40,16 @@
   }
 
   .correct__number {
-      color: green;
+      color: $color-correct;
   }
 
   .mistakes__number {
-      color: red;
+      color: $color-wrong;
   }
 
   .results__words__container {
     display: flex;
-         
+
     .results__word {
       width: 100%;
       margin-left: 5px;
@@ -58,12 +58,12 @@
       font-weight: 500;
 
       .word_EN {
-        margin: 0 20px;  
+        margin: 0 20px;
         font-weight: 700;
       }
     }
   }
-      
+
   .results__audio-play {
     width: 20px;
     height: 20px;
@@ -81,7 +81,7 @@
   display: flex;
   width: 100%;
   justify-content: center;
-  
+
   .results__button {
       width: 284px;
       height: 54px;
@@ -108,16 +108,16 @@
   margin-left: 15px;
   overflow-y: scroll;
 }
-  
+
 .scrollbar-primary::-webkit-scrollbar {
   width: 8px;
 }
-  
+
 .scrollbar-primary::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: grey; 
+  background-color: grey;
 }
-  
+
 .scrollbar-primary {
   scrollbar-color: grey;
 }

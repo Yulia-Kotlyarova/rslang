@@ -3,9 +3,10 @@ import { heartFill, heartStroke } from './consts';
 import { savannahSettings } from './appState';
 
 export default class ProceedAnswer {
-  constructor(savannahState, startNewRound) {
+  constructor(savannahState, startNewRound, startNewGame) {
     this.savannahState = savannahState;
     this.startNewRound = startNewRound;
+    this.startNewGame = startNewGame;
     this.answersArea = document.querySelector('.game__answers');
     this.activeWordContainer = document.querySelector('.game__active-word');
     this.heartContainer = document.querySelector('.control__lifes');
@@ -102,7 +103,7 @@ export default class ProceedAnswer {
       this.countLifes();
       this.clearWordsContainers();
       setTimeout(() => {
-        const results = new Results(this.savannahState);
+        const results = new Results(this.startNewGame, this.savannahState);
         results.showResults();
       }, 800);
     }

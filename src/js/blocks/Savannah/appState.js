@@ -1,5 +1,4 @@
 export const savannahState = {
-  lastPlayedRound: '',
   currentLevel: '',
   currentPage: '',
   activeWord: 0,
@@ -12,10 +11,6 @@ export const savannahState = {
   answeredWrong: [],
   timerId: 0,
 };
-
-// const savannahSatistics = {
-
-// };
 
 export const savannahSettings = {
   soundOn: true,

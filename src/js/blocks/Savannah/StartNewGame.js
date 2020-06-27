@@ -12,36 +12,14 @@ export default class StartNewGame {
   }
 
   async startGame() {
-    this.defineActiveRound();
-    this.savannahState.lastPlayedRound = [this.level, this.page].join('.');
-    this.savannahState.currentLevel = this.level;
-    this.savannahState.currentPage = this.page;
     this.savannahState.wordsCollection = await this.getWordsCollection();
     this.savannahState.wordsOrder = this.setWordsOrder();
     this.savannahState.wordAndAnswers.length = 0;
+    this.savannahState.answeredCorrect.length = 0;
+    this.savannahState.answeredWrong.length = 0;
     this.savannahState.wordAndAnswers = this.combineWordsAndAnswers();
     this.heartContainer.innerHTML = heartFill.repeat(5);
     this.startNewRound.startRound();
-  }
-
-  defineActiveRound() {
-    this.level = 0;
-    this.page = 0;
-    if (this.savannahState.lastPlayedRound !== '') {
-      [this.level, this.page] = this.savannahState.lastPlayedRound.split('.');
-      if (this.page === 29) {
-        if (this.level === 5) {
-          this.level = 0;
-          this.page = 0;
-        } else {
-          this.level += 1;
-          this.page = 0;
-        }
-      } else {
-        this.page += 1;
-      }
-    }
-    return [this.level, this.page];
   }
 
   async getWordsCollection() {

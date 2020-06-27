@@ -6,15 +6,21 @@ import StartNewGame from './StartNewGame';
 import StartNewRound from './StartNewRound';
 import ProceedAnswer from './ProceedAnswer';
 import ControlPanel from './ControlPanel';
+import Navigation from './Navigation';
+import Results from './Results';
 
 window.onload = async function onload() {
   const startNewRound = new StartNewRound(savannahState);
   const startNewGame = new StartNewGame(savannahState, startNewRound);
-  const proceedAnswer = new ProceedAnswer(savannahState, startNewRound);
+  const proceedAnswer = new ProceedAnswer(savannahState, startNewRound, startNewGame);
   const controlPanel = new ControlPanel(savannahState, startNewRound);
+  const navigation = new Navigation(startNewGame, savannahState);
+  const results = new Results(startNewGame, savannahState, navigation);
+  results.setEventListeners();
   proceedAnswer.setEventListeners();
   controlPanel.setEventListeners();
   controlPanel.setSoundMode();
+  navigation.setEventListeners();
   const buttonStart = document.querySelector('.button__start');
   buttonStart.addEventListener('click', () => {
     const startPage = document.querySelector('.start-page');

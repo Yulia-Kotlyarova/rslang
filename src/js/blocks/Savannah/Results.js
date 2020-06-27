@@ -1,6 +1,8 @@
 export default class Results {
-  constructor(savannahState) {
+  constructor(startNewGame, savannahState, navigation) {
+    this.startNewGame = startNewGame;
     this.savannahState = savannahState;
+    this.navigation = navigation;
     this.answersArea = document.querySelector('.game__answers');
     this.activeWordContainer = document.querySelector('.game__active-word');
     this.resultsContainer = document.querySelector('.results');
@@ -14,6 +16,31 @@ export default class Results {
   }
 
   setEventListeners() {
+    this.buttonPlayAgain.addEventListener('click', () => {
+      this.resultsContainer.classList.add('hidden');
+      this.startNewGame.startGame();
+    });
+    this.buttonPlayNextGame.addEventListener('click', () => {
+      this.resultsContainer.classList.add('hidden');
+      this.defineNextlevelAndPage();
+      this.navigation.updatetNavigationFields();
+      this.startNewGame.startGame();
+    });
+  }
+
+  defineNextlevelAndPage() {
+    if (this.savannahState.currentLevel === 5) {
+      this.savannahState.currentLevel = 0;
+      this.savannahState.currentPage = 0;
+    } else if (this.savannahState.currentPage < 29) {
+      this.savannahState.currentPage += 1;
+    } else {
+      this.savannahState.currentLevel += 1;
+      this.savannahState.currentPage = 0;
+    }
+  }
+
+  setAudioEventListeners() {
     this.resultsKnowledge.addEventListener('click', (event) => {
       const clickedIcon = event.target.closest('.results__audio-play');
       if (clickedIcon) {
@@ -49,6 +76,6 @@ export default class Results {
       const wordRU = `<div class="word_RU">${this.savannahState.wordsCollection[wordNumber].wordTranslate}</div>`;
       this.correctWords.innerHTML += `<div class="results__words__container">${audioPlay} <div class="results__word">${wordEN} ${wordRU}</div></div>`;
     });
-    this.setEventListeners();
+    this.setAudioEventListeners();
   }
 }
