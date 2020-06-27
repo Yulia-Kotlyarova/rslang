@@ -1,6 +1,9 @@
 import '../../../sass/styles.scss';
 import { init } from './sprintGame';
+import { getWordsFromBackend } from './SprintBackend';
 
+// let e = document.querySelector('.levelSelector');
+// let strUser = e.options[e.selectedIndex].value;
 const FULL_DASH_ARRAY2 = 283;
 const COLOR_CODES2 = {
   info: {
@@ -46,19 +49,24 @@ function setCircleDasharray2() {
 }
 
 function startTimer2() {
-  timerInterval = setInterval(() => {
-    const timePassed2 = timePassed + 1;
-    timePassed = timePassed2;
-    timeLeft = TIME_LIMIT - timePassed;
-    document.getElementById('base-timer-label2').innerHTML = formatTime2(
-      timeLeft,
-    );
-    setCircleDasharray2();
-    if (timeLeft === 0) {
-      onTimesUp2();
-      document.querySelector('.wrapper').style.display = 'flex';
-    }
-  }, 1000);
+  document.querySelector('.score__score2').addEventListener('click', () => {
+    timerInterval = setInterval(() => {
+      const timePassed2 = timePassed + 1;
+      timePassed = timePassed2;
+      timeLeft = TIME_LIMIT - timePassed;
+      document.querySelector('.startText').textContent = 'Приготовьтесь';
+      document.querySelector('.gameLevel').style.display = 'none';
+      document.getElementById('base-timer-label2').innerHTML = formatTime2(
+        timeLeft,
+      );
+      setCircleDasharray2();
+      if (timeLeft === 0) {
+        onTimesUp2();
+        document.querySelector('.wrapper').style.display = 'flex';
+        getWordsFromBackend(document.querySelector('.levelSelector').value);
+      }
+    }, 1000);
+  });
 }
 
 document.getElementById('app2').innerHTML = `
@@ -85,4 +93,6 @@ document.getElementById('app2').innerHTML = `
 </div>
 `;
 
-startTimer2();
+window.onload = () => {
+  startTimer2();
+};

@@ -1,11 +1,11 @@
 /* eslint-disable semi */
 import '../../../sass/styles.scss';
+import { wordArray1, wordArray2, wordArray3 } from './SprintBackend';
 
-const API_KEY_TRS = 'trnsl.1.1.20200509T130827Z.c2ef7d3760909903.5b2cbc1a7fca3465812b94c8bce081ad43d94d02';
-const API = 'https://translate.yandex.net/api/v1.5/tr.json/translate';
+// const API_KEY_TRS = '
+// trnsl.1.1.20200509T130827Z.c2ef7d3760909903.5b2cbc1a7fca3465812b94c8bce081ad43d94d02';
+// const API = 'https://translate.yandex.net/api/v1.5/tr.json/translate';
 
-const wordArray = ['apple', 'banana', 'car', 'shoes', 'dress', 'spoon', 'street', 'sun', 'watch', 'carpet', 'fruits', 'boy', 'start', 'cat', 'hot', 'rain'];
-const translatedArray = [];
 const wordCardEn = document.getElementById('game__board-middle-en');
 const yesOrNoButton = document.querySelector('.game__board-bottom');
 const wordCardRu = document.getElementById('game__board-middle-ru');
@@ -26,13 +26,16 @@ const tickAppearOnScore = document.querySelectorAll('.game__board-top_score_chec
 export const objForCorrectWord = {
   eng: [],
   ru: [],
+  audio: [],
 };
 export const objForInCorrectWord = {
   eng: [],
   ru: [],
+  audio: [],
 };
 
 let ii = 0;
+let k = 0
 
 let equal = true;
 const letsCount = [];
@@ -42,9 +45,37 @@ function play(song) {
   audio.play();
 }
 
+const checkCorrectOrNot = () => {
+  const kkk = k - 1;
+  let engValueIndex
+  let ruValueIndex
+  if (kkk % 2 === 0) {
+    engValueIndex = wordArray1.indexOf(wordToCheckEn[0].textContent);
+    ruValueIndex = wordArray2.indexOf(wordToCheckRu[0].textContent);
+  } else {
+    engValueIndex = wordArray2.indexOf(wordToCheckEn[0].textContent);
+    ruValueIndex = wordArray1.indexOf(wordToCheckRu[0].textContent);
+  }
+  if (engValueIndex === ruValueIndex) {
+    equal = true;
+  } if (engValueIndex !== ruValueIndex) {
+    equal = false;
+  }
+}
+
 const addWordToCard = () => {
-  wordCardEn.textContent = wordArray[Math.floor(Math.random() * wordArray.length)];
-  wordCardRu.textContent = translatedArray[Math.floor(Math.random() * wordArray.length)];
+  if (k % 2 === 0) {
+    wordCardEn.textContent = wordArray1[k];
+    wordCardRu.textContent = wordArray2[k];
+  } else {
+    wordCardEn.textContent = wordArray2[k];
+    if (k % 3 === 0) {
+      wordCardRu.textContent = wordArray1[Math.floor(Math.random() * wordArray2.length)];
+    } else {
+      wordCardRu.textContent = wordArray1[k];
+    }
+  }
+  k += 1;
   if (letsCount.length === 5 || letsCount.length === 10 || letsCount.length === 15
     || letsCount.length === 20) {
     play('phiu2.wav');
@@ -56,7 +87,8 @@ const addWordToCard = () => {
     tickAppearOnWrong.style.display = 'none';
     borderOnCorrect.style.border = '2px solid #E5E5E3';
   }, 300);
-  changingScore.textContent = letsCount.reduce((acc, val) => acc + val, 0)
+  changingScore.textContent = letsCount.reduce((acc, val) => acc + val, 0);
+  checkCorrectOrNot();
 }
 
 const scoreLogicCorrect = () => {
@@ -90,23 +122,6 @@ const scoreLogicCorrect = () => {
   }
 }
 
-const checkCorrectOrNot = () => {
-  const val = wordToCheckEn[0].textContent;
-  const toCompare = wordToCheckRu[0].textContent;
-  const api = `${API}?key=${API_KEY_TRS}&text=${val}&lang=ru`;
-  fetch(api)
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.text[0] === toCompare) {
-        equal = true;
-      } if (data.text[0] !== toCompare) {
-        equal = false;
-      }
-    })
-    .catch(() => {
-    });
-}
-
 const scoreLogicInCorrect = () => {
   if (letsCount.length > 0) {
     const tmpScore = letsCount.pop()
@@ -118,13 +133,20 @@ const scoreLogicInCorrect = () => {
 
 const addWordToCardOnKeyPress = () => {
   window.addEventListener('keydown', (event) => {
+    const kk = k - 1;
     if (event.keyCode === 37 && equal === false) {
       play('phiu.wav');
       leftPress.classList.add('colorLeft')
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51'
-      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
+      if (kk % 2 === 0) {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForCorrectWord.audio.push(wordArray3[kk]);
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
         ii += 1;
@@ -132,28 +154,42 @@ const addWordToCardOnKeyPress = () => {
         tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
         ii = 0
       }
-      scoreLogicCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      setTimeout(() => {
+        scoreLogicCorrect();
+        addWordToCard()
+      }, 200);
     }
     if (event.keyCode === 39 && equal === false) {
       play('error.wav');
       rightPress.classList.add('colorRight')
       tickAppearOnWrong.style.display = 'block';
       borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
-      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
-      scoreLogicInCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      if (kk % 2 === 0) {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForInCorrectWord.audio.push(wordArray3[kk]);
+      setTimeout(() => {
+        scoreLogicInCorrect();
+        addWordToCard()
+      }, 200);
     }
     if (event.keyCode === 39 && equal === true) {
       play('phiu.wav');
       rightPress.classList.add('colorRight')
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51';
-      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
+      if (kk % 2 === 0) {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForCorrectWord.audio.push(wordArray3[kk]);
       fistTick.getElementsByTagName('i')[0].style.color = '#5A7E51'
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
@@ -162,20 +198,28 @@ const addWordToCardOnKeyPress = () => {
         tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
         ii = 0
       }
-      scoreLogicCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      setTimeout(() => {
+        scoreLogicCorrect();
+        addWordToCard()
+      }, 200);
     }
     if (event.keyCode === 37 && equal === true) {
       play('error.wav');
       leftPress.classList.add('colorLeft')
       tickAppearOnWrong.style.display = 'block';
       borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
-      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
-      scoreLogicInCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      if (kk % 2 === 0) {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForInCorrectWord.audio.push(wordArray3[kk]);
+      setTimeout(() => {
+        scoreLogicInCorrect();
+        addWordToCard()
+      }, 200);
     }
   })
 }
@@ -183,12 +227,19 @@ const addWordToCardOnKeyPress = () => {
 
 const addWordToCardOnPress = () => {
   yesOrNoButton.addEventListener('click', (e) => {
+    const kk = k - 1;
     if (e.target.className === 'btn btn-danger' && equal === false) {
       play('phiu.wav');
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51';
-      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
+      if (kk % 2 === 0) {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForCorrectWord.audio.push(wordArray3[kk]);
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
         ii += 1;
@@ -196,27 +247,41 @@ const addWordToCardOnPress = () => {
         tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
         ii = 0
       }
-      scoreLogicCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      setTimeout(() => {
+        scoreLogicCorrect();
+        addWordToCard()
+      }, 100);
     }
     if (e.target.className === 'btn btn-success' && equal === false) {
       play('error.wav');
       tickAppearOnWrong.style.display = 'block';
       borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
-      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
-      scoreLogicInCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      if (kk % 2 === 0) {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForInCorrectWord.audio.push(wordArray3[kk]);
+      setTimeout(() => {
+        scoreLogicInCorrect();
+        addWordToCard()
+      }, 100);
     }
 
     if (e.target.className === 'btn btn-success' && equal === true) {
       play('phiu.wav');
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51';
-      objForCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForCorrectWord.ru.push(wordToCheckRu[0].textContent);
+      if (kk % 2 === 0) {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForCorrectWord.eng.push(wordArray1[kk]);
+        objForCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForCorrectWord.audio.push(wordArray3[kk]);
       if (ii < 3) {
         fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
         ii += 1;
@@ -224,52 +289,35 @@ const addWordToCardOnPress = () => {
         tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
         ii = 0
       }
-      scoreLogicCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      setTimeout(() => {
+        scoreLogicCorrect();
+        addWordToCard()
+      }, 100);
     }
     if (e.target.className === 'btn btn-danger' && equal === true) {
       play('error.wav');
       tickAppearOnWrong.style.display = 'block';
       borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
-      objForInCorrectWord.eng.push(wordToCheckEn[0].textContent);
-      objForInCorrectWord.ru.push(wordToCheckRu[0].textContent);
-      scoreLogicInCorrect()
-      addWordToCard()
-      checkCorrectOrNot()
+      if (kk % 2 === 0) {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      } else {
+        objForInCorrectWord.eng.push(wordArray1[kk]);
+        objForInCorrectWord.ru.push(wordArray2[kk]);
+      }
+      objForInCorrectWord.audio.push(wordArray3[kk]);
+      setTimeout(() => {
+        scoreLogicInCorrect();
+        addWordToCard()
+      }, 100);
     }
   })
 }
 
-const yanTranslate = {
-  translate() {
-    wordArray.forEach((val) => {
-      const api = `${API}?key=${API_KEY_TRS}&text=${val}&lang=ru`;
-      fetch(api)
-        .then((res) => res.json())
-        .then((data) => {
-          translatedArray.push(data.text[0]);
-        })
-        .catch(() => {
-        });
-    })
-    setTimeout(() => {
-      addWordToCard();
-      checkCorrectOrNot();
-    }, 1000);
-  },
-} // end of object yanTranslate
-
-// window.addEventListener('load', () => {
-//   addWordToCardOnKeyPress();
-//   yanTranslate.translate();
-//   addWordToCardOnPress();
-// })
-
 export const init = () => {
+  addWordToCard();
   play('bong.wav');
   addWordToCardOnKeyPress();
-  yanTranslate.translate();
   addWordToCardOnPress();
 };
 
