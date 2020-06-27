@@ -19,7 +19,7 @@ div {
     top: 0;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-
+   
     .modal-content {
         background-color: #f4f4f4;
         margin: 8% auto;
@@ -33,6 +33,15 @@ div {
         display: flex;
         flex-direction: column;
         overflow-y: auto;
+        
+        @media screen and (min-width: 1px) and (max-width: 480px) {
+            width: 90%;
+            margin: 25% auto;
+        }
+        @media screen and (min-width: 481px) and (max-width: 960px) {
+                width: 70%;
+                margin: 15% auto;
+          }
 
         @keyframes modalopen {
             from {
@@ -45,6 +54,7 @@ div {
         }
         .modal-content__body{
             margin: 10px 20px;
+            
             #modal-content__body-error-count{
                 background: red;
                 color: #ffff;

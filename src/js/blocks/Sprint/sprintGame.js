@@ -2,10 +2,6 @@
 import '../../../sass/styles.scss';
 import { wordArray1, wordArray2, wordArray3 } from './SprintBackend';
 
-// const API_KEY_TRS = '
-// trnsl.1.1.20200509T130827Z.c2ef7d3760909903.5b2cbc1a7fca3465812b94c8bce081ad43d94d02';
-// const API = 'https://translate.yandex.net/api/v1.5/tr.json/translate';
-
 const wordCardEn = document.getElementById('game__board-middle-en');
 const yesOrNoButton = document.querySelector('.game__board-bottom');
 const wordCardRu = document.getElementById('game__board-middle-ru');
@@ -92,33 +88,40 @@ const addWordToCard = () => {
 }
 
 const scoreLogicCorrect = () => {
+  console.log(letsCount.length);
   if (letsCount.length < 4) {
-    scoreChange.textContent = '+10'
+    scoreChange.textContent = '+10';
     letsCount.push(10);
   }
   if (letsCount.length > 3 && letsCount.length < 9) {
-    scoreChange.textContent = '+20'
-    letsCount.push(20)
+    scoreChange.textContent = '+20';
+    letsCount.push(20);
     changeColorOnScore.style.background = '#EDB216';
   }
   if (letsCount.length > 8 && letsCount.length < 14) {
-    scoreChange.textContent = '+40'
-    letsCount.push(40)
+    scoreChange.textContent = '+40';
+    letsCount.push(40);
     changeColorOnScore.style.background = '#DB8650';
   }
   if (letsCount.length > 13 && letsCount.length < 19) {
-    scoreChange.textContent = '+80'
-    letsCount.push(80)
+    scoreChange.textContent = '+80';
+    letsCount.push(80);
     changeColorOnScore.style.background = '#BD7283';
   }
-  if (letsCount.length > 18 && letsCount.length < 22) {
-    scoreChange.textContent = '+160'
-    letsCount.push(160)
+  if (letsCount.length > 18 && letsCount.length < 24) {
+    scoreChange.textContent = '+160';
+    letsCount.push(160);
     changeColorOnScore.style.background = '#9B462C';
   }
-  if (letsCount.length > 21) {
-    scoreChange.textContent = '+320'
-    letsCount.push(320)
+  if (letsCount.length > 23 && letsCount.length < 29) {
+    scoreChange.textContent = '+320';
+    letsCount.push(320);
+    changeColorOnScore.style.background = '#FFD700';
+  }
+  if (letsCount.length > 29) {
+    scoreChange.textContent = '+640';
+    letsCount.push(640);
+    changeColorOnScore.style.background = '#ef1cdf';
   }
 }
 
@@ -223,7 +226,6 @@ const addWordToCardOnKeyPress = () => {
     }
   })
 }
-// export default addWordToCardOnKeyPress;
 
 const addWordToCardOnPress = () => {
   yesOrNoButton.addEventListener('click', (e) => {
@@ -250,7 +252,7 @@ const addWordToCardOnPress = () => {
       setTimeout(() => {
         scoreLogicCorrect();
         addWordToCard()
-      }, 100);
+      }, 200);
     }
     if (e.target.className === 'btn btn-success' && equal === false) {
       play('error.wav');
@@ -267,7 +269,7 @@ const addWordToCardOnPress = () => {
       setTimeout(() => {
         scoreLogicInCorrect();
         addWordToCard()
-      }, 100);
+      }, 200);
     }
 
     if (e.target.className === 'btn btn-success' && equal === true) {
@@ -292,7 +294,7 @@ const addWordToCardOnPress = () => {
       setTimeout(() => {
         scoreLogicCorrect();
         addWordToCard()
-      }, 100);
+      }, 200);
     }
     if (e.target.className === 'btn btn-danger' && equal === true) {
       play('error.wav');
@@ -309,7 +311,7 @@ const addWordToCardOnPress = () => {
       setTimeout(() => {
         scoreLogicInCorrect();
         addWordToCard()
-      }, 100);
+      }, 200);
     }
   })
 }
@@ -320,5 +322,3 @@ export const init = () => {
   addWordToCardOnKeyPress();
   addWordToCardOnPress();
 };
-
-// export default init();
