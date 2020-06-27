@@ -15,7 +15,6 @@ div {
 
 body {
     background: url(mainPage.PNG) no-repeat center center fixed;
-    //background: url(sprint_background.png) no-repeat center center fixed;
     background-size: cover;
     height: 100%;
     overflow: hidden;
@@ -39,6 +38,14 @@ body {
             margin-top: 2%;
             width: 37%;
             height: 68%;
+            @media screen and (min-width: 1px) and (max-width: 480px) {
+                width: 95%;
+                margin: 0;
+            }
+            @media screen and (min-width: 481px) and (max-width: 860px) {
+                    width: 70%;
+                    margin: 0;
+              }
 
             .game__points {
                 display: flex;
@@ -55,14 +62,15 @@ body {
                 height: 75%;
                 border-radius: 10px;
                 background: #ffff;
-                // border-bottom: 2px solid #E5E5E3;
-                // border-left: 2px solid #E5E5E3;
-                // border-right: 2px solid #E5E5E3;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                // border: 2px solid #E5E5E3;
-
+                @media screen and (min-width: 1px) and (max-width: 480px) {
+                    height: 80%;
+                }
+                @media screen and (min-width: 481px) and (max-width: 860px) {
+                    height: 78%;
+                  }
 
 
                 .game__board-top {
@@ -72,21 +80,16 @@ body {
                     justify-content: center;
                     flex-direction: column;
                     align-items: center;
-                    //background: #C96F89;
-                    // border-top: 1px solid #C96F89;
                     border-top-left-radius: 5px;
                     border-top-right-radius: 5px;
 
                     .game__board-top_score_checks {
                         .fa-check-circle {
-                            //  color: #5A7E51;
                             color: white;
-                            //border: 1px solid white;
                             border-radius: 50%;
                             background: white;
                         }
                     }
-
 
                     .game__board-top-point {
                         font-size: calc(10px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
@@ -102,6 +105,13 @@ body {
                         background: url(bird_inside_card.png);
                         background-size: cover;
                         height: 40%;
+                        @media screen and (min-width: 1px) and (max-width: 480px) {
+                            height: 32%;
+                        }
+                        @media screen and (min-width: 481px) and (max-width: 860px) {
+                            height: 45%;
+                          }
+                        
                     }
 
                     #game__board-middle-en {
@@ -122,9 +132,6 @@ body {
                         font-size: calc(13px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
 
                     }
-
-
-
                 }
 
                 .game__board-bottom {
@@ -177,12 +184,28 @@ body {
                 border-radius: 50%;
                 width: 90px;
                 height: 90px;
+                @media screen and (min-width: 1px) and (max-width: 480px) {
+                    width: 50px;
+                    height: 50px;
+                }
+                @media screen and (min-width: 481px) and (max-width: 860px) {
+                    width: 70px;
+                    height: 70px;
+                  }
 
 
                 .base-timer {
                     position: relative;
                     height: 90px;
                     width: 90px;
+                    @media screen and (min-width: 1px) and (max-width: 480px) {
+                        width: 50px;
+                        height: 50px;
+                    }
+                    @media screen and (min-width: 481px) and (max-width: 860px) {
+                        width: 70px;
+                        height: 70px;
+                      }
 
                     .base-timer__label {
                         position: absolute;
@@ -193,6 +216,16 @@ body {
                         align-items: center;
                         justify-content: center;
                         font-size: 28px;
+                        @media screen and (min-width: 1px) and (max-width: 480px) {
+                            width: 50px;
+                            height: 50px;
+                            font-size: 15px;
+                        }
+                        @media screen and (min-width: 481px) and (max-width: 860px) {
+                            width: 70px;
+                            height: 70px;
+                            font-size: 20px;
+                          }
                     }
 
                     .base-timer__circle {
@@ -249,16 +282,13 @@ body {
                 border: 1px solid #fbfbfb52;
             }
 
-
             .btn-light.colorRight {
-                //background-color: #64535b;
-                background-color: #3e8e41;
+                 background-color: #3e8e41;
                 box-shadow: 0 5px #666;
                 transform: translateY(4px);
             }
 
             .btn-light.colorLeft {
-                //background-color: #64535b;
                 background-color: #c82333;
                 box-shadow: 0 5px #666;
                 transform: translateY(4px);
