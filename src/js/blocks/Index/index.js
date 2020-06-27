@@ -5,5 +5,4 @@ import Header from '../../modules/Header';
 window.onload = () => {
   const header = new Header();
   header.run();
-  document.body.classList.remove('hidden-for-header-render');
 };

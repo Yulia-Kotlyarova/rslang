@@ -35,6 +35,7 @@ export default class Header {
     this.checkUserAuthorization();
     this.renderHeader();
     Header.setEventListeners();
+    document.body.classList.remove('hidden-for-header-render');
   }
 
   checkUserAuthorization() {
