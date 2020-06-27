@@ -1,0 +1,175 @@
+.game-puzzle-main-class {
+    .game-puzzle-header__navigation {
+        display: flex;
+        font-size: 2rem;
+    }
+
+    .navigation__level, .navigation__page {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .level__title, .page__title {
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .level__select, .page__select {
+        width: 60px;
+        height: $button-height;
+        text-align-last: center;
+        font-size: 2rem;
+        color: $color-puzzle-text;
+        background-color: $color-button-standart;
+        border-radius: $small-border-radius;
+        cursor: pointer;
+    }
+
+    .level__select:hover, .page__select:hover {
+        box-shadow: 0 0 2px 2px $color-main-background;
+    }
+
+    .game-puzzle__navigation__option {
+        text-align: center;
+        color: $color-button-standart;
+        background-color: #FFFFFF;
+        cursor: pointer;
+    }
+
+    .page__select.level_2 > option:nth-child(n+42) {
+        display: none;
+    }
+
+    .page__select.level_3 > option:nth-child(n+41) {
+        display: none;
+    }
+
+    .page__select.level_4 > option:nth-child(n+30) {
+        display: none;
+    }
+
+    .page__select.level_5 > option:nth-child(n+30) {
+        display: none;
+    }
+
+    .page__select.level_6 > option:nth-child(n+25) {
+        display: none;
+    }
+
+    .prompts-and-logout {
+        display: flex;
+    }
+
+    .header__prompts {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .prompts__button {
+        width: $button-height;
+        height: $button-height;
+        margin: 0 5px;
+        box-shadow: 0 0 0 0 none;
+    }
+
+    .prompts__button:hover {
+        box-shadow: 0 0 2px 2px $color-button-standart;
+    }
+
+    .prompts__button.clicked {
+        background-color: $color-button-clicked;
+    }
+
+    .prompts__button:last-child {
+        margin-right: 0;
+    }
+
+    .button__prompt-auto-audio-play {
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        line-height: 0.8rem;
+        font-weight: 500;
+        background-image: url(./icons/puzzle/speak.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
+    }
+
+    .button__audio-play-once {
+        margin-left: 0;
+        background-image: url(./icons/puzzle/speak.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.5;
+    }
+
+    .button__audio-play-once:hover {
+        opacity: 1;
+    }
+
+    .button__prompt-translation {
+        background-image: url(./icons/puzzle/translate.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .button__prompt-audio-play {
+        background-image: url(./icons/puzzle/speak.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .button__prompt-painting {
+        background-image: url(./icons/puzzle/landscape.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .main__prompts {
+        width: $puzzle-width;
+        display: flex;
+        align-items: center;
+    }
+
+    .main__translation {
+        flex: 1 1 100%;
+        height: $button-height;
+        padding: 0 20px;
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        font-size: 1.4rem;
+        line-height: 1.5rem;
+        font-weight: 600;
+        background-color: $translation-area-color;
+        border-radius: $small-border-radius;
+    }
+
+    .header__logout {
+        margin-left: 10px;
+        display: flex;
+    }
+    .header__current-user {
+        max-width: 400px;
+        margin: 0 10px;
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .button__logout {
+        width: 80px;
+        height: $button-height;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+}
