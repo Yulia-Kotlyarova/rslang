@@ -16,7 +16,7 @@ export default class Header {
     this.userLoginName = '';
 
     this.mainURL = './index.html';
-    this.promoURL = './promo.html'; // надо добавить страницу
+    this.promoURL = './promo.html';
     this.statisticsURL = './statistics.html';
     this.settingsURL = './settings.html'; // надо добавить страницу
     this.dictionaryURL = './dictionary.html';
@@ -46,30 +46,12 @@ export default class Header {
   }
 
   static setEventListeners() {
-    const authorizationButtonMain = document.querySelector('.button_authorization_main');
-    const authorizationButtonBurger = document.querySelector('.button_authorization_burger');
-    const headerBurger = document.querySelector('.header__burger');
-    authorizationButtonMain.addEventListener('click', () => Header.signOfUser());
-    authorizationButtonBurger.addEventListener('click', () => Header.signOfUser());
-    headerBurger.addEventListener('click', () => Header.burgerMenuOpenClose(headerBurger));
+    const authorizationButton = document.querySelector('.button_authorization');
+    authorizationButton.addEventListener('click', () => Header.signOfUser());
   }
 
   static signOfUser() {
     Authorization.logOut();
-  }
-
-  static burgerMenuOpenClose(headerBurger) {
-    const burgerMenu = document.querySelector('.header__burger__menu');
-    const isOpen = headerBurger.classList.contains('header__burger_rotate');
-    if (isOpen) {
-      headerBurger.classList.remove('header__burger_rotate');
-      burgerMenu.classList.add('burger__menu_hide');
-      burgerMenu.classList.remove('burger__menu_show');
-    } else {
-      headerBurger.classList.add('header__burger_rotate');
-      burgerMenu.classList.add('burger__menu_show');
-      burgerMenu.classList.remove('burger__menu_hide');
-    }
   }
 
   renderHeader() {
@@ -77,18 +59,15 @@ export default class Header {
     header.classList.add('app-header', 'sticky-top');
     document.body.prepend(header);
 
-    const headerBurger = `<div class="header__burger">
-     <div class="burder__line"></div>
-     <div class="burder__line"></div>
-     <div class="burder__line"></div>
-     </div>`;
+    const headerBurger = `<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span></button>`;
 
     const promoButton = `<div class="header__promo">
      <a href=${this.promoURL}><div class="header__logo"><div>RS LANG</div></div></a>
      </div>`;
 
     const cardsButton = `<a href=${this.mainURL}><button class="header__button button_cards">${this.iconCards}</button></a>`;
-    const gamesButton = `<div class="dropdown">
+    const gamesButton = `<div class="header__dropdown">
     <a href="#games"><button class="header__button button_games">${this.iconGames}</button></a>
     <div class="dropdown-content">
       <a href=${this.gameSpeakItURL}>Speak It</a>
@@ -99,7 +78,7 @@ export default class Header {
     </div>
     </div>`;
 
-    const dictionaryButton = `<div class="dropdown">
+    const dictionaryButton = `<div class="header__dropdown">
     <a href=${this.dictionaryURL}><button class="header__button button_dictionary">${this.iconDictionary}</button></a>
     <div class="dropdown-content">
         <a href="#">Все слова</a>
@@ -110,10 +89,8 @@ export default class Header {
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
     const settingsButton = `<a href=${this.settingsURL}><button class="header__button button_settings">${this.iconSettings}</button></a>`;
     const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
-    const logOutButtonBurgerMenu = `<button class="header__button button_authorization button_authorization_burger">${this.iconLogOut}</button>`;
-    const logInButtonBurgerMenu = '<button class="header__button button_authorization button_authorization_burger">Log In</button>';
-    const logOutButtonMain = '<button class="header__button button_authorization_main">LOG OUT</button>';
-    const logInButtonMain = '<button class="header__button button_authorization_main">LOG IN</button>';
+    const logOutButtonMain = '<button class="header__button button_authorization">LOG OUT</button>';
+    const logInButtonMain = '<button class="header__button button_authorization">LOG IN</button>';
     const userLoginName = `<div class="header__username"><span>${this.userLoginName}</span></div>`;
 
     let userAutherizationArea;
@@ -123,26 +100,27 @@ export default class Header {
       userAutherizationArea = ` <div class="header__user-authorization">${logInButtonMain}</div>`;
     }
 
-    const buttonsGroup = `<div class="header__buttons">${cardsButton}${gamesButton}
-          ${dictionaryButton}${statisticsButton}${settingsButton}${teamButton}</div>`;
-
-    const burgerAuthorizationBtn = this.isSingedUp ? logOutButtonBurgerMenu : logInButtonBurgerMenu;
-
-    const headerBurgerMenu = `<div class="header__burger__menu burger__menu_hide">
-        ${userLoginName}
+    const buttonsGroup = `<div class="header__buttons">
         ${cardsButton}
         ${gamesButton}
         ${dictionaryButton}
         ${statisticsButton}
         ${settingsButton}
         ${teamButton}
-        ${burgerAuthorizationBtn}
         </div>`;
 
-    const headerContainer = `<div class="app-header__container">${headerBurger}${promoButton}
-          ${buttonsGroup}${userAutherizationArea}</div>`;
+    const headerContainer = `<nav class="navbar navbar-expand-lg navbar-light bg-light app-header__container">
+        ${headerBurger}
+        ${promoButton}
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav" id="navbar-nav-margin">
+            ${buttonsGroup}
+            ${userAutherizationArea}
+            </div>
+          </div>
+        </nav>`;
 
-    const headerHTML = `${headerBurgerMenu}${headerContainer}`;
+    const headerHTML = `${headerContainer}`;
     header.innerHTML = headerHTML;
   }
 }
