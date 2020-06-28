@@ -2,8 +2,6 @@ import '../../../sass/styles.scss';
 import { init } from './sprintGame';
 import { getWordsFromBackend } from './SprintBackend';
 
-// let e = document.querySelector('.levelSelector');
-// let strUser = e.options[e.selectedIndex].value;
 const FULL_DASH_ARRAY2 = 283;
 const COLOR_CODES2 = {
   info: {
