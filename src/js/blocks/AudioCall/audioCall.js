@@ -7,7 +7,7 @@ import random from 'lodash/fp/random';
 
 const dontKnowBtn = document.querySelector('.a-c-dont-know');
 const volumeUp = document.querySelector('#big-volume-up');
-
+const bigVolumeIcon = document.querySelector('.fa-volume-up');
 const volumeUpIcon = document.querySelector('.volume-up > audio');
 const wordList = document.querySelectorAll('.word-list > li');
 const photo = document.querySelector('.audio-call-photo');
@@ -61,7 +61,7 @@ function soundClick(taskWord) {
   volumeUpIcon.src = taskWord.audio;
   volumeUpIcon.attributes.autoplay = 'autoplay';
   const sound = taskWord.audio;
-  document.querySelector('.fa-volume-up').addEventListener('click', () => {
+  bigVolumeIcon.addEventListener('click', () => {
     const audio = new Audio();
     audio.src = sound;
     audio.autoplay = true;
