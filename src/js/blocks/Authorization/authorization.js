@@ -8,6 +8,7 @@ import MessageModal from '../../modules/MessageModal';
 window.onload = () => {
   if (Authorization.isSignedUp() && !Authorization.isTokenExpired()) {
     window.location.href = 'index.html';
+    return;
   }
 
   localStorage.clear();
