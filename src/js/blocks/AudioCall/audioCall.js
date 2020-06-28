@@ -10,6 +10,7 @@ const volumeUp = document.querySelector('#big-volume-up');
 
 const volumeUpIcon = document.querySelector('.volume-up > audio');
 const wordList = document.querySelectorAll('.word-list > li');
+const photo = document.querySelector('.audio-call-photo');
 
 // wrong / right answer
 
@@ -47,8 +48,8 @@ function getCard(taskWord) {
       wordList[randPlace].textContent = taskWord.wordTranslate;
       wordList[randPlace].removeEventListener('click', wrong);
       wordList[randPlace].addEventListener('click', right);
-      document.querySelector('.audio-call-photo').src = taskWord.image;
-      document.querySelector('.audio-call-photo').classList.remove('hidden');
+      photo.src = taskWord.image;
+      photo.classList.remove('hidden');
     })
     .then(() => {
       dontKnowBtn.classList.add('hidden');
