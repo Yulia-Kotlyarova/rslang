@@ -9,8 +9,6 @@ const closeBtn = document.getElementsByClassName('closeBtn')[0];
 const errorCount = document.getElementById('modal-content__body-error-count');
 const correctCount = document.getElementById('modal-content__body-correct-count');
 
-// const incorrectWords = [];
-
 function disableKey() {
   document.addEventListener('keydown', (e) => {
     e.stopPropagation();

@@ -1,5 +1,5 @@
 @import "sprintStat.scss";
-@import "./gameLevel.scss";
+@import "gameLevel.scss";
 
 * {
     margin: 0;
@@ -12,8 +12,7 @@ div {
     margin: 0;
 }
 
-
-body {
+body.sprint__body {
     background: url(mainPage.PNG) no-repeat center center fixed;
     background-size: cover;
     height: 100%;
@@ -110,8 +109,7 @@ body {
                         }
                         @media screen and (min-width: 481px) and (max-width: 860px) {
                             height: 45%;
-                          }
-                        
+                          } 
                     }
 
                     #game__board-middle-en {
@@ -146,7 +144,6 @@ body {
                     .fa-check-circle {
                         position: absolute;
                         top: -12px;
-                        // left: 138px;
                         font-size: 24px;
                         display: none;
                         color: #5A7E51;
@@ -155,7 +152,6 @@ body {
                     .fa-times-circle {
                         position: absolute;
                         top: -12px;
-                        // left: 138px;
                         font-size: 24px;
                         display: none;
                         color: rgba(255, 0, 0, 0.685);
@@ -239,8 +235,6 @@ body {
                             transform-origin: center;
                             transition: 1s linear all;
                             stroke: currentColor;
-
-
                         }
 
                         .base-timer__path-remaining.green {
@@ -254,8 +248,7 @@ body {
                         .base-timer__path-remaining.red {
                             color: red;
                         }
-
-
+                        
                         .base-timer__path-elapsed {
                             stroke-width: 7px;
                             stroke: grey;
@@ -263,10 +256,7 @@ body {
                         }
                     }
 
-
-                }
-                
-                
+                }                           
             }
         }
 
@@ -385,10 +375,7 @@ body {
 
                     }
                 }
-
-
-            }
-            
+            }           
         }
         
         .startText{
@@ -396,11 +383,8 @@ body {
             font-size: 22px;
             transition-duration: 0.4s;
         }
-    }
-
-    
+    } 
 }
-
 
 
 

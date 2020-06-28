@@ -88,7 +88,6 @@ const addWordToCard = () => {
 }
 
 const scoreLogicCorrect = () => {
-  console.log(letsCount.length);
   if (letsCount.length < 4) {
     scoreChange.textContent = '+10';
     letsCount.push(10);
