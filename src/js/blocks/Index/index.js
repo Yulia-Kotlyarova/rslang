@@ -31,10 +31,12 @@ class Card {
     this.difficultWordButton = document.querySelector('.difficult-word');
     this.removeWordButton = document.querySelector('.delete-word');
     this.nextCardButton = document.querySelector('.next-card-btn');
+    this.repeatWordButton = document.querySelector('.repeat-word');
 
     this.todayProgress = document.querySelector('.progress');
     this.todayStudiedWordsOutput = document.querySelector('.today-studied-words');
     this.availabelWordsToStudy = document.querySelector('.max-available-words');
+    this.wordSettings = document.querySelector('.word-difficulty-level');
     this.wordPositionInResponse = 0;
     this.todayStudiedWords = (localStorage.getItem('todayStudiedWords')) ? localStorage.getItem('todayStudiedWords') : 0;
 
@@ -51,11 +53,11 @@ class Card {
 
     this.isTranscription = this.settings.isTranscriptionVisible;
     this.isWordImage = this.settings.isPictureVisible;
-    // ToDo add button audioAutoplay to settings
-    // add difficult words
-    this.isAutoplayAudio = true;
+    this.isAutoplayAudio = this.settings.isSoundAutoPlay;
 
     this.isChecked = false;
+    this.isMistake = false;
+    this.mistakenWordRepeatInterval = 3;
   }
 
   wordsHandler() {
@@ -64,6 +66,7 @@ class Card {
       this.wordPositionInResponse = 0;
     } else {
       this.wordData = this.actualWordsData[this.wordPositionInResponse];
+      console.log(this.actualWordsData);
       this.showWordInput(this.wordData);
       this.wordPositionInResponse += 1;
     }
@@ -91,8 +94,20 @@ class Card {
     console.log(content);
   }
 
+  repeatHardWord() {
+    console.log(this.actualWordsData);
+    console.log(this.word);
+    console.log(this.wordData);
+    if (this.isMistake) return;
+    this.isMistake = true;
+    if ((this.actualWordsData.length - this.wordPositionInResponse)
+    > this.mistakenWordRepeatInterval) {
+      this.actualWordsData.splice(this.wordPositionInResponse + this.mistakenWordRepeatInterval,
+        0, this.wordData);
+    } else { this.actualWordsData.push(this.wordData); }
+  }
+
   showCard() {
-    console.log(this.settings);
     this.card = document.createElement('div');
     this.card.classList.add('word-card');
     this.todayProgress.setAttribute('max', this.numberOfCardsByDay);
@@ -240,9 +255,8 @@ class Card {
     if (this.isChecked) return;
     this.isChecked = true;
     const entryField = document.querySelector('.word-field');
-    const wordSettings = document.querySelector('.word-difficulty-level');
     this.nextCardButton.classList.remove('hidden');
-    wordSettings.classList.remove('hidden');
+    this.wordSettings.classList.remove('hidden');
     entryField.classList.add('right-letter');
     if (this.isWordMeaning || this.isTextExample) {
       const hiddenWords = document.querySelectorAll('.hidden-word');
@@ -264,6 +278,7 @@ class Card {
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     const wordValue = entryField.value;
     if (this.word !== entryField.value) {
+      this.repeatHardWord();
       for (let i = 0; i < hiddenRightWord.length; i += 1) {
         if (wordValue[i] === hiddenRightWord[i].textContent) {
           hiddenRightWord[i].classList.add('right-letter');
@@ -293,7 +308,9 @@ class Card {
   }
 
   nextCard() {
+    this.isMistake = false;
     this.nextCardButton.classList.add('hidden');
+    this.wordSettings.classList.add('hidden');
     this.todayProgress.setAttribute('value', this.todayStudiedWords);
     this.todayStudiedWordsOutput.innerText = this.todayStudiedWords;
     this.clearCard();
@@ -304,6 +321,7 @@ class Card {
     this.showAnswerButton.addEventListener('click', this.showRightAnswer.bind(this));
     this.checkWordButton.addEventListener('click', this.checkWord.bind(this));
     this.nextCardButton.addEventListener('click', this.nextCard.bind(this));
+    this.repeatWordButton.addEventListener('click', this.repeatHardWord.bind(this));
     document.addEventListener('keyup', (event) => {
       if (event.key === 'Enter') {
         this.checkWord();
