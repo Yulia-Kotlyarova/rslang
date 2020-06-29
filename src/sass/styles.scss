@@ -1,10 +1,12 @@
 @import "~bootstrap/scss/bootstrap";
 
 @import "blocks/Authorization/authorization";
+<<<<<<< HEAD
 @import "blocks/AudioCall/AudioCall";
 @import "blocks/Savannah/savannah";
 @import "blocks/Header/header";
 @import "blocks/Puzzle/puzzle-style";
+=======
+>>>>>>> e8cc08e... delete: file from diff repository
 
-@import "sprint/sprint.scss";
-@import "./blocks/Scramble/scramble.scss";
+@import "blocks/Scramble/scramble.scss";
