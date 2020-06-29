@@ -95,6 +95,11 @@ module.exports = {
       chunks: ['sprint'],
     }),
     new HtmlWebpackPlugin({
+      filename: '../dist/scramble.html',
+      template: path.resolve(__dirname, '../src/scramble.html'),
+      chunks: ['scramble'],
+    }),
+    new HtmlWebpackPlugin({
       filename: '../dist/statistics.html',
       template: path.resolve(__dirname, '../src/statistics.html'),
       chunks: ['statistics'],
