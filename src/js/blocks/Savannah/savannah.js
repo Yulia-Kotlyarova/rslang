@@ -19,7 +19,7 @@ window.onload = async function onload() {
   results.setEventListeners();
   proceedAnswer.setEventListeners();
   controlPanel.setEventListeners();
-  controlPanel.setSoundMode();
+  controlPanel.setSoundModeOnLoad();
   navigation.setEventListeners();
   const buttonStart = document.querySelector('.button__start');
   buttonStart.addEventListener('click', () => {

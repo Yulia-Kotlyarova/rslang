@@ -1,3 +1,4 @@
+import arrayShuffle from 'lodash/_arrayShuffle';
 import { heartFill } from './consts';
 
 export default class StartNewGame {
@@ -13,7 +14,7 @@ export default class StartNewGame {
 
   async startGame() {
     this.savannahState.wordsCollection = await this.getWordsCollection();
-    this.savannahState.wordsOrder = this.setWordsOrder();
+    this.savannahState.wordsOrder = StartNewGame.setWordsOrder();
     this.savannahState.wordAndAnswers.length = 0;
     this.savannahState.answeredCorrect.length = 0;
     this.savannahState.answeredWrong.length = 0;
@@ -31,16 +32,9 @@ export default class StartNewGame {
     return result;
   }
 
-  setWordsOrder() {
-    const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]; // подумать
-    const arrLength = this.savannahState.wordsCollection.length;
-    for (let i = arrLength - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = arr[j];
-      arr[j] = arr[i];
-      arr[i] = temp;
-    }
-    return arr;
+  static setWordsOrder() {
+    const arr = [...Array(20).keys()];
+    return arrayShuffle(arr);
   }
 
   combineWordsAndAnswers() {

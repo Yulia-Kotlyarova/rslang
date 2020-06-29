@@ -12,8 +12,10 @@ export default class ControlPanel {
     this.controlSoundContainer.addEventListener('click', () => this.switchSoundMode());
   }
 
-  setSoundMode() {
-    if (savannahSettings.soundOn) {
+  setSoundModeOnLoad() {
+    const isSoundOn = JSON.parse(localStorage.getItem('savannaSound'));
+    if (isSoundOn === null || isSoundOn) {
+      localStorage.setItem('savannaSound', true);
       savannahSettings.soundOn = true;
       this.controlSoundContainer.innerHTML = soundOn;
     } else {
@@ -23,11 +25,13 @@ export default class ControlPanel {
   }
 
   switchSoundMode() {
+    savannahSettings.soundOn = !savannahSettings.soundOn;
     if (savannahSettings.soundOn) {
-      savannahSettings.soundOn = false;
+      localStorage.setItem('savannaSound', true);
+      this.controlSoundContainer.innerHTML = soundOn;
     } else {
-      savannahSettings.soundOn = true;
+      localStorage.setItem('savannaSound', false);
+      this.controlSoundContainer.innerHTML = soundOff;
     }
-    this.setSoundMode();
   }
 }

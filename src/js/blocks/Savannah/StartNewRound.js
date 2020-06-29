@@ -1,3 +1,4 @@
+import arrayShuffle from 'lodash/_arrayShuffle';
 import Answer from './Answer';
 import ProceedAnswer from './ProceedAnswer';
 
@@ -55,13 +56,7 @@ export default class StartNewRound {
   }
 
   static shuffleArray() {
-    const arr = [0, 1, 2, 3];
-    for (let i = arr.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = arr[j];
-      arr[j] = arr[i];
-      arr[i] = temp;
-    }
-    return arr;
+    const arr = [...Array(4).keys()];
+    return arrayShuffle(arr);
   }
 }
