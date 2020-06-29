@@ -23,24 +23,38 @@ window.onload = async () => {
 
 class Card {
   constructor() {
+    this.actualWordsData = null;
+    this.card = null;
     this.word = null;
     this.wordData = null;
+
+    this.token = localStorage.getItem('token');
+    this.userId = localStorage.getItem('userId');
+
     this.cardWrapper = document.querySelector('.card-wrapper');
+
+    this.showAnswerButton = document.querySelector('.show-answer');
+    this.checkWordButton = document.querySelector('.check');
+    this.difficultWordButton = document.querySelector('.difficult-word');
+    this.removeWordButton = document.querySelector('.delete-word');
+    this.nextCardButton = document.querySelector('.next-card-btn');
+
     this.todayProgress = document.querySelector('.progress');
     this.todayStudiedWordsOutput = document.querySelector('.today-studied-words');
     this.availabelWordsToStudy = document.querySelector('.max-available-words');
-    this.card = null;
-    this.actualWordsData = null;
     this.wordPositionInResponse = 0;
     this.todayStudiedWords = (localStorage.getItem('todayStudiedWords')) ? localStorage.getItem('todayStudiedWords') : 0;
-    this.numberOfWordsToStudy = 50;
 
-    this.isChecked = false;
-    this.isShowAnswer = true;
+    this.settings = JSON.parse(localStorage.getItem('settings'));
+    this.numberOfNewWordsToStudy = this.settings.wordsPerDay;
+    this.numberOfCardsByDay = this.settings.maxCardsPerDay;
+    this.isShowAnswer = this.settings.isShowAnswerButtonVisible;
 
-    this.isTranslate = true;
-    this.isWordMeaning = true;
-    this.isTextExample = true;
+    this.isTranslate = this.settings.isTranslationVisible;
+    this.isWordMeaning = this.settings.isExplanationVisible;
+    this.isTextExample = this.settings.isExampleVisible;
+    this.isDifficultButtonVisible = this.settings.isDifficultButtonVisible;
+    this.isRemoveButtonVisible = this.settings.isRemoveButtonVisible;
 
     this.isTranscription = true;
     this.isWordImage = true;
@@ -65,26 +79,41 @@ class Card {
     this.wordsHandler();
   }
 
+  async getUserWords() {
+    const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words`, {
+      method: 'GET',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        Accept: 'application/json',
+      },
+    });
+    const content = await rawResponse.json();
+
+    console.log(content);
+  }
+
   showCard() {
+    console.log(this.settings);
     this.card = document.createElement('div');
-    const showAnswerButton = document.createElement('button');
-    const checkWordButton = document.createElement('button');
-    const nextCardButton = document.createElement('button');
     this.card.classList.add('word-card');
-    this.todayProgress.setAttribute('max', this.numberOfWordsToStudy);
+    this.todayProgress.setAttribute('max', this.numberOfCardsByDay);
     this.todayProgress.setAttribute('value', this.todayStudiedWords);
     this.todayStudiedWordsOutput.innerText = this.todayStudiedWords;
-    this.availabelWordsToStudy.innerText = this.numberOfWordsToStudy;
-    showAnswerButton.classList.add('show-answer');
-    showAnswerButton.innerText = 'Show answer';
-    if (!this.isShowAnswer) {
-      showAnswerButton.classList.add('hidden');
-    }
-    checkWordButton.classList.add('check');
-    checkWordButton.innerText = 'Check';
-    nextCardButton.classList.add('next-card-btn', 'hidden');
-    nextCardButton.innerText = 'Next';
-    this.cardWrapper.prepend(this.card, showAnswerButton, checkWordButton, nextCardButton);
+    this.availabelWordsToStudy.innerText = this.numberOfCardsByDay;
+    if (this.isShowAnswer) {
+      this.showAnswerButton.classList.remove('hidden');
+    } else { this.showAnswerButton.classList.add('hidden'); }
+
+    if (this.isDifficultButtonVisible) {
+      this.difficultWordButton.classList.remove('hidden');
+    } else { this.difficultWordButton.classList.add('hidden'); }
+
+    if (this.isRemoveButtonVisible) {
+      this.removeWordButton.classList.remove('hidden');
+    } else { this.removeWordButton.classList.add('hidden'); }
+
+    this.cardWrapper.prepend(this.card);
   }
 
   showWordInput(wordData) {
@@ -213,8 +242,9 @@ class Card {
     if (this.isChecked) return;
     this.isChecked = true;
     const entryField = document.querySelector('.word-field');
-    const nextCardButton = document.querySelector('.next-card-btn');
-    nextCardButton.classList.remove('hidden');
+    const wordSettings = document.querySelector('.word-difficulty-level');
+    this.nextCardButton.classList.remove('hidden');
+    wordSettings.classList.remove('hidden');
     entryField.classList.add('right-letter');
     if (this.isWordMeaning || this.isTextExample) {
       const hiddenWords = document.querySelectorAll('.hidden-word');
@@ -265,8 +295,7 @@ class Card {
   }
 
   nextCard() {
-    const nextCardButton = document.querySelector('.next-card-btn');
-    nextCardButton.classList.add('hidden');
+    this.nextCardButton.classList.add('hidden');
     this.todayProgress.setAttribute('value', this.todayStudiedWords);
     this.todayStudiedWordsOutput.innerText = this.todayStudiedWords;
     this.clearCard();
@@ -274,12 +303,9 @@ class Card {
   }
 
   setEventListener() {
-    const showAnswerButton = document.querySelector('.show-answer');
-    const checkWordButton = document.querySelector('.check');
-    const nextCardButton = document.querySelector('.next-card-btn');
-    showAnswerButton.addEventListener('click', this.showRightAnswer.bind(this));
-    checkWordButton.addEventListener('click', this.checkWord.bind(this));
-    nextCardButton.addEventListener('click', this.nextCard.bind(this));
+    this.showAnswerButton.addEventListener('click', this.showRightAnswer.bind(this));
+    this.checkWordButton.addEventListener('click', this.checkWord.bind(this));
+    this.nextCardButton.addEventListener('click', this.nextCard.bind(this));
     document.addEventListener('keyup', (event) => {
       if (event.key === 'Enter') {
         this.checkWord();
