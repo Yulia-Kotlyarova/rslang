@@ -1,0 +1,18 @@
+.card-wrapper {
+  position: relative;
+  text-align: center;
+}
+
+.word-difficulty-level {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+.next-card-btn {
+  position: absolute;
+  top: 0;
+  right: 10%;
+}
