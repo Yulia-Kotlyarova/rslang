@@ -1,5 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
+import MessageModal from './MessageModal';
+
 import defaultSettings from '../constants/defaultSettings';
 
 class Authorization {
@@ -64,34 +66,38 @@ class Authorization {
       },
       body: JSON.stringify(user),
     });
+
+    if (!rawResponse.ok && rawResponse.status !== 422) {
+      throw new Error(rawResponse.statusText);
+    }
+
     const content = await rawResponse.json();
 
     if (content.error) {
-      // eslint-disable-next-line no-alert
-      alert(content.error.errors[0].message);
-    } else {
-      localStorage.setItem('settings', JSON.stringify(defaultSettings));
-
-      const token = await Authorization.signinUser(user);
-
-      const userId = localStorage.getItem('userId');
-
-      const settings = {
-        wordsPerDay: defaultSettings.wordsPerDay,
-      };
-      delete defaultSettings.wordsPerDay;
-      settings.optional = defaultSettings;
-
-      await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(settings),
-      });
+      throw new Error(content.error.errors[0].message);
     }
+
+    localStorage.setItem('settings', JSON.stringify(defaultSettings));
+
+    const token = await Authorization.signinUser(user);
+
+    const userId = localStorage.getItem('userId');
+
+    const settings = {
+      wordsPerDay: defaultSettings.wordsPerDay,
+    };
+    delete defaultSettings.wordsPerDay;
+    settings.optional = defaultSettings;
+
+    await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(settings),
+    });
   }
 
   static async signinUser(user) {
@@ -104,33 +110,43 @@ class Authorization {
       body: JSON.stringify(user),
     });
 
+    if (rawResponse.status === 404) {
+      throw new Error('User with specified email and password not found');
+    }
+
+    if (!rawResponse.ok) {
+      throw new Error(rawResponse.statusText);
+    }
+
     const content = await rawResponse.json();
 
-    if (content.message === 'Authenticated') {
-      localStorage.setItem('userId', content.userId);
-      localStorage.setItem('token', content.token);
-      localStorage.setItem('email', user.email);
-      localStorage.setItem('password', user.password);
+    if (content.message !== 'Authenticated') {
+      throw new Error('Can not authenticate.');
+    }
 
-      if (!localStorage.getItem('settings')) {
-        const settingsRawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${content.userId}/settings`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${content.token}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        });
+    localStorage.setItem('userId', content.userId);
+    localStorage.setItem('token', content.token);
+    localStorage.setItem('email', user.email);
+    localStorage.setItem('password', user.password);
 
-        const settings = await settingsRawResponse.json();
+    if (!localStorage.getItem('settings')) {
+      const settingsRawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${content.userId}/settings`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${content.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
 
-        const settingsToSave = {
-          wordsPerDay: settings.wordsPerDay,
-          ...settings.optional,
-        };
+      const settings = await settingsRawResponse.json();
 
-        localStorage.setItem('settings', JSON.stringify(settingsToSave));
-      }
+      const settingsToSave = {
+        wordsPerDay: settings.wordsPerDay,
+        ...settings.optional,
+      };
+
+      localStorage.setItem('settings', JSON.stringify(settingsToSave));
     }
 
     return content.token;
@@ -171,7 +187,12 @@ class Authorization {
       }
 
       const user = Authorization.getUserDataFromForm(this.signupForm);
-      await Authorization.signupUser(user);
+      try {
+        await Authorization.signupUser(user);
+      } catch (e) {
+        MessageModal.showModal(e.message);
+        return;
+      }
 
       if (!window.location.href.endsWith('index.html')) {
         window.location.href = 'index.html';
@@ -189,7 +210,12 @@ class Authorization {
       }
 
       const user = Authorization.getUserDataFromForm(this.signinForm);
-      await Authorization.signinUser(user);
+      try {
+        await Authorization.signinUser(user);
+      } catch (e) {
+        MessageModal.showModal(e.message);
+        return;
+      }
 
       if (!window.location.href.endsWith('index.html')) {
         window.location.href = 'index.html';
