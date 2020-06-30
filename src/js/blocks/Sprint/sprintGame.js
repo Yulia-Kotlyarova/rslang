@@ -1,19 +1,17 @@
-/* eslint-disable semi */
-import '../../../sass/styles.scss';
-import { wordArray1, wordArray2, wordArray3 } from './SprintBackend';
+import { wordArrayWords, wordArrayTranslation, wordArrayAudios } from './SprintBackend';
 
 const wordCardEn = document.getElementById('game__board-middle-en');
 const yesOrNoButton = document.querySelector('.game__board-bottom');
 const wordCardRu = document.getElementById('game__board-middle-ru');
-const wordToCheckEn = document.getElementsByClassName('game__board-middle-check_eng')
-const wordToCheckRu = document.getElementsByClassName('game__board-middle-check_ru')
-const tickAppearOnCorrect = document.querySelector('.game__board-bottom .fa-check-circle')
-const tickAppearOnWrong = document.querySelector('.game__board-bottom .fa-times-circle')
+const wordToCheckEn = document.getElementsByClassName('game__board-middle-check_eng');
+const wordToCheckRu = document.getElementsByClassName('game__board-middle-check_ru');
+const tickAppearOnCorrect = document.querySelector('.game__board-bottom .fa-check-circle');
+const tickAppearOnWrong = document.querySelector('.game__board-bottom .fa-times-circle');
 const borderOnCorrect = document.querySelector('.game__board');
 const borderOnWrong = document.querySelector('.game__board');
 const leftPress = document.getElementById('button_left');
 const rightPress = document.getElementById('button_right');
-const changingScore = document.querySelector('.game__points-point')
+const changingScore = document.querySelector('.game__points-point');
 const scoreChange = document.getElementById('game__board_top-point_num');
 const changeColorOnScore = document.querySelector('.game__board-top');
 const fistTick = document.querySelector('.game__board-top_score_checks');
@@ -31,7 +29,7 @@ export const objForInCorrectWord = {
 };
 
 let ii = 0;
-let k = 0
+let k = 0;
 
 let equal = true;
 const letsCount = [];
@@ -43,32 +41,33 @@ function play(song) {
 
 const checkCorrectOrNot = () => {
   const kkk = k - 1;
-  let engValueIndex
-  let ruValueIndex
+  let engValueIndex;
+  let ruValueIndex;
   if (kkk % 2 === 0) {
-    engValueIndex = wordArray1.indexOf(wordToCheckEn[0].textContent);
-    ruValueIndex = wordArray2.indexOf(wordToCheckRu[0].textContent);
+    engValueIndex = wordArrayWords.indexOf(wordToCheckEn[0].textContent);
+    ruValueIndex = wordArrayTranslation.indexOf(wordToCheckRu[0].textContent);
   } else {
-    engValueIndex = wordArray2.indexOf(wordToCheckEn[0].textContent);
-    ruValueIndex = wordArray1.indexOf(wordToCheckRu[0].textContent);
+    engValueIndex = wordArrayTranslation.indexOf(wordToCheckEn[0].textContent);
+    ruValueIndex = wordArrayWords.indexOf(wordToCheckRu[0].textContent);
   }
   if (engValueIndex === ruValueIndex) {
     equal = true;
   } if (engValueIndex !== ruValueIndex) {
     equal = false;
   }
-}
+};
 
 const addWordToCard = () => {
   if (k % 2 === 0) {
-    wordCardEn.textContent = wordArray1[k];
-    wordCardRu.textContent = wordArray2[k];
+    wordCardEn.textContent = wordArrayWords[k];
+    wordCardRu.textContent = wordArrayTranslation[k];
   } else {
-    wordCardEn.textContent = wordArray2[k];
+    wordCardEn.textContent = wordArrayTranslation[k];
     if (k % 3 === 0) {
-      wordCardRu.textContent = wordArray1[Math.floor(Math.random() * wordArray2.length)];
+      wordCardRu.textContent = wordArrayWords[Math.floor(Math.random()
+        * wordArrayTranslation.length)];
     } else {
-      wordCardRu.textContent = wordArray1[k];
+      wordCardRu.textContent = wordArrayWords[k];
     }
   }
   k += 1;
@@ -77,15 +76,15 @@ const addWordToCard = () => {
     play('phiu2.wav');
   }
   setTimeout(() => {
-    leftPress.classList.remove('colorLeft')
-    rightPress.classList.remove('colorRight')
+    leftPress.classList.remove('colorLeft');
+    rightPress.classList.remove('colorRight');
     tickAppearOnCorrect.style.display = 'none';
     tickAppearOnWrong.style.display = 'none';
     borderOnCorrect.style.border = '2px solid #E5E5E3';
   }, 300);
   changingScore.textContent = letsCount.reduce((acc, val) => acc + val, 0);
   checkCorrectOrNot();
-}
+};
 
 const scoreLogicCorrect = () => {
   if (letsCount.length < 4) {
@@ -122,198 +121,198 @@ const scoreLogicCorrect = () => {
     letsCount.push(640);
     changeColorOnScore.style.background = '#ef1cdf';
   }
-}
+};
 
 const scoreLogicInCorrect = () => {
   if (letsCount.length > 0) {
-    const tmpScore = letsCount.pop()
-    letsCount.push(tmpScore - 10)
+    const tmpScore = letsCount.pop();
+    letsCount.push(tmpScore - 10);
   } else {
-    letsCount.push(-10)
+    letsCount.push(-10);
   }
-}
+};
 
 const addWordToCardOnKeyPress = () => {
   window.addEventListener('keydown', (event) => {
     const kk = k - 1;
-    if (event.keyCode === 37 && equal === false) {
+    if (event.keyCode === 37 && !equal) {
       play('phiu.wav');
-      leftPress.classList.add('colorLeft')
-      tickAppearOnCorrect.style.display = 'block';
-      borderOnCorrect.style.border = '4px solid #5A7E51'
-      if (kk % 2 === 0) {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
-      } else {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
-      }
-      objForCorrectWord.audio.push(wordArray3[kk]);
-      if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
-        ii += 1;
-      } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
-        ii = 0
-      }
-      setTimeout(() => {
-        scoreLogicCorrect();
-        addWordToCard()
-      }, 200);
-    }
-    if (event.keyCode === 39 && equal === false) {
-      play('error.wav');
-      rightPress.classList.add('colorRight')
-      tickAppearOnWrong.style.display = 'block';
-      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
-      if (kk % 2 === 0) {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
-      } else {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
-      }
-      objForInCorrectWord.audio.push(wordArray3[kk]);
-      setTimeout(() => {
-        scoreLogicInCorrect();
-        addWordToCard()
-      }, 200);
-    }
-    if (event.keyCode === 39 && equal === true) {
-      play('phiu.wav');
-      rightPress.classList.add('colorRight')
+      leftPress.classList.add('colorLeft');
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51';
       if (kk % 2 === 0) {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       } else {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
-      objForCorrectWord.audio.push(wordArray3[kk]);
-      fistTick.getElementsByTagName('i')[0].style.color = '#5A7E51'
+      objForCorrectWord.audio.push(wordArrayAudios[kk]);
       if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
+        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
         ii += 1;
       } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
-        ii = 0
+        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        ii = 0;
       }
       setTimeout(() => {
         scoreLogicCorrect();
-        addWordToCard()
-      }, 200);
+        addWordToCard();
+      }, 400);
     }
-    if (event.keyCode === 37 && equal === true) {
+    if (event.keyCode === 39 && !equal) {
       play('error.wav');
-      leftPress.classList.add('colorLeft')
+      rightPress.classList.add('colorRight');
       tickAppearOnWrong.style.display = 'block';
       borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
       if (kk % 2 === 0) {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       } else {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
-      objForInCorrectWord.audio.push(wordArray3[kk]);
+      objForInCorrectWord.audio.push(wordArrayAudios[kk]);
       setTimeout(() => {
         scoreLogicInCorrect();
-        addWordToCard()
-      }, 200);
+        addWordToCard();
+      }, 400);
     }
-  })
-}
+    if (event.keyCode === 39 && equal) {
+      play('phiu.wav');
+      rightPress.classList.add('colorRight');
+      tickAppearOnCorrect.style.display = 'block';
+      borderOnCorrect.style.border = '4px solid #5A7E51';
+      if (kk % 2 === 0) {
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
+      } else {
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
+      }
+      objForCorrectWord.audio.push(wordArrayAudios[kk]);
+      fistTick.getElementsByTagName('i')[0].style.color = '#5A7E51';
+      if (ii < 3) {
+        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
+        ii += 1;
+      } else {
+        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        ii = 0;
+      }
+      setTimeout(() => {
+        scoreLogicCorrect();
+        addWordToCard();
+      }, 400);
+    }
+    if (event.keyCode === 37 && equal) {
+      play('error.wav');
+      leftPress.classList.add('colorLeft');
+      tickAppearOnWrong.style.display = 'block';
+      borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
+      if (kk % 2 === 0) {
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
+      } else {
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
+      }
+      objForInCorrectWord.audio.push(wordArrayAudios[kk]);
+      setTimeout(() => {
+        scoreLogicInCorrect();
+        addWordToCard();
+      }, 400);
+    }
+  });
+};
 
 const addWordToCardOnPress = () => {
   yesOrNoButton.addEventListener('click', (e) => {
     const kk = k - 1;
-    if (e.target.className === 'btn btn-danger' && equal === false) {
+    if (e.target.className === 'btn btn-danger' && !equal) {
       play('phiu.wav');
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51';
       if (kk % 2 === 0) {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       } else {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
-      objForCorrectWord.audio.push(wordArray3[kk]);
+      objForCorrectWord.audio.push(wordArrayAudios[kk]);
       if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
+        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
         ii += 1;
       } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
-        ii = 0
+        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        ii = 0;
       }
       setTimeout(() => {
         scoreLogicCorrect();
-        addWordToCard()
-      }, 200);
+        addWordToCard();
+      }, 400);
     }
-    if (e.target.className === 'btn btn-success' && equal === false) {
+    if (e.target.className === 'btn btn-success' && !equal) {
       play('error.wav');
       tickAppearOnWrong.style.display = 'block';
       borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
       if (kk % 2 === 0) {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       } else {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
-      objForInCorrectWord.audio.push(wordArray3[kk]);
+      objForInCorrectWord.audio.push(wordArrayAudios[kk]);
       setTimeout(() => {
         scoreLogicInCorrect();
-        addWordToCard()
-      }, 200);
+        addWordToCard();
+      }, 400);
     }
 
-    if (e.target.className === 'btn btn-success' && equal === true) {
+    if (e.target.className === 'btn btn-success' && equal) {
       play('phiu.wav');
       tickAppearOnCorrect.style.display = 'block';
       borderOnCorrect.style.border = '4px solid #5A7E51';
       if (kk % 2 === 0) {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       } else {
-        objForCorrectWord.eng.push(wordArray1[kk]);
-        objForCorrectWord.ru.push(wordArray2[kk]);
+        objForCorrectWord.eng.push(wordArrayWords[kk]);
+        objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
-      objForCorrectWord.audio.push(wordArray3[kk]);
+      objForCorrectWord.audio.push(wordArrayAudios[kk]);
       if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51'
+        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
         ii += 1;
       } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null })
-        ii = 0
+        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        ii = 0;
       }
       setTimeout(() => {
         scoreLogicCorrect();
-        addWordToCard()
-      }, 200);
+        addWordToCard();
+      }, 400);
     }
-    if (e.target.className === 'btn btn-danger' && equal === true) {
+    if (e.target.className === 'btn btn-danger' && equal) {
       play('error.wav');
       tickAppearOnWrong.style.display = 'block';
       borderOnWrong.style.border = '4px solid rgba(255, 0, 0, 0.685)';
       if (kk % 2 === 0) {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       } else {
-        objForInCorrectWord.eng.push(wordArray1[kk]);
-        objForInCorrectWord.ru.push(wordArray2[kk]);
+        objForInCorrectWord.eng.push(wordArrayWords[kk]);
+        objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
-      objForInCorrectWord.audio.push(wordArray3[kk]);
+      objForInCorrectWord.audio.push(wordArrayAudios[kk]);
       setTimeout(() => {
         scoreLogicInCorrect();
-        addWordToCard()
-      }, 200);
+        addWordToCard();
+      }, 400);
     }
-  })
-}
+  });
+};
 
 export const init = () => {
   addWordToCard();

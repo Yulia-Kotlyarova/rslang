@@ -19,6 +19,7 @@ div {
     top: 0;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
+    
    
     .modal-content {
         background-color: #f4f4f4;
@@ -98,4 +99,8 @@ div {
             }
         }
     }
+}
+
+.modalSimple.d-block{
+    display: block;
 }
