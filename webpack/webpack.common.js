@@ -1,5 +1,6 @@
 const path = require('path');
 
+const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
@@ -32,8 +33,15 @@ module.exports = {
     rules: [javascript],
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+    }),
+
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
+      cleanOnceBeforeBuildPatterns: ['**/*', '!files*', '!files/*.jpg', '!files/*.mp3'],
     }),
 
     new HtmlWebpackPlugin({
@@ -99,6 +107,7 @@ module.exports = {
 
     new CopyPlugin([
       { from: 'src/favicon.ico', to: 'favicon.ico' },
+      { from: 'src/icons', to: 'icons' },
     ]),
   ],
 };

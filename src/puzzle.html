@@ -7,6 +7,132 @@
         <title>Puzzle | RS Lang</title>
     </head>
     <body>
-        <h1>Puzzle</h1>
+        <div class="start__page">
+            <div class="start__page__container">
+                <div class="start__title">ENGLISH PUZZLE</div>
+                <div class="start__instruction"><span>Click on puzzles with words - collect phrases and you wil see a painting.
+                Choose tooltips in menu bar. Have Fun!</span></div>
+                <button type="button" class="btn btn-secondary button__start">Start</button>
+            </div>
+        </div>
+        <section class="header wrapper">
+            <div class="header__navigation">
+                <div class="navigation__level">
+                    <div class="level__title">Level</div>
+                    <select class="level__select">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                    </select>
+                </div>
+                <div class="navigation__page">
+                    <div class="page__title">Page</div>
+                    <select class="page__select level_1">
+                        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                        <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                        <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
+                        <option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
+                        <option>21</option><option>22</option><option>23</option><option>24</option><option>25</option>
+                        <option>26</option><option>27</option><option>28</option><option>29</option><option>30</option>
+                        <option>31</option><option>32</option><option>33</option><option>34</option><option>32</option>
+                        <option>36</option><option>37</option><option>38</option><option>39</option><option>40</option>
+                        <option>41</option><option>42</option><option>43</option><option>44</option><option>45</option>
+                    </select>
+                </div>
+            </div>
+            <div class="prompts-and-logout">
+                <div class="header__prompts">
+                    <button type="button" class="btn btn-secondary prompts__button button__prompt-auto-audio-play"><span>AUTO</span><span>PLAY</span></button>
+                    <button type="button" class="btn btn-secondary prompts__button button__prompt-translation"></button>
+                    <button type="button" class="btn btn-secondary prompts__button button__prompt-audio-play"></button>
+                    <button type="button" class="btn btn-secondary prompts__button button__prompt-painting"></button>
+                </div>
+            </div>
+        </section>
+        <main class="main wrapper">
+            <div class="main__prompts">
+                <button type="button" class="btn btn-secondary prompts__button button__audio-play-once display-none"></button>
+                <div class="main__translation"><span class="translation__text display-none"></span></div>
+            </div>
+            <div class="game">
+                <div class="puzzle">
+                    <div class="puzzle__painting display-none"><img src=""></div>
+                    <div class="puzzle__line-numbers">
+                        <div class="line-number_0">1</div>
+                        <div class="line-number_1">2</div>
+                        <div class="line-number_2">3</div>
+                        <div class="line-number_3">4</div>
+                        <div class="line-number_4">5</div>
+                        <div class="line-number_5">6</div>
+                        <div class="line-number_6">7</div>
+                        <div class="line-number_7">8</div>
+                        <div class="line-number_8">9</div>
+                        <div class="line-number_9">10</div>
+                    </div>
+
+                    <div class="puzzle__line line_active" id="line_0"></div>
+                    <div class="puzzle__line line_active" id="line_1"></div>
+                    <div class="puzzle__line line_active" id="line_2"></div>
+                    <div class="puzzle__line line_active" id="line_3"></div>
+                    <div class="puzzle__line line_active" id="line_4"></div>
+                    <div class="puzzle__line line_active" id="line_5"></div>
+                    <div class="puzzle__line line_active" id="line_6"></div>
+                    <div class="puzzle__line line_active" id="line_7"></div>
+                    <div class="puzzle__line line_active" id="line_8"></div>
+                    <div class="puzzle__line line_active" id="line_9"></div>
+                </div>
+
+                <div class="game__game-line">
+                    <div class="game__line" id="game_line_0"></div>
+                    <div class="game__line" id="game_line_1"></div>
+                    <div class="game__line" id="game_line_2"></div>
+                    <div class="game__line" id="game_line_3"></div>
+                    <div class="game__line" id="game_line_4"></div>
+                    <div class="game__line" id="game_line_5"></div>
+                    <div class="game__line" id="game_line_6"></div>
+                    <div class="game__line" id="game_line_7"></div>
+                    <div class="game__line" id="game_line_8"></div>
+                    <div class="game__line" id="game_line_9"></div>
+                    <div class="game__line_overlay"></div>
+                    <div class="game__line_painting-info display-none"><span></span></div>
+                </div>
+                <div class="game__buttons">
+                    <button type="button" class="btn btn-secondary game__button button__check display-none">Check</button>
+                    <button type="button" class="btn btn-secondary game__button button__dontknow display-none">I don't know</button>
+                    <button type="button" class="btn btn-secondary game__button button__continue display-none">Continue</button>
+                    <button type="button" class="btn btn-secondary game__button button__results display-none">Results</button>
+                </div>
+            </div>
+        </main>
+        <div class="results display-none">
+            <div class="results__container">
+                <div class="results__painting">
+                    <div class="results__painting__image"><a href="" target="blank"><img src=""></a></div>
+                    <div class="results__painting__info"><span></span></div>
+                </div>
+                <div class="results__knowledge">
+                    <div class="results__know">
+                        <div class="know__count"><span>I know</span><span class="know__number"></span></div>
+                        <div class="know__phrases"></div>
+                    </div>
+                    <div class="results__dont-know">
+                        <div class="dont-know__count"><span>I don't know</span><span class="dont-know__number"></span></div>
+                        <div class="dont-know__phrases"></div>
+                    </div>
+                </div>
+                <div class="results__buttons">
+                    <button type="button" class="btn btn-secondary results__button button__continue-results">Continue</button>
+                    <button type="button" class="btn btn-secondary results__button button__statistics">Statistics</button>
+                </div>
+            </div>
+        </div>
+        <div class="icon-attribution">
+            Icons made by <a href="https://www.flaticon.com/authors/bqlqn" title="bqlqn">bqlqn</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+            Icons made by <a href="https://www.flaticon.com/authors/becris" title="Becris">Becris</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+            Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+        </div>
     </body>
 </html>
