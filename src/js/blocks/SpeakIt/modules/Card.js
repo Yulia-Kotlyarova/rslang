@@ -1,16 +1,18 @@
+import templates from '../templates/templates';
+
 class Card {
-  constructor(template, word) {
-    const cardElement = template.cloneNode(true);
+  constructor(word) {
+    const cardElement = templates.card(word);
 
-    cardElement.setAttribute('data-word', word.word);
-    cardElement.querySelector('.card__word').innerText = word.word;
-    cardElement.querySelector('.card__transcription').innerText = word.transcription;
-    // cardElement.querySelector('.card__translation').innerText = word.transcription;
-
-    this.word = word.word;
+    this.word = word.word.trim();
     this.cardElement = cardElement;
-    this.image = word.image;
-    this.audio = word.audio;
+    this.image = word.image.trim();
+    this.audio = word.audio.trim();
+    this.translation = word.wordTranslate.trim();
+  }
+
+  playPronunciation() {
+    new Audio(this.audio).play();
   }
 }
 

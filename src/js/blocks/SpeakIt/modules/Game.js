@@ -18,9 +18,11 @@ class Game {
   }
 
   updateGamesInStorage() {
-    if (!this.game.on) return;
+    if (!this.game.on) {
+      return;
+    }
 
-    const gamesJSON = localStorage.getItem('games');
+    const gamesJSON = localStorage.getItem('speakit-games');
     let games;
 
     if (gamesJSON) {
@@ -37,7 +39,7 @@ class Game {
       guessed: this.game.guessed || 0,
       level: this.app.level || 0,
     });
-    localStorage.setItem('games', JSON.stringify(games));
+    localStorage.setItem('speakit-games', JSON.stringify(games));
   }
 
   compareWords(word) {

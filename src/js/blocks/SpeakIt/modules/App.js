@@ -1,10 +1,7 @@
 class App {
-  // constructor() {
-  //   this.wordsData = [];
-  // }
-
   setMainPage(mainPage) {
     this.mainPage = mainPage;
+    this.api = 'https://afternoon-falls-25894.herokuapp.com/words';
   }
 
   setStartScreen(startScreen) {
@@ -23,9 +20,8 @@ class App {
     this.result = result;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getWords(page, group) {
-    const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${page}&group=${group}`;
+    const url = `${this.api}?page=${page}&group=${group}`;
     const res = await fetch(url);
     const json = await res.json();
     return json;
@@ -35,10 +31,6 @@ class App {
     const page = Math.floor(Math.random() * (29 + 1));
     const json = await this.getWords(page, group);
     return json;
-  }
-
-  async initiate() {
-    this.wordsData = await this.getRandomPageWords(0);
   }
 
   async render(page, level) {
@@ -53,6 +45,17 @@ class App {
       this.result.render();
       this.startScreen.hide();
     }
+  }
+
+  async initiate() {
+    this.wordsData = await this.getRandomPageWords(0);
+
+    window.addEventListener('beforeunload', () => {
+      this.game.finish();
+    });
+    window.addEventListener('unload', () => {
+      this.game.finish();
+    });
   }
 }
 

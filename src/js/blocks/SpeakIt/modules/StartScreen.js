@@ -15,8 +15,8 @@ class StartScreen {
   }
 
   initiate() {
-    this.startButton.addEventListener('click', () => {
-      this.app.render('mainPage');
+    this.startButton.addEventListener('click', async () => {
+      await this.app.render('mainPage');
     });
   }
 }

@@ -1,3 +1,5 @@
+import templates from '../templates/templates';
+
 class Result {
   constructor(resultElement, app) {
     this.app = app;
@@ -10,7 +12,6 @@ class Result {
     this.returnButton = this.resultElement.querySelector('.button_return');
     this.newGameButton = this.resultElement.querySelector('.button_new-game');
 
-    this.gameResultTemplate = this.resultElement.querySelector('.games-played__game');
     this.gamesPlayedList = this.resultElement.querySelector('.games-played__list');
   }
 
@@ -22,30 +23,25 @@ class Result {
     this.resultElement.classList.remove('results_hide');
   }
 
-  async render() {
-    this.show();
-
-    this.cardsErrorsContainer.innerHTML = '';
-    const cardsErrorsFragment = document.createDocumentFragment();
+  render() {
     this.cardsSuccessContainer.innerHTML = '';
+    this.cardsErrorsContainer.innerHTML = '';
+    this.gamesPlayedList.innerHTML = '';
+
     const cardsSuccessFragment = document.createDocumentFragment();
+    const cardsErrorsFragment = document.createDocumentFragment();
+    const gamesFragment = document.createDocumentFragment();
 
     let errors = 0;
     let successes = 0;
 
     const { cards } = this.app.mainPage;
 
-    await Promise.all(Object.keys(cards).map(async (key) => {
+    Object.keys(cards).forEach((key) => {
       const card = cards[key].cardElement.cloneNode(true);
       card.classList.add('card_result');
 
-      if (cards[key].translation) {
-        card.querySelector('.card__translation').innerText = cards[key].translation;
-      } else {
-        const translation = await this.app.mainPage.getTranslation(cards[key].word);
-        cards[key].translation = translation;
-        card.querySelector('.card__translation').innerText = translation;
-      }
+      card.querySelector('.card__translation').innerText = cards[key].translation;
 
       if (cards[key].guessed) {
         successes += 1;
@@ -54,25 +50,28 @@ class Result {
         errors += 1;
         cardsErrorsFragment.appendChild(card);
       }
-    }));
+    });
 
-    this.errorsCount.innerText = errors;
-    this.successCount.innerText = successes;
-    this.cardsErrorsContainer.appendChild(cardsErrorsFragment);
-    this.cardsSuccessContainer.appendChild(cardsSuccessFragment);
+    const gamesJSON = localStorage.getItem('speakit-games');
+    if (!gamesJSON) {
+      return;
+    }
 
-    this.gamesPlayedList.innerHTML = '';
-    const gamesJSON = localStorage.getItem('games');
-    if (!gamesJSON) return;
     const games = JSON.parse(gamesJSON);
-    const gamesFragment = document.createDocumentFragment();
+
     games.forEach((game) => {
-      const gameItem = this.gameResultTemplate.cloneNode();
-      gameItem.classList.remove('games-played__game_hide');
-      gameItem.innerText = `${game.date}. Level: ${game.level}. Guessed: ${game.guessed}, not guessed: ${game.errors}.`;
+      const gameItem = templates.gameItem(game);
       gamesFragment.appendChild(gameItem);
     });
+
+    this.successCount.innerText = successes;
+    this.errorsCount.innerText = errors;
+
+    this.cardsSuccessContainer.appendChild(cardsSuccessFragment);
+    this.cardsErrorsContainer.appendChild(cardsErrorsFragment);
     this.gamesPlayedList.appendChild(gamesFragment);
+
+    this.show();
   }
 
   initiate() {
@@ -80,23 +79,26 @@ class Result {
       this.hide();
     });
 
-    this.newGameButton.addEventListener('click', () => {
+    this.newGameButton.addEventListener('click', async () => {
+      this.app.game.finish();
+      this.app.mainPage.activateLevel(this.app.mainPage.levelZero);
       this.app.mainPage.displayWord('img/blank.jpg');
       this.app.mainPage.translationDisplay.innerText = '';
-      this.app.game.finish();
       this.app.mainPage.stopListening();
-      this.app.mainPage.activateLevel(this.app.mainPage.levelZero);
-      this.app.render('mainPage', 0);
+
+      await this.app.render('mainPage', 0);
+
       this.hide();
     });
 
     this.resultElement.addEventListener('click', async (event) => {
-      const card = event.target.closest('.card');
-      if (!card) return;
+      const cardElement = event.target.closest('.card');
+      if (!cardElement) {
+        return;
+      }
 
-      const cardData = this.app.mainPage.cards[card.dataset.word.toLowerCase().trim()];
-
-      this.app.mainPage.playPronunciation(cardData);
+      const card = this.app.mainPage.cards[cardElement.dataset.word.toLowerCase()];
+      card.playPronunciation();
     });
   }
 }

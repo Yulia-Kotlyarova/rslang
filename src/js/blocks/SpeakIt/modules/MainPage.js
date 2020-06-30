@@ -1,5 +1,6 @@
 import Card from './Card';
-import apiKeys from '../../../constants/api-keys';
+
+import templates from '../templates/templates';
 
 class MainPage {
   constructor(mainPageElement, app) {
@@ -7,7 +8,6 @@ class MainPage {
     this.app = app;
 
     this.cardsElement = this.mainPageElement.querySelector('.cards');
-    this.cardTemplate = this.mainPageElement.querySelector('.card');
     this.displayImage = this.mainPageElement.querySelector('.display__image');
     this.restartButton = this.mainPageElement.querySelector('.controls__restart');
     this.speakButton = this.mainPageElement.querySelector('.controls__speak');
@@ -15,7 +15,6 @@ class MainPage {
 
     this.levels = this.mainPageElement.querySelector('.levels');
     this.levelZero = this.mainPageElement.querySelector('.levels__level');
-    this.starTemplate = this.mainPageElement.querySelector('.star');
     this.score = this.mainPageElement.querySelector('.score');
 
     this.translationDisplay = this.mainPageElement.querySelector('.display__translation');
@@ -50,8 +49,7 @@ class MainPage {
   }
 
   addStar() {
-    const star = this.starTemplate.cloneNode(true);
-    star.classList.remove('star_hide');
+    const star = templates.star();
     this.score.appendChild(star);
   }
 
@@ -82,27 +80,9 @@ class MainPage {
     this.displayImage.setAttribute('src', image);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  playPronunciation(cardData) {
-    new Audio(cardData.audio).play();
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async getTranslation(word) {
-    const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${apiKeys.KEY}&text= ${word} &lang=en-ru`;
-    const res = await fetch(url);
-    const data = await res.json();
-    return data.text[0];
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async showTranslation(cardData) {
-    let { translation } = cardData;
-    if (!translation) {
-      translation = await this.getTranslation(cardData.word);
-    }
+  showTranslation(card) {
+    const { translation } = card;
     this.translationDisplay.innerText = translation;
-    this.cards[cardData.word.toLowerCase().trim()].translation = translation;
   }
 
   renderWords(wordsData) {
@@ -110,10 +90,13 @@ class MainPage {
     const cardsFragment = document.createDocumentFragment();
 
     wordsData.forEach((word, index) => {
-      if (index > 9) return;
-      const card = new Card(this.cardTemplate, word);
+      if (index > 9) {
+        return;
+      }
+
+      const card = new Card(word);
       cardsFragment.appendChild(card.cardElement);
-      this.cards[word.word.toLowerCase().trim()] = card;
+      this.cards[word.word.toLowerCase()] = card;
     });
 
     this.cardsElement.innerHTML = '';
@@ -124,36 +107,43 @@ class MainPage {
     this.activateLevel(this.levelZero);
 
     this.cardsElement.addEventListener('click', async (event) => {
-      const card = event.target.closest('.card');
-      if (!card || this.app.game.game.on) return;
+      const cardElement = event.target.closest('.card');
+      if (!cardElement || this.app.game.game.on) {
+        return;
+      }
 
-      const cardData = this.cards[card.dataset.word.toLowerCase().trim()];
+      const card = this.cards[cardElement.dataset.word.toLowerCase()];
 
-      this.activateCard(card);
-      this.playPronunciation(cardData);
-      this.displayWord(cardData.image);
-      await this.showTranslation(cardData);
+      card.playPronunciation();
+
+      this.activateCard(cardElement);
+      this.displayWord(card.image);
+      this.showTranslation(card);
     });
 
     this.levels.addEventListener('click', async (event) => {
       const levelElement = event.target.closest('.levels__level');
-      if (!levelElement) return;
+      if (!levelElement) {
+        return;
+      }
 
       const { level } = levelElement.dataset;
 
+      this.app.game.finish();
       this.activateLevel(levelElement);
       this.displayWord('img/blank.jpg');
-      this.app.game.finish();
-      await this.app.render('mainPage', level);
       this.translationDisplay.innerText = '';
+
+      await this.app.render('mainPage', level);
     });
 
-    this.restartButton.addEventListener('click', () => {
+    this.restartButton.addEventListener('click', async () => {
+      this.app.game.finish();
+      this.activateLevel(this.levelZero);
       this.displayWord('img/blank.jpg');
       this.translationDisplay.innerText = '';
-      this.app.game.finish();
-      this.app.render('mainPage', 0);
-      this.activateLevel(this.levelZero);
+
+      await this.app.render('mainPage', 0);
     });
 
     this.speakButton.addEventListener('click', () => {
@@ -162,8 +152,8 @@ class MainPage {
       }
     });
 
-    this.resultButton.addEventListener('click', () => {
-      this.app.render('result');
+    this.resultButton.addEventListener('click', async () => {
+      await this.app.render('result');
     });
   }
 
