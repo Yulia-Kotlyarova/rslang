@@ -1,0 +1,38 @@
+.savannah-html {
+  .control-panel__navigation {
+    display: flex;
+    font-size: 2rem;
+  }
+
+  .navigation__level, .navigation__page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .level__title, .page__title {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .level__select, .page__select {
+    width: 60px;
+    height: 30px;
+    text-align-last: center;
+    font-size: 2rem;
+    color: $color-text-additional;
+    border-radius: $button-border-radius;
+    cursor: pointer;
+  }
+
+  .level__select:hover, .page__select:hover {
+    box-shadow: 0 0 2px 2px black;
+  }
+
+  option {
+    text-align: center;
+    background-color: #FFFFFF;
+    cursor: pointer;
+  }
+}
