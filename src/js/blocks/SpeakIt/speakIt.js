@@ -1,6 +1,9 @@
 import '../../../sass/styles.scss';
 
 import '@fortawesome/fontawesome-free/js/all.min';
+import 'bootstrap/js/dist/collapse';
+
+import Header from '../../modules/Header';
 
 import StartScreen from './modules/StartScreen';
 import MainPage from './modules/MainPage';
@@ -30,6 +33,9 @@ window.onload = async () => {
     document.querySelector('.container'),
     app,
   );
+
+  const header = new Header();
+  header.run();
 
   app.setMainPage(mainPage);
   app.setStartScreen(startScreen);
