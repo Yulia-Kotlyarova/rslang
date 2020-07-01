@@ -23,6 +23,7 @@ module.exports = {
     savannah: path.resolve(__dirname, '../src/js/blocks/Savannah/savannah.js'),
     speakIt: path.resolve(__dirname, '../src/js/blocks/SpeakIt/speakIt.js'),
     sprint: path.resolve(__dirname, '../src/js/blocks/Sprint/sprint.js'),
+    scramble: path.resolve(__dirname, '../src/js/blocks/Scramble/scramble.js'),
     statistics: path.resolve(__dirname, '../src/js/blocks/Statistics/statistics.js'),
     team: path.resolve(__dirname, '../src/js/blocks/Team/team.js'),
   },
