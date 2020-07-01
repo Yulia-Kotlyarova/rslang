@@ -1,4 +1,4 @@
-// import '@fortawesome/fontawesome-free/js/all.min';
+import '@fortawesome/fontawesome-free/js/all.min';
 import '../../../sass/styles.scss';
 import startTimer from './sprintStart';
 import { init } from './sprintGame';
@@ -49,7 +49,7 @@ function setCircleDasharray2() {
     .setAttribute('stroke-dasharray', circleDasharray);
 }
 
-export default function startTimer2() {
+function startTimer2() {
   document.querySelector('.score__score2').addEventListener('click', () => {
     timerInterval = setInterval(() => {
       timePassed += 1;

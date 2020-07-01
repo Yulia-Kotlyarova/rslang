@@ -127,4 +127,3 @@ document.getElementById('app').innerHTML = `
   )}</span>
 </div>
 `;
-// export default startTimer();

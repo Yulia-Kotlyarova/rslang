@@ -14,8 +14,7 @@ const rightPress = document.getElementById('button_right');
 const changingScore = document.querySelector('.game__points-point');
 const scoreChange = document.getElementById('game__board_top-point_num');
 const changeColorOnScore = document.querySelector('.game__board-top');
-const fistTick = document.querySelector('.game__board-top_score_checks');
-const tickAppearOnScore = document.querySelectorAll('.game__board-top_score_checks .fa-check-circle');
+const fistTick = document.getElementsByClassName('fa-check-circle');
 
 export const objForCorrectWord = {
   eng: [],
@@ -149,10 +148,10 @@ const addWordToCardOnKeyPress = () => {
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
       if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
+        fistTick[ii].classList.add('tick-green');
         ii += 1;
       } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        Array.from(fistTick).forEach((val) => { const tmp = val; tmp.classList.remove('tick-green'); });
         ii = 0;
       }
       setTimeout(() => {
@@ -191,12 +190,11 @@ const addWordToCardOnKeyPress = () => {
         objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
-      fistTick.getElementsByTagName('i')[0].style.color = '#5A7E51';
       if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
+        fistTick[ii].classList.add('tick-green');
         ii += 1;
       } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        Array.from(fistTick).forEach((val) => { const tmp = val; tmp.classList.remove('tick-green'); });
         ii = 0;
       }
       setTimeout(() => {
@@ -241,10 +239,10 @@ const addWordToCardOnPress = () => {
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
       if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
+        fistTick[ii].classList.add('tick-green');
         ii += 1;
       } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        Array.from(fistTick).forEach((val) => { const tmp = val; tmp.classList.remove('tick-green'); });
         ii = 0;
       }
       setTimeout(() => {
@@ -283,10 +281,10 @@ const addWordToCardOnPress = () => {
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
       if (ii < 3) {
-        fistTick.getElementsByTagName('i')[ii].style.color = '#5A7E51';
+        fistTick[ii].classList.add('tick-green');
         ii += 1;
       } else {
-        tickAppearOnScore.forEach((val) => { const tmp = val; tmp.style.color = null; });
+        Array.from(fistTick).forEach((val) => { const tmp = val; tmp.classList.remove('tick-green'); });
         ii = 0;
       }
       setTimeout(() => {
