@@ -326,11 +326,7 @@ class Card {
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     const wordValue = entryField.value;
     if (this.word !== entryField.value) {
-      this.repeatWrongWord();
       for (let i = 0; i < hiddenRightWord.length; i += 1) {
-        if (wordValue[i] === hiddenRightWord[i].textContent) {
-          hiddenRightWord[i].classList.add('right-letter');
-        } else {
           hiddenRightWord[i].classList.add('wrong-letter');
         }
       }
