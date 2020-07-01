@@ -116,10 +116,10 @@ const scoreLogicCorrect = () => {
     letsCount.push(320);
     changeColorOnScore.style.background = '#FFD700';
   }
-  if (letsCount.length > 29) {
+  if (letsCount.length > 28) {
     scoreChange.textContent = '+640';
     letsCount.push(640);
-    changeColorOnScore.style.background = '#ef1cdf';
+    changeColorOnScore.style.background = '#EF1CDF';
   }
 };
 
