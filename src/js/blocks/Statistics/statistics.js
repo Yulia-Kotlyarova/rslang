@@ -9,5 +9,6 @@ const chart = new Chart();
 window.onload = () => {
   const header = new Header();
   header.run();
-  chart.drawChart();
+  chart.setEventListeners();
+  chart.drawMainChart();
 };
