@@ -1,0 +1,125 @@
+.savannah-html {
+  .results {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #67CCC0;
+    z-index: 5;
+  }
+
+  .results__container {
+    position: relative;
+    top: calc(50vh - 250px);
+    left: calc(50vw - 300px);
+    width: 600px;
+    height: 500px;
+    padding: 20px;
+    color: $color-text-dark;
+    background-color: $color-container-background;
+    border-radius: 30px;
+  }
+
+  .results__knowledge {
+    display: flex;
+    justify-content: space-between;
+
+    .results__mistakes, .results__correct {
+      flex: 0 0 45%;
+      display: flex;
+      flex-direction: column;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .mistakes__number, .correct__number {
+        width: 20px;
+        margin: 10px 5px;
+        padding: 0 10px;
+        border-radius: 3px;
+    }
+
+    .correct__number {
+        color: $color-correct;
+    }
+
+    .mistakes__number {
+        color: $color-wrong;
+    }
+
+    .results__words__container {
+      display: flex;
+
+      .results__word {
+        width: 100%;
+        margin-left: 5px;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+
+        .word_EN {
+          margin: 0 20px;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .results__audio-play {
+      width: 20px;
+      height: 20px;
+      margin: 3px;
+      filter: invert(40%);
+      cursor: pointer;
+    }
+
+    .results__audio-play:hover {
+      filter: invert(0%);
+    }
+  }
+
+  .results__buttons {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    .results__button {
+        width: 284px;
+        height: 54px;
+        font-size: 2.4rem;
+        margin: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-button-text;
+        background-color: $color-button-background;
+        border-radius: $button-border-radius;
+        border: none;
+    }
+
+    .results__button:hover {
+        border: 1px solid white;
+    }
+  }
+
+  .scrollbar {
+    float: left;
+    width: 95%;
+    height: 85%;
+    margin-left: 15px;
+    overflow-y: scroll;
+  }
+
+  .scrollbar-primary::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .scrollbar-primary::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: grey;
+  }
+
+  .scrollbar-primary {
+    scrollbar-color: grey;
+  }
+}
