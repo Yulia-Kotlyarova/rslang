@@ -1,11 +1,6 @@
-$color-main-chart: #d7d7ff;
-$color-user-chart: #51b8a17e;
-$color-chart-grid: #afafb1;
-$color-chart-stroke: #414177;
-$color-text-legend: #808080;
-
-$chart-width-height-desktop: 400px;
-$chart-cicle-width-and-height: 12px;
+@import './abstract/consts';
+@import './components/chart';
+@import './components/short-statisctics';
 
 .statistics {
 
@@ -20,77 +15,4 @@ $chart-cicle-width-and-height: 12px;
     justify-content: center;
     align-items: center;
   }
-
-  .statisctics__chart-with-legend__container {
-    display: flex;
-    align-items: center;
-  }
-
-  .statisctics__chart__container {
-    position: relative;
-  }
-
-  .statistics__chart {
-    width: $chart-width-height-desktop;
-    height: $chart-width-height-desktop;
-  }
-
-  .legend-percentage__container {
-    height: $chart-width-height-desktop / 5 * 6;
-    width: 20px;
-    margin-right: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .legend-percentage {
-    height: $chart-width-height-desktop / 5;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-size: 1.4rem;
-    color: $color-text-legend;
-  }
-
-  .legend-words__container {
-    position: absolute;
-    bottom: -20px;
-    width: $chart-width-height-desktop;
-    display: flex;
-  }
-
-  .legend-words {
-    flex: 1 1 20%;
-    display: flex;
-    justify-content: center;
-    font-size: 1.4rem;
-    color: $color-text-legend;
-  }
-}
-
-.chart-range {
-  width: $chart-width-height-desktop;
-}
-
-.chart__number-of-words {
-  position: absolute;
-  top: $chart-width-height-desktop / 2 - 15px;
-  left: $chart-width-height-desktop / 2 - 40px;
-  font-size: 2rem;
-  color: $color-chart-stroke;
-}
-
-.chart__circle {
-  position: absolute;
-  bottom: 0 - $chart-cicle-width-and-height / 2;
-  left: 0 - $chart-cicle-width-and-height / 2;
-  width: $chart-cicle-width-and-height;
-  height: $chart-cicle-width-and-height;
-  background-color: $color-chart-stroke;
-  border-radius: $chart-cicle-width-and-height / 2;
-}
-
-.percentage-of-words {
-  color: $color-text-legend;
-  font-size: 1.5rem;
 }
