@@ -1,10 +1,11 @@
-$color-main-diagram: #d7d7ff;
-$color-user-diagram: #51b8a17e;
-$color-diagram-grid: #afafb1;
-$color-diagram-stroke: #414177;
+$color-main-chart: #d7d7ff;
+$color-user-chart: #51b8a17e;
+$color-chart-grid: #afafb1;
+$color-chart-stroke: #414177;
 $color-text-legend: #808080;
 
-$diagram-width-height-desktop: 400px;
+$chart-width-height-desktop: 400px;
+$chart-cicle-width-and-height: 12px;
 
 .statistics {
 
@@ -30,12 +31,12 @@ $diagram-width-height-desktop: 400px;
   }
 
   .statistics__chart {
-    width: $diagram-width-height-desktop;
-    height: $diagram-width-height-desktop;
+    width: $chart-width-height-desktop;
+    height: $chart-width-height-desktop;
   }
 
   .legend-percentage__container {
-    height: $diagram-width-height-desktop / 5 * 6;
+    height: $chart-width-height-desktop / 5 * 6;
     width: 20px;
     margin-right: 20px;
     display: flex;
@@ -43,7 +44,7 @@ $diagram-width-height-desktop: 400px;
   }
 
   .legend-percentage {
-    height: $diagram-width-height-desktop / 5;
+    height: $chart-width-height-desktop / 5;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -54,7 +55,7 @@ $diagram-width-height-desktop: 400px;
   .legend-words__container {
     position: absolute;
     bottom: -20px;
-    width: $diagram-width-height-desktop;
+    width: $chart-width-height-desktop;
     display: flex;
   }
 
@@ -68,14 +69,28 @@ $diagram-width-height-desktop: 400px;
 }
 
 .chart-range {
-  width: $diagram-width-height-desktop;
+  width: $chart-width-height-desktop;
 }
 
 .chart__number-of-words {
   position: absolute;
-  top: $diagram-width-height-desktop / 2 - 15px;
-  left: $diagram-width-height-desktop / 2 - 40px;
+  top: $chart-width-height-desktop / 2 - 15px;
+  left: $chart-width-height-desktop / 2 - 40px;
   font-size: 2rem;
-  color: $color-diagram-stroke;
+  color: $color-chart-stroke;
 }
 
+.chart__circle {
+  position: absolute;
+  bottom: 0 - $chart-cicle-width-and-height / 2;
+  left: 0 - $chart-cicle-width-and-height / 2;
+  width: $chart-cicle-width-and-height;
+  height: $chart-cicle-width-and-height;
+  background-color: $color-chart-stroke;
+  border-radius: $chart-cicle-width-and-height / 2;
+}
+
+.percentage-of-words {
+  color: $color-text-legend;
+  font-size: 1.5rem;
+}
