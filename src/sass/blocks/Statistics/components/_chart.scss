@@ -1,5 +1,12 @@
 .statistics {
 
+  .statistics__main__chart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   .statisctics__chart-with-legend__container {
     display: flex;
     align-items: center;

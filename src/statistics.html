@@ -8,35 +8,41 @@
         <title>Statistics | RS Lang</title>
     </head>
     <body class="hidden-for-header-render">
-        <div class="statisctics__main">
-            <div class="statisctics__chart-with-legend__container">
-                <div class="legend-percentage__container">
-                    <div class="legend-percentage">100%</div>
-                    <div class="legend-percentage">80%</div>
-                    <div class="legend-percentage">60%</div>
-                    <div class="legend-percentage">40%</div>
-                    <div class="legend-percentage">20%</div>
-                    <div class="legend-percentage">0%</div>
-                </div>
-                <div class="statisctics__chart__container">
-                    <canvas class="statistics__chart"></canvas>
-                    <div class="legend-words__container">
-                        <div class="legend-words">1000</div>
-                        <div class="legend-words">2000</div>
-                        <div class="legend-words">3000</div>
-                        <div class="legend-words">4000</div>
-                        <div class="legend-words">5000</div>
+        <div class="statistics__main">
+            <div class="statistics__main__chart">
+                <div class="statisctics__chart-with-legend__container">
+                    <div class="legend-percentage__container">
+                        <div class="legend-percentage">100%</div>
+                        <div class="legend-percentage">80%</div>
+                        <div class="legend-percentage">60%</div>
+                        <div class="legend-percentage">40%</div>
+                        <div class="legend-percentage">20%</div>
+                        <div class="legend-percentage">0%</div>
                     </div>
-                    <div class="chart__number-of-words"></div>
-                    <div class="chart__circle"></div>
+                    <div class="statisctics__chart__container">
+                        <canvas class="statistics__chart"></canvas>
+                        <div class="legend-words__container">
+                            <div class="legend-words">1000</div>
+                            <div class="legend-words">2000</div>
+                            <div class="legend-words">3000</div>
+                            <div class="legend-words">4000</div>
+                            <div class="legend-words">5000</div>
+                        </div>
+                        <div class="chart__number-of-words"></div>
+                        <div class="chart__circle"></div>
+                    </div>
                 </div>
+                <form>
+                    <div class="form-group">
+                      <input type="range" min="0" max="46" value="0" class="form-control-range chart-range" id="formControlRange">
+                    </div>
+                </form>
+                <div class="percentage-of-words"></div>
             </div>
-            <form>
-                <div class="form-group">
-                  <input type="range" min="0" max="46" value="0" class="form-control-range chart-range" id="formControlRange">
-                </div>
-            </form>
-            <div class="percentage-of-words"></div>
+            <div class="statistics__main__buttons">
+                <button type="button" class="btn btn-secondary statistics-today">Show statistics for today</button>
+                <button type="button" class="btn btn-secondary statistics-all-time">Show statistics for all time</button>
+            </div>
         </div>
     </body>
 </html>
