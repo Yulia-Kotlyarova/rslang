@@ -1,4 +1,5 @@
 import { chartData, chartDataKeys } from './statistics_consts';
+import Repository from '../../modules/Repository';
 
 export default class Chart {
   constructor() {
@@ -11,13 +12,19 @@ export default class Chart {
     this.percentageOfWords = 0;
   }
 
-  renderUserChart() {
-    this.totalWordsNumber = 17;
+  async renderUserChart() {
+    this.totalWordsNumber = await Chart.updateTotalWordsNumber();
     this.chartRange.value = this.calculateChartRangeValue();
     this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
     this.chartWordsNumber.innerText = `Words: ${this.totalWordsNumber}`;
     this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% of words of any text`;
     this.drawChart();
+  }
+
+  static async updateTotalWordsNumber() {
+    const statistics = await Repository.getStatistics();
+    // console.log(statistics);
+    return statistics.learnedWords;
   }
 
   calculateChartRangeValue() {
@@ -105,8 +112,8 @@ export default class Chart {
     const chartRangeValue = this.chartRange.value;
     this.totalWordsNumber = chartDataKeys[chartRangeValue];
     this.percentageOfWords = chartData[chartDataKeys[chartRangeValue]];
-    this.chartWordsNumber.innerText = `Слов: ${this.totalWordsNumber}`;
-    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% слов любого текста`;
+    this.chartWordsNumber.innerText = `Words: ${this.totalWordsNumber}`;
+    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% of words of any text`;
     this.drawChart();
   }
 }

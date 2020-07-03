@@ -11,10 +11,10 @@ const chart = new Chart();
 const shortStatistics = new ShortStatistics();
 const buttons = new Buttons(shortStatistics);
 
-window.onload = () => {
+window.onload = async () => {
   const header = new Header();
   header.run();
-  chart.renderUserChart();
+  await chart.renderUserChart();
   chart.setEventListeners();
   buttons.setEventListeners();
 };

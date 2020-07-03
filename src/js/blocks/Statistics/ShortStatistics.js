@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import 'bootstrap/js/dist/modal';
+import Repository from '../../modules/Repository';
+import getTodayShort from '../../helpers';
 
 export default class ShortStatistics {
   constructor() {
@@ -9,6 +11,20 @@ export default class ShortStatistics {
     this.newWords = 0;
     this.correctAswers = 0;
     this.longestSession = 0;
+  }
+
+  async updateTodayStatisticsData() {
+    const statistics = await Repository.getStatistics();
+    const statisticsToday = await statistics.optional.dates[getTodayShort()];
+    this.cardsCompleted = statisticsToday.answersGivenToday;
+    this.newWords = statisticsToday.learnedToday;
+    this.correctAswers = `${Math.round((statisticsToday.correctToday / this.cardsCompleted) * 100, 0)}%`;
+    this.longestSession = statisticsToday.correctMaximumSeriesToday;
+    // await Repository.incrementLearnedWords(1, true);
+    // await Repository.incrementLearnedWords(1, true);
+    // await Repository.incrementLearnedWords(1, true);
+    // await Repository.incrementLearnedWords(1, true);
+    // await Repository.incrementLearnedWords(1, true);
   }
 
   createModalHTML() {
@@ -30,11 +46,11 @@ export default class ShortStatistics {
                       </div>
                       <div class="short-statictics__data correct-answers">
                           <div class="data__title">Correct answers</div>
-                          <div class="data__numbers">${this.newWords}</div>
+                          <div class="data__numbers">${this.correctAswers}</div>
                       </div>
                       <div class="short-statictics__data new-words">
                           <div class="data__title">New words</div>
-                          <div class="data__numbers">${this.correctAswers}</div>
+                          <div class="data__numbers">${this.newWords}</div>
                       </div>
                       <div class="short-statictics__data longest-session">
                           <div class="data__title">Longest session of correct answers</div>
@@ -51,18 +67,8 @@ export default class ShortStatistics {
     `;
   }
 
-  // static showModal() {
-  //   const modal = document.querySelector('.modal');
-  //   $(modal).modal('show');
-
-  // if (closeCallback) {
-  //   $(modal).on('hidden.bs.modal', () => {
-  //     closeCallback();
-  //   });
-  // }
-  // }
-
-  showModal() {
+  async showModal() {
+    await this.updateTodayStatisticsData();
     this.modalHTML = this.createModalHTML();
     this.body.insertAdjacentHTML('beforeend', this.modalHTML);
     const modal = document.querySelector('.modal');
