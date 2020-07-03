@@ -1,6 +1,7 @@
 @import './abstract/consts';
 @import './components/chart';
 @import './components/short-statisctics';
+@import './components/calendar';
 
 .statistics {
 
@@ -11,17 +12,6 @@
     margin-top: 20px;
     display: flex;
     justify-content: center;
-  }
-
-  .statistics__main__buttons {
-    margin-left: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .btn-secondary {
-    margin: 10px;
-    font-size: 2rem;
+    // align-items: center;
   }
 }

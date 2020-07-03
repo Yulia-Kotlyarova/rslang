@@ -53,14 +53,40 @@
     color: $color-text-dark;
   }
 
-  .chart-range {
+  .chart-range__container {
     width: $chart-width-height-desktop;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .chart-range {
+    flex: 0 0 80%;
+  }
+
+  .chart-range-refresh {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    font-size: 2rem;
+    background-color: none;
+    color: $color-chart-stroke;
+  }
+
+  .chart-range-refresh:focus {
+    box-shadow: none;
+  }
+
+  .chart-range-refresh:hover {
+    transition: all ease 0.5s;
+    transform: rotate(360deg);
   }
 
   .chart__number-of-words {
     position: absolute;
     top: $chart-width-height-desktop / 2 - 15px;
-    left: $chart-width-height-desktop / 2 - 40px;
+    left: $chart-width-height-desktop / 2 - 80px;
     font-size: 2rem;
     color: $color-chart-stroke;
   }

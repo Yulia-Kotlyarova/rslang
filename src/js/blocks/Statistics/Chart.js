@@ -1,5 +1,6 @@
 import { chartData, chartDataKeys } from './statistics_consts';
 import Repository from '../../modules/Repository';
+import MessageModal from '../../modules/MessageModal';
 
 export default class Chart {
   constructor() {
@@ -13,17 +14,26 @@ export default class Chart {
   }
 
   async renderUserChart() {
-    this.totalWordsNumber = await Chart.updateTotalWordsNumber();
-    this.chartRange.value = this.calculateChartRangeValue();
-    this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
-    this.chartWordsNumber.innerText = `Words: ${this.totalWordsNumber}`;
-    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% of words of any text`;
-    this.drawChart();
+    try {
+      this.totalWordsNumber = await Chart.updateTotalWordsNumber();
+    } catch (error) {
+      this.totalWordsNumber = 0;
+      this.percentageOfWords = 0;
+      const messageModal = new MessageModal();
+      MessageModal.createModalHTML('userChartError');
+      messageModal.appendSelf('userChartError');
+      MessageModal.showModal('Please sign in to see your statistics');
+    } finally {
+      this.chartRange.value = this.calculateChartRangeValue();
+      this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
+      this.chartWordsNumber.innerText = `Your Words: ${this.totalWordsNumber}`;
+      this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% of words of any text`;
+      this.drawChart();
+    }
   }
 
   static async updateTotalWordsNumber() {
     const statistics = await Repository.getStatistics();
-    // console.log(statistics);
     return statistics.learnedWords;
   }
 

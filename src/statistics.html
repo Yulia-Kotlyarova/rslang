@@ -33,15 +33,19 @@
                     </div>
                 </div>
                 <form>
-                    <div class="form-group">
-                      <input type="range" min="0" max="46" value="0" class="form-control-range chart-range" id="formControlRange">
+                    <div class="form-group chart-range__container">
+                        <input type="range" min="0" max="46" value="0" class="form-control-range chart-range" id="formControlRange">
+                        <button type="button" class="btn chart-range-refresh"><i class="fas fa-redo"></i></button>
                     </div>
+
                 </form>
                 <div class="percentage-of-words"></div>
             </div>
-            <div class="statistics__main__buttons">
+            <div class="statistics__main__calendar">
+                <div class=" scrollbar scrollbar-primary">
+                    <div class="calendar__container"></div>
+                </div>
                 <button type="button" class="btn btn-secondary statistics-today">Show statistics for today</button>
-                <button type="button" class="btn btn-secondary statistics-all-time">Show statistics for all time</button>
             </div>
         </div>
     </body>

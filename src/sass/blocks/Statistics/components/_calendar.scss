@@ -1,0 +1,65 @@
+.statistics {
+  .statistics__main__calendar {
+    margin: 30px 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .calendar__container {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    td {
+      width: $calendar-width-height-desktop * 0.3;
+      text-align: center;
+      color: $color-text-dark;
+      font-size: 1.2rem;
+      border-bottom: 1px solid $color-chart-grid;
+
+    }
+
+    tr > td:first-child {
+      border-right: 1px solid $color-chart-grid;
+    }
+
+    tr > td:last-child {
+      border-left: 1px solid $color-chart-grid;
+    }
+
+    thead {
+      font-weight: 700;
+    }
+  }
+
+  .scrollbar {
+    float: left;
+    width: $calendar-width-height-desktop;
+    height: $calendar-width-height-desktop;
+    margin-left: 15px;
+    padding-top: 10px;
+    overflow-y: scroll;
+    background-color: $color-calendar-background;
+    border-bottom: 10px solid $color-calendar-background;
+  }
+
+  .scrollbar-primary::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-primary::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: $color-text-dark;
+  }
+
+  .scrollbar-primary {
+    scrollbar-color: $color-text-dark;
+  }
+
+  .statistics-today {
+    margin-top: 20px;
+    font-size: 1.5rem;
+  }
+}
