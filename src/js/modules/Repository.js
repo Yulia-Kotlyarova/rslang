@@ -1,15 +1,32 @@
+import sortBy from 'lodash/sortBy';
+
 import Authorization from './Authorization';
 
 import defaultSettings from '../constants/defaultSettings';
+import { coefficients, intervals } from '../constants/intervalRepetition';
 
 class Repository {
-  static async getAllUserWords(group = '', wordsPerPage = '') {
+  static async getWords(type, group, wordsPerPage) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const filter = '{"userWord": {"$exists": "true"}}';
+    let filter;
+    if (type === 'new') {
+      filter = '{"$and":[{"userWord":null, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+    } else if (type === 'currentSession') {
+      const currentSessionEnd = Date.now() + intervals.defaultCurrentSessionFromNow;
+      filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
+    } else if (type === 'mixed') {
+      filter = '{"$and":["userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+    } else if (type === 'deleted') {
+      filter = '{"userWord.optional.isDeleted":true}';
+    } else if (type === 'hard') {
+      filter = '{"userWord.optional.isHard":true}';
+    } else {
+      throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'mixed', 'deleted', 'hard'`);
+    }
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group ? `group=${group}` : ''}${wordsPerPage ? `wordsPerPage=${wordsPerPage}` : ''}filter=${filter}`;
+    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -23,6 +40,37 @@ class Repository {
     const content = await rawResponse.json();
 
     return content[0].paginatedResults;
+  }
+
+  static async getAllUserWords(group, wordsPerPage) {
+    const words = await Repository.getWords('repeat', group, wordsPerPage);
+    return sortBy(words, 'userWord.optional.playNextDate');
+  }
+
+  static async getCurrentSessionUserWords(group, wordsPerPage) {
+    const words = await Repository.getWords('currentSession', group, wordsPerPage);
+    return sortBy(words, 'userWord.optional.playNextDate');
+  }
+
+  static async getNewWords(group, wordsPerPage) {
+    return Repository.getWords('new', group, wordsPerPage);
+  }
+
+  static async getMixedWords(group, wordsPerPage = 10) {
+    const userWords = await Repository.getCurrentSessionUserWords(group, wordsPerPage);
+    if (userWords.length === Number(wordsPerPage)) {
+      return userWords;
+    }
+    const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
+    return [...userWords, ...wordsNew];
+  }
+
+  static async getHardWords(group, wordsPerPage) {
+    return Repository.getWords('hard', group, wordsPerPage);
+  }
+
+  static async getDeletedWords(group, wordsPerPage) {
+    return Repository.getWords('deleted', group, wordsPerPage);
   }
 
   static async getOneUserWord(wordId) {
@@ -45,7 +93,7 @@ class Repository {
     return content[0];
   }
 
-  static async createUserWord(wordId, difficulty, optional = {}) {
+  static async createUserWord(wordId, difficulty = 'default', optional = {}) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
@@ -58,7 +106,7 @@ class Repository {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ difficulty, optional }),
+      body: JSON.stringify({ difficulty, optional: { ...optional, default: 'default' } }),
     });
 
     return rawResponse.json();
@@ -70,9 +118,13 @@ class Repository {
 
     const word = await Repository.getOneUserWord(wordId);
     const updates = { difficulty };
-    updates.optional = word.userWord && word.userWord.optional ? word.userWord.optional : {};
+    updates.optional = word.userWord && word.userWord.optional ? word.userWord.optional : { default: 'default' };
 
     const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+
+    if (!updates.difficulty) {
+      updates.difficulty = 'default';
+    }
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -94,7 +146,7 @@ class Repository {
     const word = await Repository.getOneUserWord(wordId);
 
     const updates = {};
-    updates.difficulty = word.userWord && word.userWord.difficulty ? word.userWord.difficulty : '';
+    updates.difficulty = word.userWord && word.userWord.difficulty ? word.userWord.difficulty : 'default';
     if (word.userWord && word.userWord.optional) {
       updates.optional = { ...word.userWord.optional, ...updatedValues };
     } else {
@@ -114,6 +166,22 @@ class Repository {
     });
 
     return rawResponse.json();
+  }
+
+  static async markWordAsDeleted(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isDeleted: true });
+  }
+
+  static async unmarkWordAsDeleted(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isDeleted: false });
+  }
+
+  static async markWordAsHard(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isHard: true });
+  }
+
+  static async unmarkWordAsHard(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isHard: false });
   }
 
   static async deleteUserWord(wordId) {
@@ -182,11 +250,43 @@ class Repository {
     return rawResponse.json();
   }
 
+  static getTodayShort() {
+    const now = new Date();
+    const year = now.getFullYear();
+    let month = now.getMonth() + 1;
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    let date = now.getDate();
+    if (date < 10) {
+      date = `0${date}`;
+    }
+    return `${year}-${month}-${date}`;
+  }
+
   static async incrementLearnedWords() {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
     const statistics = await Repository.getStatistics();
+    const todayShort = Repository.getTodayShort();
+
+    if (!statistics.optional) {
+      statistics.optional = {};
+    }
+    if (!statistics.optional.dates) {
+      statistics.optional.dates = {};
+    }
+    if (!statistics.optional.dates[todayShort]) {
+      statistics.optional.dates[todayShort] = {
+        learnedTotalSoFar: statistics.learnedWords + 1,
+        learnedToday: 1,
+      };
+    } else {
+      statistics.optional.dates[todayShort].learnedTotalSoFar = statistics.learnedWords + 1;
+      statistics.optional.dates[todayShort].learnedToday += 1;
+    }
+
     const newStatistics = {
       learnedWords: statistics.learnedWords + 1,
       optional: statistics.optional,
@@ -283,6 +383,97 @@ class Repository {
     });
 
     return rawResponse.json();
+  }
+
+  static async saveWordResult({ wordId, result = '1' }) {
+    let word;
+    word = await Repository.getOneUserWord(wordId);
+
+    if (!word) {
+      await Repository.createUserWord(wordId);
+      word = await Repository.getOneUserWord(wordId);
+    }
+
+    let interval;
+
+    if (result === '0') {
+      interval = intervals.defaultAgainInterval;
+      word.userWord.optional.lastPlayedDate = Date.now();
+      word.userWord.optional.playNextDate = Date.now() + interval;
+    } else {
+      const { lastPlayedDate } = word.userWord.optional;
+
+      if (lastPlayedDate) {
+        interval = Date.now() - lastPlayedDate;
+      } else {
+        interval = intervals.defaultInterval;
+      }
+
+      if (interval < intervals.defaultInterval) {
+        interval = intervals.defaultInterval;
+      }
+
+      word.userWord.optional.lastPlayedDate = Date.now();
+      word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
+    }
+
+    await Repository.updateUserWordOptional(wordId, word.userWord.optional);
+    await Repository.incrementLearnedWords();
+  }
+
+  static async saveGameResult(gameName, isVictory, sessionData) {
+    const statistics = await Repository.getStatistics();
+    const todayShort = Repository.getTodayShort();
+
+    if (!statistics.optional) {
+      statistics.optional = {};
+    }
+    if (!statistics.optional.dates) {
+      statistics.optional.dates = {};
+    }
+
+    if (!statistics.optional.dates[todayShort]) {
+      statistics.optional.dates[todayShort] = {
+        gamesPlayed: 1,
+      };
+
+      if (isVictory) {
+        statistics.optional.dates[todayShort].victories = 1;
+      } else {
+        statistics.optional.dates[todayShort].defeats = 1;
+      }
+    } else {
+      statistics.optional.dates[todayShort]
+        .gamesPlayed = statistics.optional.dates[todayShort].gamesPlayed
+          ? statistics.optional.dates[todayShort].gamesPlayed + 1
+          : 1;
+
+      if (isVictory) {
+        statistics.optional.dates[todayShort]
+          .victories = statistics.optional.dates[todayShort].victories
+            ? statistics.optional.dates[todayShort].victories + 1
+            : 1;
+      } else {
+        statistics.optional.dates[todayShort]
+          .defeats = statistics.optional.dates[todayShort].defeats
+            ? statistics.optional.dates[todayShort].defeats + 1
+            : 1;
+      }
+    }
+
+    if (!statistics.optional.games) {
+      statistics.optional.games = {
+        [gameName]: [],
+      };
+    }
+
+    if (!statistics.optional.games[gameName]) {
+      statistics.optional.games[gameName] = [];
+    }
+
+    statistics.optional.games[gameName].push(sessionData);
+
+    return Repository.updateOptionalStatistics(statistics.optional);
   }
 }
 
