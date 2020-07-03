@@ -16,8 +16,14 @@ class Repository {
     } else if (type === 'currentSession') {
       const currentSessionEnd = Date.now() + intervals.defaultCurrentSessionFromNow;
       filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
-    } else {
+    } else if (type === 'mixed') {
       filter = '{"$and":["userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+    } else if (type === 'deleted') {
+      filter = '{"userWord.optional.isDeleted":true}';
+    } else if (type === 'hard') {
+      filter = '{"userWord.optional.isHard":true}';
+    } else {
+      throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'mixed', 'deleted', 'hard'`);
     }
 
     const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
@@ -57,6 +63,14 @@ class Repository {
     }
     const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
     return [...userWords, ...wordsNew];
+  }
+
+  static async getHardWords(group, wordsPerPage) {
+    return Repository.getWords('hard', group, wordsPerPage);
+  }
+
+  static async getDeletedWords(group, wordsPerPage) {
+    return Repository.getWords('deleted', group, wordsPerPage);
   }
 
   static async getOneUserWord(wordId) {
@@ -152,6 +166,22 @@ class Repository {
     });
 
     return rawResponse.json();
+  }
+
+  static async markWordAsDeleted(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isDeleted: true });
+  }
+
+  static async unmarkWordAsDeleted(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isDeleted: false });
+  }
+
+  static async markWordAsHard(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isHard: true });
+  }
+
+  static async unmarkWordAsHard(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isHard: false });
   }
 
   static async deleteUserWord(wordId) {
