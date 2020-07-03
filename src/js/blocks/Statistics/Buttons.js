@@ -1,11 +1,11 @@
 export default class Buttons {
   constructor(shortStatistics) {
     this.shortStatistics = shortStatistics;
-    this.buttonShowTodayStatistics = document.querySelector('.statistics-today');
-    this.buttonShowAllTimeStatistics = document.querySelector('.statistics-all-time');
+    this.buttonShowTodayStat = document.querySelector('.statistics-today');
+    this.buttonShowAllTimeStat = document.querySelector('.statistics-all-time');
   }
 
   setEventListeners() {
-    this.buttonShowTodayStatistics.addEventListener('click', async () => this.shortStatistics.showModal());
+    this.buttonShowTodayStat.addEventListener('click', () => this.shortStatistics.showModal());
   }
 }
