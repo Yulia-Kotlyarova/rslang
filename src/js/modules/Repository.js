@@ -5,6 +5,8 @@ import Authorization from './Authorization';
 import defaultSettings from '../constants/defaultSettings';
 import { coefficients, intervals } from '../constants/intervalRepetition';
 
+import getTodayShort from '../helpers';
+
 class Repository {
   static async getWords(type, group, wordsPerPage) {
     const userId = localStorage.getItem('userId');
@@ -250,45 +252,82 @@ class Repository {
     return rawResponse.json();
   }
 
-  static getTodayShort() {
-    const now = new Date();
-    const year = now.getFullYear();
-    let month = now.getMonth() + 1;
-    if (month < 10) {
-      month = `0${month}`;
-    }
-    let date = now.getDate();
-    if (date < 10) {
-      date = `0${date}`;
-    }
-    return `${year}-${month}-${date}`;
-  }
-
-  static async incrementLearnedWords() {
+  static async incrementLearnedWords(result, isWordNew) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
+    const isCorrect = Number(result) !== 0;
 
     const statistics = await Repository.getStatistics();
-    const todayShort = Repository.getTodayShort();
+    const todayShort = getTodayShort();
 
     if (!statistics.optional) {
       statistics.optional = {};
+    }
+
+    if (!statistics.learnedWords) {
+      statistics.learnedWords = 0;
     }
     if (!statistics.optional.dates) {
       statistics.optional.dates = {};
     }
     if (!statistics.optional.dates[todayShort]) {
-      statistics.optional.dates[todayShort] = {
-        learnedTotalSoFar: statistics.learnedWords + 1,
-        learnedToday: 1,
-      };
+      statistics.optional.dates[todayShort] = {};
+      const todayStatistics = statistics.optional.dates[todayShort];
+
+      if (!isCorrect) {
+        todayStatistics.previousGuessed = false;
+        todayStatistics.correctSeriesToday = 0;
+        todayStatistics.correctMaximumSeriesToday = 0;
+        todayStatistics.correctToday = 0;
+
+        todayStatistics.learnedTotalSoFar = statistics.learnedWords;
+        todayStatistics.learnedToday = 0;
+      } else {
+        todayStatistics.previousGuessed = true;
+        todayStatistics.correctSeriesToday = 1;
+        todayStatistics.correctMaximumSeriesToday = 1;
+        todayStatistics.correctToday = 1;
+
+        if (isWordNew) {
+          todayStatistics.learnedTotalSoFar = statistics.learnedWords + 1;
+          todayStatistics.learnedToday = 1;
+        } else {
+          todayStatistics.learnedTotalSoFar = statistics.learnedWords;
+          todayStatistics.learnedToday = 0;
+        }
+      }
+
+      todayStatistics.answersGivenToday = 1;
     } else {
-      statistics.optional.dates[todayShort].learnedTotalSoFar = statistics.learnedWords + 1;
-      statistics.optional.dates[todayShort].learnedToday += 1;
+      const todayStatistics = statistics.optional.dates[todayShort];
+
+      if (!isCorrect) {
+        if (todayStatistics.correctSeriesToday > todayStatistics.correctMaximumSeriesToday) {
+          todayStatistics.correctMaximumSeriesToday = todayStatistics.correctSeriesToday;
+        }
+
+        todayStatistics.previousGuessed = false;
+        todayStatistics.correctSeriesToday = 0;
+      } else {
+        todayStatistics.previousGuessed = true;
+        todayStatistics.correctSeriesToday += 1;
+        todayStatistics.correctToday += 1;
+
+        if (todayStatistics.correctSeriesToday > todayStatistics.correctMaximumSeriesToday) {
+          todayStatistics.correctMaximumSeriesToday = todayStatistics.correctSeriesToday;
+        }
+
+        if (isWordNew) {
+          todayStatistics.learnedTotalSoFar += 1;
+          todayStatistics.learnedToday += 1;
+        }
+      }
+
+      todayStatistics.answersGivenToday += 1;
     }
 
     const newStatistics = {
-      learnedWords: statistics.learnedWords + 1,
+      learnedWords: isCorrect && isWordNew ? statistics.learnedWords + 1 : statistics.learnedWords,
       optional: statistics.optional,
     };
 
@@ -387,9 +426,11 @@ class Repository {
 
   static async saveWordResult({ wordId, result = '1' }) {
     let word;
+    let isWordNew = false;
     word = await Repository.getOneUserWord(wordId);
 
     if (!word) {
+      isWordNew = true;
       await Repository.createUserWord(wordId);
       word = await Repository.getOneUserWord(wordId);
     }
@@ -418,12 +459,12 @@ class Repository {
     }
 
     await Repository.updateUserWordOptional(wordId, word.userWord.optional);
-    await Repository.incrementLearnedWords();
+    await Repository.incrementLearnedWords(result, isWordNew);
   }
 
   static async saveGameResult(gameName, isVictory, sessionData) {
     const statistics = await Repository.getStatistics();
-    const todayShort = Repository.getTodayShort();
+    const todayShort = getTodayShort();
 
     if (!statistics.optional) {
       statistics.optional = {};

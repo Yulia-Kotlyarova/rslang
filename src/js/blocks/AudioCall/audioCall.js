@@ -1,10 +1,11 @@
 /* eslint-disable no-plusplus */
+
 import '../../../sass/styles.scss';
+
+import '@fortawesome/fontawesome-free/js/all.min';
+import random from 'lodash/fp/random';
+
 window.onload = () => {
-  import '@fortawesome/fontawesome-free/js/all.min';
-
-  import random from 'lodash/fp/random';
-
   const dontKnowBtn = document.querySelector('.a-c-dont-know');
   const volumeUp = document.querySelector('#big-volume-up');
   const bigVolumeIcon = document.querySelector('.fa-volume-up');
@@ -20,7 +21,8 @@ window.onload = () => {
     volumeUp.classList.add('hidden');
     wordList.forEach((el) => {
       el.removeEventListener('click', wrong);
-      el.removeEventListener('click', right);
+      // eslint-disable-next-line no-undef
+      el.removeEventListener('click', right); // TODO: right function
     });
   };
 
@@ -47,7 +49,8 @@ window.onload = () => {
         const randPlace = random(0, 4);
         wordList[randPlace].textContent = taskWord.wordTranslate;
         wordList[randPlace].removeEventListener('click', wrong);
-        wordList[randPlace].addEventListener('click', right);
+        // eslint-disable-next-line no-undef
+        wordList[randPlace].addEventListener('click', right); // TODO: right function
         photo.src = taskWord.image;
         photo.classList.remove('hidden');
       })
@@ -69,7 +72,7 @@ window.onload = () => {
     getCard(taskWord);
   }
 
-  function getWords() { 
+  function getWords() {
     fetch('https://afternoon-falls-25894.herokuapp.com/words?page=3&group=5')
       .then((response) => response.json())
       .then((response) => {
@@ -81,6 +84,4 @@ window.onload = () => {
       .catch((error) => (console.error(error)));
   }
   getWords();
-} 
-  
-
+};
