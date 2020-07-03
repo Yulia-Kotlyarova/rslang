@@ -4,6 +4,8 @@ import '@fortawesome/fontawesome-free/js/all.min';
 
 import random from 'lodash/fp/random';
 
+import Header from './Header';
+
 const dontKnowBtn = document.querySelector('.a-c-dont-know');
 const nextBtn = document.querySelector('.a-c-next');
 const playAnother = document.querySelector('.a-c-another-game-btn');
@@ -50,6 +52,7 @@ const right = (event) => {
   volumeUp.classList.add('hidden');
   showRightAnswer();
   wordList.forEach((el) => {
+    // eslint-disable-next-line no-use-before-define
     el.removeEventListener('click', wrong);
     el.removeEventListener('click', right);
   });
@@ -57,11 +60,7 @@ const right = (event) => {
 
 const wrong = (event) => {
   dontKnowBtn.classList.add('hidden');
-  if (event.target.textContent === translate.textContent) {
-    console.log('err in wrong');
-  } else {
-    localStorage.wrong += `,${translate.textContent}`;
-  }
+  localStorage.wrong += `,${translate.textContent}`;
 
   const element = event.target;
   if (element === dontKnowBtn) {
@@ -89,7 +88,7 @@ function wrongAnswer() {
 
 async function getCard(taskWord) {
   try {
-    let resp = await fetch('https://afternoon-falls-25894.herokuapp.com/words?page=1&group=0')
+    let resp = await fetch('https://afternoon-falls-25894.herokuapp.com/words?page=1&group=0');
     resp = await resp.json();
 
     for (let i = 0; i < 5; i++) {
@@ -107,6 +106,7 @@ async function getCard(taskWord) {
 
     dontKnowBtn.addEventListener('click', wrong);
   } catch (error) {
+    // eslint-disable-next-line no-console
     throw new Error(console.error(error));
   }
 }
@@ -135,21 +135,21 @@ function checkWord(taskWord) {
   let arrWrong = localStorage.wrong.split(',');
   arrWrong = arrWrong.slice(1, arrWrong.length);
   if (arrWrong.includes(currentWord)) {
-    console.log(arrWrong);
+    // eslint-disable-next-line no-use-before-define
     getWords();
   }
 
   let arrRight = localStorage.right.split(',');
   arrRight = arrRight.slice(1, arrRight.length);
   if (arrRight.includes(currentWord)) {
-    console.log(arrRight);
+    // eslint-disable-next-line no-use-before-define
     getWords();
   }
 }
 
 async function getWords() { // change link * *
   try {
-    let response = await fetch('https://afternoon-falls-25894.herokuapp.com/words?page=2&group=1')
+    let response = await fetch('https://afternoon-falls-25894.herokuapp.com/words?page=2&group=1');
     response = await response.json();
     const rand = random(1, 19);
     const taskWord = response[rand];
@@ -171,6 +171,7 @@ async function getWords() { // change link * *
       littleVolumeUp.removeEventListener('click', () => audio.play());
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     throw new Error(console.error(error));
   }
 }
@@ -221,7 +222,7 @@ function background() {
   body.classList.remove(`a-c-back-${localStorage.cardNumber.length - 1}`);
 }
 
-const nextCard = (audio) => {
+const nextCard = () => {
   photo.classList.add('hidden');
   translateContainer.classList.add('hidden');
   if (localStorage.cardNumber.length >= 10) {
@@ -229,8 +230,8 @@ const nextCard = (audio) => {
   } else {
     dontKnowBtn.classList.remove('hidden');
     volumeUp.classList.remove('hidden');
-    wordList.forEach((el) => {
-      el.style.textDecoration = 'none';
+    wordList.forEach((e) => {
+      e.style.textDecoration = 'none';
     });
     localStorage.cardNumber += 1;
     getWords(); // relaunch loop
@@ -307,39 +308,11 @@ window.onkeydown = function Next(e) {
     }
   }
 };
-/*
-function createWordList(response) {
-  class WordTrain {
-    constructor(word, translate, image, audio) {
-      this.word = word;
-      this.translate = translate;
-      this.image = image;
-      this.audio = audio;
-    }
-  }
 
-function createWordList(response) {
-  function newWord(response) {
-    let rand = randomInteger(min, max);
-    let word = new WordTrain(`${response[rand].word}`, `${response[rand].wordTranslate}`, `${response[rand].audio}`, `${response[rand].image}`);
-    // console.log(word);
-    return word;
-  }
-
-  let word11 = newWord(response);
-  let word22 = newWord(response);
-  let word33 = newWord(response);
-  let word44 = newWord(response);
-  let word55 = newWord(response);
-
-  console.log(word1);
-  return (word11, word22, word33, word44, word55);
-}
-*/
-// add remover counter when go out the game
+//  TO DO: add remover counter when go out the game
 
 export {
   showRightAnswer, right, wrong, wrongAnswer, getCard, sayWord,
   getWords, gameResult, nextCard, background,
-  rightNumber, wrongNumber,
+  rightNumber, wrongNumber, Header,
 };
