@@ -10,5 +10,5 @@ window.onload = () => {
   const header = new Header();
   header.run();
   chart.setEventListeners();
-  chart.drawMainChart();
+  chart.renderUserChart();
 };
