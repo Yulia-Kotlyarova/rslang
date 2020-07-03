@@ -429,7 +429,7 @@ class Repository {
     let isWordNew = false;
     word = await Repository.getOneUserWord(wordId);
 
-    if (!word) {
+    if (!word || !word.userWord) {
       isWordNew = true;
       await Repository.createUserWord(wordId);
       word = await Repository.getOneUserWord(wordId);
@@ -458,8 +458,10 @@ class Repository {
       word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
     }
 
-    await Repository.updateUserWordOptional(wordId, word.userWord.optional);
+    const wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
     await Repository.incrementLearnedWords(result, isWordNew);
+
+    return wordSaved;
   }
 
   static async saveGameResult(gameName, isVictory, sessionData) {
