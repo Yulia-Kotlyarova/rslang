@@ -6,25 +6,21 @@ import defaultSettings from '../constants/defaultSettings';
 import { coefficients, intervals } from '../constants/intervalRepetition';
 
 class Repository {
-  static async getWords(type, wordsPerPage) {
+  static async getWords(type, group, wordsPerPage) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
     let filter;
     if (type === 'new') {
-      filter = '{"userWord":null}';
+      filter = '{"$and":[{"userWord":null, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
     } else if (type === 'currentSession') {
       const currentSessionEnd = Date.now() + intervals.defaultCurrentSessionFromNow;
-      filter = `{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}}`;
+      filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
     } else {
-      filter = '{"userWord":{"$ne": null}}';
+      filter = '{"$and":["userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
     }
 
-    // На 01.07.2020 бэкенд не фильтрует слова по группе, но возвращает пустой массив,
-    // если не передавать значение этого параметра => рандомный номер
-    const group = 777;
-
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
+    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -40,26 +36,26 @@ class Repository {
     return content[0].paginatedResults;
   }
 
-  static async getAllUserWords(wordsPerPage = '') {
-    const words = await Repository.getWords('repeat', wordsPerPage);
+  static async getAllUserWords(group, wordsPerPage) {
+    const words = await Repository.getWords('repeat', group, wordsPerPage);
     return sortBy(words, 'userWord.optional.playNextDate');
   }
 
-  static async getCurrentSessionUserWords(wordsPerPage = '') {
-    const words = await Repository.getWords('currentSession', wordsPerPage);
+  static async getCurrentSessionUserWords(group, wordsPerPage) {
+    const words = await Repository.getWords('currentSession', group, wordsPerPage);
     return sortBy(words, 'userWord.optional.playNextDate');
   }
 
-  static async getNewWords(wordsPerPage) {
-    return Repository.getWords('new', wordsPerPage);
+  static async getNewWords(group, wordsPerPage) {
+    return Repository.getWords('new', group, wordsPerPage);
   }
 
-  static async getMixedWords(wordsPerPage) {
-    const userWords = await Repository.getCurrentSessionUserWords(wordsPerPage);
+  static async getMixedWords(group, wordsPerPage = 10) {
+    const userWords = await Repository.getCurrentSessionUserWords(group, wordsPerPage);
     if (userWords.length === Number(wordsPerPage)) {
       return userWords;
     }
-    const wordsNew = await Repository.getNewWords((wordsPerPage - userWords.length));
+    const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
     return [...userWords, ...wordsNew];
   }
 
