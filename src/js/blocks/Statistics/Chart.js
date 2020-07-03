@@ -15,8 +15,8 @@ export default class Chart {
     this.totalWordsNumber = 17;
     this.chartRange.value = this.calculateChartRangeValue();
     this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
-    this.chartWordsNumber.innerText = `Слов: ${this.totalWordsNumber}`;
-    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% слов любого текста`;
+    this.chartWordsNumber.innerText = `Words: ${this.totalWordsNumber}`;
+    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% of words of any text`;
     this.drawChart();
   }
 
