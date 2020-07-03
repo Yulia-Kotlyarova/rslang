@@ -11,6 +11,7 @@ import getTodayShort from '../../helpers';
 window.onload = () => {
   const header = new Header();
   header.run();
+<<<<<<< HEAD
 
   const goBtn = document.querySelector('.a-c-go');
   const dontKnowBtn = document.querySelector('.a-c-dont-know');
@@ -334,4 +335,6 @@ window.onload = () => {
     }
     Repository.saveGameResult('Audio Call', isVictory, sessionData);
   };
+=======
+>>>>>>> fix: resolve conflicts
 };
