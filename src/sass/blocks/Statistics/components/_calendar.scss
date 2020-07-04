@@ -1,14 +1,22 @@
 .statistics {
   .statistics__main__calendar {
+    padding: 30px;
     margin: 30px 0 0 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: $color-header-main;
+    border-radius: 30px;
+  }
+
+  .calendar__title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: $color-chart-stroke;
   }
 
   .calendar__container {
     width: 100%;
-
     display: flex;
     justify-content: center;
 
@@ -38,7 +46,6 @@
     float: left;
     width: $calendar-width-height-desktop;
     height: $calendar-width-height-desktop;
-    margin-left: 15px;
     padding-top: 10px;
     overflow-y: scroll;
     background-color: $color-calendar-background;
@@ -58,8 +65,32 @@
     scrollbar-color: $color-text-dark;
   }
 
-  .statistics-today {
+  .statistics-today-button {
     margin-top: 20px;
     font-size: 1.5rem;
+  }
+
+  @media (max-width: 1019px) {
+    .statistics__main__calendar {
+      margin: 30px 0 0 0;
+    }
+  }
+
+  @media (max-width: 410px) {
+    .calendar__container {
+      td {
+        width: $calendar-width-height-mobile * 0.3;
+        font-size: 1rem;
+      }
+      thead {
+        font-weight: 500;
+      }
+    }
+
+    .scrollbar {
+      width: $calendar-width-height-mobile;
+      height: $calendar-width-height-mobile;
+      margin-left: 0;
+    }
   }
 }

@@ -2,6 +2,7 @@ import $ from 'jquery';
 import 'bootstrap/js/dist/modal';
 import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
+import MessageModal from '../../modules/MessageModal';
 
 export default class ShortStatistics {
   constructor() {
@@ -20,11 +21,6 @@ export default class ShortStatistics {
     this.newWords = statisticsToday.learnedToday;
     this.correctAswers = `${Math.round((statisticsToday.correctToday / this.cardsCompleted) * 100, 0)}%`;
     this.longestSession = statisticsToday.correctMaximumSeriesToday;
-    // await Repository.incrementLearnedWords(1, true);
-    // await Repository.incrementLearnedWords(1, true);
-    // await Repository.incrementLearnedWords(1, true);
-    // await Repository.incrementLearnedWords(1, true);
-    // await Repository.incrementLearnedWords(1, true);
   }
 
   createModalHTML() {
@@ -68,10 +64,17 @@ export default class ShortStatistics {
   }
 
   async showModal() {
-    await this.updateTodayStatisticsData();
-    this.modalHTML = this.createModalHTML();
-    this.body.insertAdjacentHTML('beforeend', this.modalHTML);
-    const modal = document.querySelector('.modal');
-    $(modal).modal('show');
+    try {
+      await this.updateTodayStatisticsData();
+      this.modalHTML = this.createModalHTML();
+      this.body.insertAdjacentHTML('beforeend', this.modalHTML);
+      const modal = document.querySelector('.modal');
+      $(modal).modal('show');
+    } catch (error) {
+      const messageModal = new MessageModal();
+      MessageModal.createModalHTML('userChartError');
+      messageModal.appendSelf('userChartError');
+      MessageModal.showModal('Please sign in to see your statistics');
+    }
   }
 }

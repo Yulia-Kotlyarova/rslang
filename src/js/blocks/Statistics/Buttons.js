@@ -2,7 +2,7 @@ export default class Buttons {
   constructor(shortStatistics, chart) {
     this.shortStatistics = shortStatistics;
     this.chart = chart;
-    this.buttonShowTodayStatistics = document.querySelector('.statistics-today');
+    this.buttonShowTodayStatistics = document.querySelector('.statistics-today-button');
     this.buttonRefreshChart = document.querySelector('.chart-range-refresh');
   }
 
