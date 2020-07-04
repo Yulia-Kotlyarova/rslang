@@ -1,3 +1,5 @@
+@import '../abstract/consts';
+
 .savannah-html {
   .results {
     position: absolute;
@@ -92,21 +94,21 @@
     align-items: center;
 
     .results__button {
-        width: 284px;
-        height: 54px;
+        width: 230px;
+        height: 45px;
         font-size: 2.4rem;
         margin: 5px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: $color-button-text;
+        color: white;
         background-color: $color-button-background;
         border-radius: $button-border-radius;
         border: none;
     }
 
     .results__button:hover {
-        border: 1px solid white;
+        filter: brightness(110%);
     }
   }
 
