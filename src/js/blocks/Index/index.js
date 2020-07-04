@@ -31,12 +31,14 @@ class Card {
     this.difficultWordButton = document.querySelector('.difficult-word');
     this.removeWordButton = document.querySelector('.delete-word');
     this.nextCardButton = document.querySelector('.next-card-btn');
-    this.repeatWordButton = document.querySelector('.repeat-word');
+    this.repeatWordButton = document.querySelector('.again');
 
     this.todayProgress = document.querySelector('.progress');
     this.todayStudiedWordsOutput = document.querySelector('.today-studied-words');
     this.availabelWordsToStudy = document.querySelector('.max-available-words');
-    this.wordSettings = document.querySelector('.word-difficulty-level');
+    this.wordSettings = document.querySelector('.word-settings');
+    this.wordDifficultyLevel = document.querySelector('.word-difficulty-level');
+
     this.wordPositionInResponse = 0;
     this.todayStudiedWords = (localStorage.getItem('todayStudiedWords')) ? localStorage.getItem('todayStudiedWords') : 0;
 
@@ -66,7 +68,6 @@ class Card {
       this.wordPositionInResponse = 0;
     } else {
       this.wordData = this.actualWordsData[this.wordPositionInResponse];
-      console.log(this.actualWordsData);
       this.showWordInput(this.wordData);
       this.wordPositionInResponse += 1;
     }
@@ -90,14 +91,10 @@ class Card {
       },
     });
     const content = await rawResponse.json();
-
     console.log(content);
   }
 
   repeatHardWord() {
-    console.log(this.actualWordsData);
-    console.log(this.word);
-    console.log(this.wordData);
     if (this.isMistake) return;
     this.isMistake = true;
     if ((this.actualWordsData.length - this.wordPositionInResponse)
@@ -317,11 +314,34 @@ class Card {
     this.wordsHandler();
   }
 
+  setWordDifficulty(event) {
+    if (!event.target.classList.contains('difficulty-level')) return;
+    const difficultyLevel = event.target.value;
+    this.saveUserWord(difficultyLevel);
+  }
+
+  async saveUserWord(difficultyLevel) {
+    const word = { difficulty: difficultyLevel, optional: { testFieldString: 'test', testFieldBoolean: true } };
+    const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words/${this.wordData.id}`, {
+      method: 'POST',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(word),
+    });
+    const content = await rawResponse.json();
+    console.log(content);
+  }
+
   setEventListener() {
     this.showAnswerButton.addEventListener('click', this.showRightAnswer.bind(this));
     this.checkWordButton.addEventListener('click', this.checkWord.bind(this));
     this.nextCardButton.addEventListener('click', this.nextCard.bind(this));
     this.repeatWordButton.addEventListener('click', this.repeatHardWord.bind(this));
+    this.wordDifficultyLevel.addEventListener('click', this.setWordDifficulty.bind(this));
     document.addEventListener('keyup', (event) => {
       if (event.key === 'Enter') {
         this.checkWord();
