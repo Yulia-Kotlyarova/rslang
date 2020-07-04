@@ -1,5 +1,8 @@
-@import "card-wrapper";
-@import "word-input";
-@import "progress";
+.index-cards {
+  @import "card-wrapper";
+  @import "word-input";
+  @import "progress";
 
-@import "settings";
+  @import "settings";
+}
+
