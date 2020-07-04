@@ -21,7 +21,7 @@ export default class StartNewRound {
   }
 
   returnActiveWordPosition() {
-    this.activeWordContainer.style.top = '-50px';
+    this.activeWordContainer.style.top = '-10px';
   }
 
   distributeAnswers() {

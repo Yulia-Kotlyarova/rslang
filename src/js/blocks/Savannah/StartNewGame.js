@@ -1,4 +1,5 @@
 import arrayShuffle from 'lodash/_arrayShuffle';
+import MessageModal from '../../modules/MessageModal';
 import { heartFill } from './consts';
 
 export default class StartNewGame {
@@ -13,14 +14,24 @@ export default class StartNewGame {
   }
 
   async startGame() {
-    this.savannahState.wordsCollection = await this.getWordsCollection();
-    this.savannahState.wordsOrder = StartNewGame.setWordsOrder();
-    this.savannahState.wordAndAnswers.length = 0;
-    this.savannahState.answeredCorrect.length = 0;
-    this.savannahState.answeredWrong.length = 0;
-    this.savannahState.wordAndAnswers = this.combineWordsAndAnswers();
-    this.heartContainer.innerHTML = heartFill.repeat(5);
-    this.startNewRound.startRound();
+    try {
+      this.savannahState.wordsCollection = await this.getWordsCollection();
+      this.savannahState.wordsOrder = StartNewGame.setWordsOrder();
+      this.savannahState.activeWord = 0;
+      this.savannahState.wordAndAnswers.length = 0;
+      this.savannahState.answeredCorrect.length = 0;
+      this.savannahState.answeredWrong.length = 0;
+      this.savannahState.wordAndAnswers = this.combineWordsAndAnswers();
+      this.heartContainer.innerHTML = heartFill.repeat(5);
+      this.startNewRound.startRound();
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try once again, please.');
+    }
   }
 
   async getWordsCollection() {

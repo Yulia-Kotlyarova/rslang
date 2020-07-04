@@ -3,6 +3,7 @@ import '@fortawesome/fontawesome-free/js/all.min';
 import '../../../sass/styles.scss';
 import { savannahState } from './appState';
 import Header from '../../modules/Header';
+// import Repository from '../../modules/Repository';
 
 import StartNewGame from './StartNewGame';
 import StartNewRound from './StartNewRound';
@@ -19,6 +20,9 @@ window.onload = async function onload() {
   const navigation = new Navigation(startNewGame, savannahState);
   const results = new Results(startNewGame, savannahState, navigation);
   const header = new Header();
+
+  // const userwords = await Repository.getNewWords(5, 4);
+
   header.run();
   results.setEventListeners();
   proceedAnswer.setEventListeners();

@@ -12,11 +12,16 @@
 
   .results__container {
     position: relative;
-    top: calc(50vh - 250px);
-    left: calc(50vw - 300px);
-    width: 600px;
-    height: 500px;
+    top: calc(50vh - 150px);
+    width: 90vw;
+    max-width: 600px;
+    max-height: 60vh;
+    margin: auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: $color-text-dark;
     background-color: $color-container-background;
     border-radius: 30px;
@@ -82,7 +87,9 @@
   .results__buttons {
     display: flex;
     width: 100%;
+    margin-top: 10px;
     justify-content: center;
+    align-items: center;
 
     .results__button {
         width: 284px;
@@ -122,5 +129,15 @@
 
   .scrollbar-primary {
     scrollbar-color: grey;
+  }
+
+  @media (max-width: 767px) {
+    .results__buttons {
+      flex-direction: column;
+    }
+
+    .results__knowledge {
+      flex-direction: column;
+    }
   }
 }
