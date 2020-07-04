@@ -11,18 +11,30 @@ window.onload = () => {
 class Card {
   constructor(word) {
     this.word = word;
-    this.wordCount = 10;
-    this.cardsCount = 10;
-    this.card = document.querySelector('.word-card');
+    this.cardWrapper = document.querySelector('.card-wrapper');
+    this.card = null;
+    this.todayStudiedWords = (localStorage.getItem('todayStudiedWords')) ? localStorage.getItem('todayStudiedWords') : 0;
+    this.numberOfWordsToStudy = 50;
+  }
+
+  showCard() {
+    this.card = document.createElement('div');
+    const checkWordButton = document.createElement('button');
+    const todayStydyProgress = document.createElement('progress');
+    this.card.classList.add('word-card');
+    todayStydyProgress.setAttribute('max', this.numberOfWordsToStudy);
+    todayStydyProgress.setAttribute('value', this.todayStudiedWords);
+    checkWordButton.classList.add('check');
+    checkWordButton.innerText = 'Check';
+    console.log(this.card);
+    this.cardWrapper.append(this.card, checkWordButton, todayStydyProgress);
   }
 
   showWordInput() {
+    console.log(this.card);
     const wordField = document.createElement('span');
-    const checkWordButton = document.createElement('button');
-    checkWordButton.classList.add('check');
-    checkWordButton.innerText = 'Check';
     wordField.classList.add('word-wrapper');
-    this.card.append(wordField, checkWordButton);
+    this.card.append(wordField);
     const wordLength = this.word.length;
     for (let i = 0; i < wordLength; i += 1) {
       const letterContainer = document.createElement('span');
@@ -62,14 +74,23 @@ class Card {
       }, 1000);
     } else {
       entryField.classList.add('right-letter');
-      // ToDo Next card
+      this.clearCard();
+      this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
+      localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
+      this.showWordInput();
+    }
+  }
+
+  clearCard() {
+    while (this.card.firstChild) {
+      this.card.removeChild(this.card.firstChild);
     }
   }
 
   setEventListener() {
     const checkWordButton = document.querySelector('.check');
     const entryField = document.querySelector('.word-field');
-
+    console.log(entryField);
     checkWordButton.addEventListener('click', this.checkWord.bind(this));
     entryField.addEventListener('input', () => {
       const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
@@ -87,5 +108,6 @@ class Card {
 }
 
 const card = new Card('happy');
+card.showCard();
 card.showWordInput();
 card.setEventListener();
