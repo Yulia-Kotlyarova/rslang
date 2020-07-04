@@ -13,16 +13,35 @@
   }
 
   .statistics__main {
-    margin-top: 20px;
+    width: 80vw;
+    margin: 20px auto;
     display: flex;
     justify-content: center;
+    background-color: $color-header-main;
+    border-radius: 30px;
   }
 
   @media (max-width: 1019px) {
     .statistics__main {
+      width: 60vw;
       flex-direction: column;
       justify-content: none;
       align-items: center;
+    }
+  }
+  @media (max-width: 767px) {
+    .statistics__main {
+      width: 70vw;
+    }
+  }
+  @media (max-width: 635px) {
+    .statistics__main {
+      width: 80vw;
+    }
+  }
+  @media (max-width: 500px) {
+    .statistics__main {
+      width: 90vw;
     }
   }
 }

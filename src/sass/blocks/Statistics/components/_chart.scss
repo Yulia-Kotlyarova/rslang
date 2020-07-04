@@ -6,8 +6,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: $color-header-main;
-    border-radius: 30px;
   }
 
   .statisctics__chart-with-legend__container {
@@ -109,7 +107,11 @@
     font-size: 1.5rem;
   }
 
-  @media (max-width: 410px) {
+  @media (max-width: 500px) {
+    .statistics__main__chart {
+      padding: 15px;
+    }
+
     .statistics__chart {
       width: $chart-width-height-mobile;
       height: $chart-width-height-mobile;
