@@ -1,6 +1,8 @@
+import 'bootstrap/js/dist/collapse';
 import '@fortawesome/fontawesome-free/js/all.min';
 import '../../../sass/styles.scss';
 import { savannahState } from './appState';
+import Header from '../../modules/Header';
 
 import StartNewGame from './StartNewGame';
 import StartNewRound from './StartNewRound';
@@ -16,6 +18,8 @@ window.onload = async function onload() {
   const controlPanel = new ControlPanel(savannahState, startNewRound);
   const navigation = new Navigation(startNewGame, savannahState);
   const results = new Results(startNewGame, savannahState, navigation);
+  const header = new Header();
+  header.run();
   results.setEventListeners();
   proceedAnswer.setEventListeners();
   controlPanel.setEventListeners();
