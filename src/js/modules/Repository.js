@@ -439,7 +439,11 @@ class Repository {
       optional: settings.optional,
     };
 
+<<<<<<< HEAD
     const url = `${backendOrigin}/users/${userId}/statistics`;
+=======
+    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`;
+>>>>>>> 4acb2c5... feat: resolve version conflicts
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
