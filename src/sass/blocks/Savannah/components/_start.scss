@@ -1,35 +1,32 @@
+@import '../abstract/consts';
+
 .savannah-html {
   .start-page {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #691769;
+    width: 70vw;
+    height: 320px;
+    background-color:$card-background-day;
+    border-radius: 15px;
     z-index: 20;
   }
 
   .start-page__container {
     position: relative;
-    top: calc(50vh - 100px);
-    left: calc(50vw - 300px);
+    top: 20vh;
+    margin: 0 auto;
     width: 600px;
     padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #8080806c;
     border-radius: 5px;
   }
 
   .start__title {
     font-size: 2rem;
     font-weight: 700;
-    color: #FFFFFF;
-    text-shadow: 1px 1px 2px #808080,
-    -1px -1px 2px #808080,
-    -1px 1px 2px #808080,
-    1px -1px 2px #808080;
+    letter-spacing: 1px;
   }
 
   .start__instruction {
@@ -38,13 +35,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     font-size: 1.8rem;
     font-weight: 400;
-    color: #FFFFFF;
-    text-shadow: 1px 1px 2px #808080,
-    -1px -1px 2px #808080,
-    -1px 1px 2px #808080,
-    1px -1px 2px #808080;
+    letter-spacing: 0.5px;
   }
 
   .button__start {
@@ -54,7 +48,11 @@
     font-weight: 400;
   }
 
-  .button__start:hover {
-    border: 1px solid #FFFFFF;
+  .btn-secondary {
+    border: 1px solid $card-background-day;
+    background-color: $card-background-day;
+    box-shadow: 0 0 10px $shadow-color;
+    border-radius: $button-border-radius;
+    color: $color-text-dark;
   }
 }
