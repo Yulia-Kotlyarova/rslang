@@ -1,11 +1,10 @@
-
 .a-c-result-wrapper {
-    width: 30vw;
-    height: 40vh;
-    position: absolute;
-    top: 80px;
-    left: 40%;
-    overflow: auto;
+  width: 30vw;
+  height: 170px;
+  position: absolute;
+  top: 40px;
+  left: 29%;
+  overflow: auto;
     li {
       font-size: 1.6rem;
       font-weight: 500;
@@ -19,6 +18,18 @@
   .a-c-result-right {
     font-size: 1.7rem;
     font-weight: 600;
+    list-style: none;
+
+    .svg-inline--fa {
+      cursor: pointer;
+      margin: 0 10px 0 0;
+      color: grey;
+    }
+
+    .svg-inline--fa:hover {
+      color: $main_font_color;
+    }
+
   }
 
   .a-c-result-wrong > a {
