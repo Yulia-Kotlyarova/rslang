@@ -7,5 +7,187 @@
         <title>RS Lang</title>
     </head>
     <body>
+        <section class="settings">
+            <button type="button" class="btn settings__button" data-toggle="modal" data-target="#settings__modal">
+                <i class="fas fa-cog fa-2x"></i>
+            </button>
+            <div class="modal fade settings__modal" id="settings__modal" tabindex="-1" role="dialog" aria-labelledby="settings__title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title settings__title" id="settings__title">Settings</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form class="settings__form" novalidate>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <div class="form-group row settings__number-row">
+                                        <div class="col settings__number-container">
+                                            <input type="number" class="form-control settings__number" id="wordsPerDay" min="1" max="999" name="wordsPerDay" required>
+                                            <div class="invalid-feedback">
+                                                Required input.
+                                            </div>
+                                        </div>
+                                        <label for="wordsPerDay" class="col-form-label settings__number-label">Words per day</label>
+                                
+                                    </div>
+                                    <div class="form-group row settings__number-row">
+                                        <div class="col settings__number-container">
+                                            <input type="number" class="form-control settings__number" id="maxCardsPerDay" min="1" max="999" name="maxCardsPerDay" required>
+                                            <div class="invalid-feedback">
+                                                Required input.
+                                            </div>
+                                        </div>
+                                        <label for="maxCardsPerDay" class="col-form-label settings__number-label">Maximum cards per day</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Info (check at least one)</h6>
+                                    <div class="form-check">
+                                        <input class="form-check-input setting__info-basic" type="checkbox" name="isTranslationVisible" id="isTranslationVisible" checked>
+                                        <label class="form-check-label" for="isTranslationVisible">
+                                            Show translation
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input setting__info-basic" type="checkbox" name="isExplanationVisible" id="isExplanationVisible" checked>
+                                        <label class="form-check-label" for="isExplanationVisible">
+                                            Show explanation
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input setting__info-basic" type="checkbox" name="isExampleVisible" id="isExampleVisible" checked>
+                                        <label class="form-check-label" for="isExampleVisible">
+                                            Show example
+                                        </label>
+                                    </div>
+                                    <div class="invalid-feedback settings__info-basic-invalid-feedback">
+                                        Check at least one.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Additional info</h6>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isTranscriptionVisible" name="isTranscriptionVisible" checked>
+                                        <label class="form-check-label" for="isTranscriptionVisible">
+                                            Show transcription
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isPictureVisible" name="isPictureVisible" checked>
+                                        <label class="form-check-label" for="isPictureVisible">
+                                            Show picture
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isSoundAutoPlay" name="isSoundAutoPlay" checked>
+                                        <label class="form-check-label" for="isSoundAutoPlay">
+                                            Auto play word's pronunciation, explanation and example
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Controls</h6>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isShowAnswerButtonVisible" name="isShowAnswerButtonVisible" checked>
+                                        <label class="form-check-label" for="isShowAnswerButtonVisible">
+                                            Show 'Show Answer' button
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isRemoveButtonVisible" name="isRemoveButtonVisible" checked>
+                                        <label class="form-check-label" for="isRemoveButtonVisible">
+                                            Show 'Remove word' button
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isDifficultButtonVisible" name="isDifficultButtonVisible" checked>
+                                        <label class="form-check-label" for="isDifficultButtonVisible">
+                                            Show 'Mark as difficult' button
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="areAdditionalButtonsVisible" name="areAdditionalButtonsVisible" checked>
+                                        <label class="form-check-label" for="areAdditionalButtonsVisible">
+                                            Show additional buttons
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6>What words to show</h6>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="mixed" value="mixed" checked>
+                                        <label class="form-check-label" for="mixed">
+                                            Mixed
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="new" value="new">
+                                        <label class="form-check-label" for="new">
+                                            Only new words
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="wordsToStudy" id="repeat" value="repeat">
+                                        <label class="form-check-label" for="repeat">
+                                            Only words to repeat
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save settings</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="card-wrapper">
+            <div class="word-card">
+                <span class="word-wrapper">
+                    <span class="word-field-top">
+                    </span>
+                    <input class="word-field word-field-spellcheck" spellcheck="false">
+                </span>
+                <audio src="" class="word-audio d-none" controls="controls"></audio>
+                <p class="transcription"></p>
+                <p class="word-translate"></p>
+                <img class="word-image" src="">
+                <p class="word-meaning"></p>
+                <p class="word-meaning-translate d-none"></p>
+                <audio class="word-audio word-meaning-audio d-none" controls="controls" src=""></audio>
+                <p class="word-text-example"></p>
+                <p class="word-text-example-translate d-none"></p>
+                <audio class="word-audio word-text-example-audio d-none" controls="controls"></audio>
+            </div>
+            <div class="card-controls">
+                <button class="show-answer hidden" type="button">Show answer</button>
+                <button class="check" type="button">Check</button>
+                <button class="difficult-word hidden" type="button">Hard</button>
+                <button class="delete-word hidden" type="button">Delete</button>
+                <button class="next-card-btn hidden" type="button">Next</button>
+            </div>
+            <div class="today-progress">
+                <span class="today-studied-words"></span>
+                <progress class="progress"></progress>
+                <span class="max-available-words"></span>
+            </div>
+            <div class="word-settings hidden">
+                <button class="again" type="button" value="again">Again</button>
+                <div class="word-difficulty-level">
+                    <button class="difficulty-level" type="button" value="1">Difficult</button>
+                    <button class="difficulty-level" type="button" value="2">Normal</button>
+                    <button class="difficulty-level" type="button" value="3">Easy</button>
+                </div>
+            </div>
+            <div class="warning-window hide-window">
+                <p class="message">You have studied all the planned words for today. The next training will be available through: <span class="timeout"></span> </p>
+            </div>
+        </div>
+
     </body>
 </html>
