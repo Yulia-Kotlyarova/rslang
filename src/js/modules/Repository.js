@@ -90,6 +90,20 @@ class Repository {
     return Repository.getWords('deleted', group, wordsPerPage);
   }
 
+  static async getWordsFromGroupAndPage(group = 0, page = 0) {
+    const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${group}&page=${page}`;
+
+    const rawResponse = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return rawResponse.json();
+  }
+
   static async getOneUserWord(wordId) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
