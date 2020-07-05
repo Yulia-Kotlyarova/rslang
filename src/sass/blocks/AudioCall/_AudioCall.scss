@@ -200,7 +200,7 @@
 
 @media (max-width: 768px) {
   .a-c-pic-wrapper {
-    top: 100px;
+    top: 30px;
   }
 
   .Audio-Call-Wrapper,
@@ -210,6 +210,24 @@
 
   .a-c-translate {
     top: 163px;  
+  }
+
+  .word-list {
+    font-size: 1.6rem;
+  }
+
+  .a-c-little-volume {
+    top: 145px;
+  }
+
+  .a-c-translate {
+    top: 147px;
+  }
+
+  .a-c-result-wrapper {
+    top: 10px;
+    height: 147px;
+    width: 300px;
   }
 
 }
