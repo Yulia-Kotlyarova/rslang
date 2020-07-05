@@ -18,14 +18,14 @@ class Repository {
     } else if (type === 'currentSession') {
       const currentSessionEnd = Date.now() + intervals.defaultCurrentSessionFromNow;
       filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
-    } else if (type === 'mixed') {
-      filter = '{"$and":["userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+    } else if (type === 'repeat') {
+      filter = '{"$and":[{"userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
     } else if (type === 'deleted') {
       filter = '{"userWord.optional.isDeleted":true}';
     } else if (type === 'hard') {
       filter = '{"userWord.optional.isHard":true}';
     } else {
-      throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'mixed', 'deleted', 'hard'`);
+      throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'repeat', 'deleted', 'hard'`);
     }
 
     const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
@@ -49,21 +49,36 @@ class Repository {
     return sortBy(words, 'userWord.optional.playNextDate');
   }
 
-  static async getCurrentSessionUserWords(group, wordsPerPage) {
-    const words = await Repository.getWords('currentSession', group, wordsPerPage);
-    return sortBy(words, 'userWord.optional.playNextDate');
+  static async getCurrentSessionUserWords(group, wordsPerPage = 20) {
+    let words = await Repository.getWords('currentSession', group, wordsPerPage);
+    words = sortBy(words, 'userWord.optional.playNextDate');
+    if (words.length > wordsPerPage) {
+      words.length = wordsPerPage;
+    }
+    return words;
   }
 
   static async getNewWords(group, wordsPerPage) {
     return Repository.getWords('new', group, wordsPerPage);
   }
 
-  static async getMixedWords(group, wordsPerPage = 10) {
+  static async getMixedWords(group, wordsPerPage = 20) {
     const userWords = await Repository.getCurrentSessionUserWords(group, wordsPerPage);
     if (userWords.length === Number(wordsPerPage)) {
       return userWords;
     }
     const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
+    return [...userWords, ...wordsNew];
+  }
+
+  static async getMixedWordsWithMandatoryNew(newWordsNumber = 10, group, wordsPerPage = 20) {
+    const wordsNew = await Repository.getNewWords(group, newWordsNumber);
+    if (wordsNew.length >= Number(wordsPerPage)) {
+      wordsNew.length = wordsPerPage;
+      return wordsNew;
+    }
+    const userWords = await Repository
+      .getCurrentSessionUserWords(group, (wordsPerPage - wordsNew.length));
     return [...userWords, ...wordsNew];
   }
 
