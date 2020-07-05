@@ -6,9 +6,8 @@ import '@fortawesome/fontawesome-free/js/all.min';
 import Header from '../../modules/Header';
 
 export {
-  showRightAnswer, right, wrong, wrongAnswer, getCard, sayWord,
+  showRightAnswer, getCard, sayWord,
   getWords, gameResult, nextCard, background,
-  rightNumber, wrongNumber,
 } from '../../modules/AudioCall';
 
 window.onload = () => {

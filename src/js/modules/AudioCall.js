@@ -6,6 +6,9 @@ import random from 'lodash/fp/random';
 
 import Header from './Header';
 
+import Repository from './Repository';
+
+const goBtn = document.querySelector('.a-c-go');
 const dontKnowBtn = document.querySelector('.a-c-dont-know');
 const nextBtn = document.querySelector('.a-c-next');
 const playAnother = document.querySelector('.a-c-another-game-btn');
@@ -18,6 +21,7 @@ const resultWrong = document.querySelector('.a-c-result-wrong');
 const resultRight = document.querySelector('.a-c-result-right');
 const body = document.querySelector('.a-c-body');
 const photo = document.querySelector('.audio-call-photo');
+const startScreen = document.querySelector('.a-c-hello-screen');
 
 const word1 = document.querySelector('.word-list-1');
 const word2 = document.querySelector('.word-list-2');
@@ -28,7 +32,6 @@ const wordList = document.querySelectorAll('.word-list > li');
 
 const volumeUp = document.querySelector('#big-volume-up');
 const littleVolumeUp = document.querySelector('.a-c-little-volume');
-const volumeUpIcon = document.querySelector('.volume-up > audio');
 
 localStorage.cardNumber = 1;
 localStorage.wrong = '';
@@ -41,43 +44,7 @@ function showRightAnswer() {
   translateContainer.classList.remove('hidden');
 }
 
-const right = (event) => {
-  dontKnowBtn.classList.add('hidden');
-  if (event.target.textContent === translate.textContent) {
-    localStorage.right += `,${translate.textContent}`;
-  }
-  const element = event.target;
-  element.innerHTML += ' &#10004';
-  photo.classList.remove('hidden');
-  volumeUp.classList.add('hidden');
-  showRightAnswer();
-  wordList.forEach((el) => {
-    // eslint-disable-next-line no-use-before-define
-    el.removeEventListener('click', wrong);
-    el.removeEventListener('click', right);
-  });
-};
-
-const wrong = (event) => {
-  dontKnowBtn.classList.add('hidden');
-  localStorage.wrong += `,${translate.textContent}`;
-
-  const element = event.target;
-  if (element === dontKnowBtn) {
-    dontKnowBtn.style.textDecoration = 'none';
-  } else {
-    element.style.textDecoration = 'line-through';
-  }
-  photo.classList.remove('hidden');
-  volumeUp.classList.add('hidden');
-  showRightAnswer();
-  wordList.forEach((el) => {
-    el.removeEventListener('click', wrong);
-    el.removeEventListener('click', right);
-  });
-};
-
-function wrongAnswer() {
+function wrongAnswer(wrong) {
   wordList.forEach((el) => {
     el.classList.add('.li-pale-color');
     el.addEventListener('click', wrong);
@@ -85,6 +52,12 @@ function wrongAnswer() {
 }
 
 // array for each word
+
+function sayWord(sound) { //  TO DO: rebase sound from getWord
+  const audio = new Audio();
+  audio.src = sound;
+  audio.autoplay = true;
+}
 
 async function getCard(taskWord) {
   try {
@@ -96,7 +69,46 @@ async function getCard(taskWord) {
       wordList[i].textContent = resp[rand].wordTranslate;
     }
 
-    await wrongAnswer();
+    const right = (event) => {
+      dontKnowBtn.classList.add('hidden');
+      if (event.target.textContent === translate.textContent) {
+        localStorage.right += `,${translate.textContent}`;
+      }
+      const element = event.target;
+      element.innerHTML += ' &#10004';
+      photo.classList.remove('hidden');
+      volumeUp.classList.add('hidden');
+      showRightAnswer();
+      resultRight.innerHTML += `<li class="a-c-result-li-right"> <i class="fas fa-music"> </i> <audio src = "${taskWord.audio}"> </audio> <span> ${taskWord.word} - ${taskWord.wordTranslate} </span> </li>`;
+      wordList.forEach((el) => {
+        // eslint-disable-next-line no-use-before-define
+        el.removeEventListener('click', wrong);
+        el.removeEventListener('click', right);
+      });
+    };
+
+    const wrong = (event) => {
+      dontKnowBtn.removeEventListener('click', wrong);
+      dontKnowBtn.classList.add('hidden');
+      localStorage.wrong += `,${translate.textContent}`;
+
+      const element = event.target;
+      if (element === dontKnowBtn) {
+        dontKnowBtn.style.textDecoration = 'none';
+      } else {
+        element.style.textDecoration = 'line-through';
+      }
+      photo.classList.remove('hidden');
+      volumeUp.classList.add('hidden');
+      resultWrong.innerHTML += `<li class="a-c-result-li-wrong"> <i class="fas fa-music"> </i> <audio src = "${taskWord.audio}"> </audio> <span> ${taskWord.word} - ${taskWord.wordTranslate} </span> </li>`;
+      showRightAnswer();
+      wordList.forEach((el) => {
+        el.removeEventListener('click', wrong);
+        el.removeEventListener('click', right);
+      });
+    };
+
+    await wrongAnswer(wrong);
     const randPlace = random(0, 4);
     wordList[randPlace].textContent = taskWord.wordTranslate;
     translate.textContent = taskWord.wordTranslate;
@@ -105,63 +117,109 @@ async function getCard(taskWord) {
     photo.src = taskWord.image;
 
     dontKnowBtn.addEventListener('click', wrong);
+
+    const rightNumber = (word) => {
+      photo.classList.remove('hidden');
+      dontKnowBtn.classList.add('hidden');
+      localStorage.right += `,${translate.textContent}`;
+      const element = word;
+      element.innerHTML += ' &#10004';
+      volumeUp.classList.add('hidden');
+      resultRight.innerHTML += `<li class="a-c-result-li-right"> <i class="fas fa-music"> </i> <audio src = "${taskWord.audio}"> </audio> <span> ${taskWord.word} - ${taskWord.wordTranslate} </span> </li>`;
+      showRightAnswer();
+    };
+
+    const wrongNumber = (word) => {
+      photo.classList.remove('hidden');
+      dontKnowBtn.classList.add('hidden');
+      localStorage.wrong += `,${translate.textContent}`;
+
+      const element = word;
+      if (word === dontKnowBtn) {
+        dontKnowBtn.style.textDecoration = 'none';
+      } else {
+        element.style.textDecoration = 'line-through';
+      }
+      volumeUp.classList.add('hidden');
+      resultWrong.innerHTML += `<li class="a-c-result-li-wrong"> <i class="fas fa-music"> </i> <audio src = "${taskWord.audio}"> </audio> <span> ${taskWord.word} - ${taskWord.wordTranslate} </span> </li>`;
+      showRightAnswer();
+    };
+
+    window.onkeydown = function Next(e) {
+      if (e.keyCode === 39) {
+        // eslint-disable-next-line no-use-before-define
+        nextCard();
+        e.preventDefault();
+        return false;
+      }
+
+      if (e.keyCode === 13) {
+        // eslint-disable-next-line no-use-before-define
+        nextCard();
+        e.preventDefault();
+        return false;
+      }
+
+      if (e.keyCode === 49) {
+        if (word1.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
+          rightNumber(word1);
+        } else {
+          wrongNumber(word1);
+        }
+      }
+      if (e.keyCode === 50) {
+        if (word2.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
+          rightNumber(word2);
+        } else {
+          wrongNumber(word2);
+        }
+      }
+      if (e.keyCode === 51) {
+        if (word3.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
+          rightNumber(word3);
+        } else {
+          wrongNumber(word3);
+        }
+      }
+      if (e.keyCode === 52) {
+        if (word4.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
+          rightNumber(word4);
+        } else {
+          wrongNumber(word4);
+        }
+      }
+      if (e.keyCode === 53) {
+        if (word5.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
+          rightNumber(word5);
+        } else {
+          wrongNumber(word5);
+        }
+      }
+    };
   } catch (error) {
     // eslint-disable-next-line no-console
     throw new Error(console.error(error));
   }
 }
 
-function sayWord(sound) {
-  const audio = new Audio();
-  audio.src = sound;
-  audio.autoplay = true;
-}
-/*
-function soundClick(taskWord) {
-  volumeUpIcon.src = taskWord.audio;
-  volumeUpIcon.attributes.autoplay = 'autoplay';
-  const sound = taskWord.audio;
-  const audio = new Audio();
-  audio.src = sound;
-  audio.autoplay = true;
+const audio = new Audio();
 
-  volumeUp.addEventListener('click', () => audio.play());
-  littleVolumeUp.addEventListener('click', () => audio.play());
-  return audio;
-}
-*/
-function checkWord(taskWord) {
-  const currentWord = taskWord.wordTranslate;
-  let arrWrong = localStorage.wrong.split(',');
-  arrWrong = arrWrong.slice(1, arrWrong.length);
-  if (arrWrong.includes(currentWord)) {
-    // eslint-disable-next-line no-use-before-define
-    getWords();
-  }
-
-  let arrRight = localStorage.right.split(',');
-  arrRight = arrRight.slice(1, arrRight.length);
-  if (arrRight.includes(currentWord)) {
-    // eslint-disable-next-line no-use-before-define
-    getWords();
-  }
+function removeStartScreen() {
+  goBtn.classList.add('hidden');
+  startScreen.classList.add('hidden');
 }
 
-async function getWords() { // change link * *
+async function getWords() { // change link  get UserWords
+  removeStartScreen();
   try {
-    let response = await fetch('https://afternoon-falls-25894.herokuapp.com/words?page=2&group=1');
-    response = await response.json();
-    const rand = random(1, 19);
-    const taskWord = response[rand];
-    await checkWord(taskWord);
-    await getCard(taskWord);
+    const response = await Repository.getNewWords(1, 11);
+    const taskWord = response[localStorage.cardNumber.length];
 
-    volumeUpIcon.src = taskWord.audio;
-    volumeUpIcon.attributes.autoplay = 'autoplay';
     const sound = taskWord.audio;
-    const audio = new Audio();
     audio.src = sound;
     audio.autoplay = true;
+
+    await getCard(taskWord, sound);
 
     volumeUp.addEventListener('click', () => audio.play());
     littleVolumeUp.addEventListener('click', () => audio.play());
@@ -175,7 +233,10 @@ async function getWords() { // change link * *
     throw new Error(console.error(error));
   }
 }
-getWords();
+
+// start game
+
+goBtn.addEventListener('click', getWords);
 
 // result of game
 
@@ -186,18 +247,6 @@ function gameResult() {
   playAgainBtn.classList.remove('hidden');
   playAnother.classList.remove('hidden');
   result.classList.remove('hidden');
-
-  let arrWrong = localStorage.wrong.split(',');
-  arrWrong = arrWrong.slice(1, arrWrong.length);
-  for (let i = 0; i < arrWrong.length; i++) {
-    resultWrong.innerHTML += `<li class="a-c-result-li-wrong"> <span> ${arrWrong[i]} </span> </li>`;
-  }
-
-  let arrRight = localStorage.right.split(',');
-  arrRight = arrRight.slice(1, arrRight.length);
-  for (let i = 0; i < arrRight.length; i++) {
-    resultRight.innerHTML += `<li class="a-c-result-li-right"> <span> ${arrRight[i]} </span> </li>`;
-  }
 
   if (localStorage.wrong.length === 0) {
     document.querySelector('.a-c-result-wrong').classList.add('hidden');
@@ -210,7 +259,6 @@ function gameResult() {
   } else {
     document.querySelector('.a-c-result-right').classList.remove('hidden');
   }
-
   document.querySelector('.a-c-result-right > a').textContent = document.querySelectorAll('.a-c-result-right > li').length;
   document.querySelector('.a-c-result-wrong > a').textContent = document.querySelectorAll('.a-c-result-wrong > li').length;
 }
@@ -241,78 +289,18 @@ const nextCard = () => {
 
 nextBtn.addEventListener('click', nextCard);
 
-function rightNumber(word) {
-  dontKnowBtn.classList.add('hidden');
-  if (word.textContent === translate.textContent) {
-    localStorage.right += `,${translate.textContent}`;
-  }
-  const element = word;
-  element.innerHTML += ' &#10004';
-  volumeUp.classList.add('hidden');
-  showRightAnswer();
+function playAgain() {
+  goBtn.classList.add('hidden');
+  startScreen.classList.add('hidden');
+  localStorage.cardNumber = 1;
 }
 
-function wrongNumber(word) {
-  dontKnowBtn.classList.add('hidden');
-  localStorage.wrong += `,${translate.textContent}`;
-
-  const element = word;
-  if (word === dontKnowBtn) {
-    dontKnowBtn.style.textDecoration = 'none';
-  } else {
-    element.style.textDecoration = 'line-through';
-  }
-  volumeUp.classList.add('hidden');
-  showRightAnswer();
-}
-
-window.onkeydown = function Next(e) {
-  if (e.keyCode === 39) {
-    nextCard();
-    e.preventDefault();
-    return false;
-  }
-  if (e.keyCode === 49) {
-    if (word1.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
-      rightNumber(word1);
-    } else if (document.querySelector('.volume-trans').classList.contains('hidden')) {
-      wrongNumber(word1);
-    }
-  }
-  if (e.keyCode === 50) {
-    if (word2.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
-      rightNumber(word2);
-    } else if (document.querySelector('.volume-trans').classList.contains('hidden')) {
-      wrongNumber(word2);
-    }
-  }
-  if (e.keyCode === 51) {
-    if (word3.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
-      rightNumber(word3);
-    } else if (document.querySelector('.volume-trans').classList.contains('hidden')) {
-      wrongNumber(word3);
-    }
-  }
-  if (e.keyCode === 52) {
-    if (word4.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
-      rightNumber(word4);
-    } else if (document.querySelector('.volume-trans').classList.contains('hidden')) {
-      wrongNumber(word4);
-    }
-  }
-  if (e.keyCode === 53) {
-    if (word5.textContent === translate.textContent && document.querySelector('.volume-trans').classList.contains('hidden')) {
-      rightNumber(word5);
-    } else if (document.querySelector('.volume-trans').classList.contains('hidden')) {
-      wrongNumber(word5);
-    }
-  }
-};
+playAgainBtn.addEventListener('click', playAgain);
 
 //  TO DO: add remover counter when go out the game
 
 export {
-  showRightAnswer, right, wrong, wrongAnswer, getCard, sayWord,
+  showRightAnswer, getCard, sayWord,
   getWords, gameResult, nextCard, background,
-  rightNumber, wrongNumber, Header,
+  Header,
 };
