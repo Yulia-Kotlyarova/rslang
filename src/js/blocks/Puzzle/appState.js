@@ -50,5 +50,3 @@ export const dragAndDropObjects = {
   targetLine: '',
   dropBefore: '',
 };
-
-export const test = 'test';
