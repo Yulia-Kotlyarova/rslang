@@ -1,14 +1,23 @@
+import Repository from '../../../modules/Repository';
+
 class Card {
   constructor() {
     this.actualWordsData = null;
     this.card = null;
     this.word = null;
     this.wordData = null;
+    this.nextStudyInterval = 12 * 60 * 60 * 1000;
+    this.oneHourInMiliseconds = 60 * 60 * 1000;
+    this.oneMinuteInMiliseconds = 60 * 1000;
+    this.oneSecondInMiliseconds = 1000;
+    this.studyFinishAt = localStorage.getItem('studyFinishAt') ? localStorage.getItem('studyFinishAt') : 0;
+    this.defaultWordInterval = 5;
 
     this.token = localStorage.getItem('token');
     this.userId = localStorage.getItem('userId');
 
     this.cardWrapper = document.querySelector('.card-wrapper');
+    this.warningWindow = document.querySelector('.warning-window');
 
     this.showAnswerButton = document.querySelector('.show-answer');
     this.checkWordButton = document.querySelector('.check');
@@ -20,6 +29,7 @@ class Card {
     this.todayProgress = document.querySelector('.progress');
     this.todayStudiedWordsOutput = document.querySelector('.today-studied-words');
     this.availabelWordsToStudy = document.querySelector('.max-available-words');
+    this.timeoutStudy = document.querySelector('.timeout');
     this.wordSettings = document.querySelector('.word-settings');
     this.wordDifficultyLevel = document.querySelector('.word-difficulty-level');
 
@@ -29,6 +39,7 @@ class Card {
     this.settings = JSON.parse(localStorage.getItem('settings'));
     this.numberOfNewWordsToStudy = this.settings.wordsPerDay;
     this.numberOfCardsByDay = this.settings.maxCardsPerDay;
+    this.wordsToStudy = this.settings.wordsToStudy;
     this.isShowAnswer = this.settings.isShowAnswerButtonVisible;
 
     this.isTranslate = this.settings.isTranslationVisible;
@@ -43,7 +54,6 @@ class Card {
 
     this.isChecked = false;
     this.isMistake = false;
-    this.mistakenWordRepeatInterval = 3;
 
     this.card = document.querySelector('.word-card');
     this.wordInput = this.card.querySelector('.word-field-spellcheck');
@@ -62,6 +72,7 @@ class Card {
   }
 
   wordsHandler() {
+    this.checkStudyProgress();
     if (this.wordPositionInResponse >= this.actualWordsData.length) {
       this.getWord();
       this.wordPositionInResponse = 0;
@@ -72,39 +83,103 @@ class Card {
     }
   }
 
+  checkStudyProgress() {
+    if (Number(this.todayStudiedWords) > Number(this.numberOfCardsByDay)) {
+      this.showWarningWindow();
+      if (!this.studyFinishAt) {
+        this.studyFinishAt = Date.now();
+        localStorage.setItem('studyFinishAt', this.studyFinishAt);
+      }
+      this.runTimer();
+    } else {
+      this.hideWarningWindow();
+    }
+  }
+
+  runTimer() {
+    setInterval(this.nextStudyTimer.bind(this), 1000);
+  }
+
+  nextStudyTimer() {
+    const nextStudyTime = Number(this.studyFinishAt) + Number(this.nextStudyInterval);
+    const timeNow = Date.now();
+    if (timeNow > nextStudyTime) {
+      this.hideWarningWindow();
+    }
+    let hours = Math.trunc((nextStudyTime - timeNow) / this.oneHourInMiliseconds);
+    let minutes = Math.trunc((nextStudyTime - timeNow - hours
+      * this.oneHourInMiliseconds) / this.oneMinuteInMiliseconds);
+    let secondes = Math.trunc((nextStudyTime - timeNow - hours
+      * this.oneHourInMiliseconds - minutes * this.oneMinuteInMiliseconds)
+      / this.oneSecondInMiliseconds);
+    if (hours < 10) {
+      hours = `0${hours}`;
+    }
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
+    if (secondes < 10) {
+      secondes = `0${secondes}`;
+    }
+    this.timeoutStudy.innerText = `${hours}:${minutes}:${secondes}`;
+  }
+
   async getWord() {
-    const url = 'https://afternoon-falls-25894.herokuapp.com/words?page=2&group=0';
-    const res = await fetch(url);
-    const data = await res.json();
-    this.actualWordsData = data;
-    this.wordsHandler();
+    switch (true) {
+      case this.wordsToStudy === 'new':
+        { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
+          this.actualWordsData = data;
+          this.wordsHandler(); }
+        break;
+      case this.wordsToStudy === 'mixed':
+        { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
+          this.actualWordsData = data;
+          this.wordsHandler(); }
+        break;
+      case this.wordsToStudy === 'repeat':
+        { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
+          this.actualWordsData = data;
+          this.wordsHandler(); }
+        break;
+      default:
+      { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
+        this.actualWordsData = data;
+        this.wordsHandler(); }
+    }
   }
 
-  async getUserWords() {
-    const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words`, {
-      method: 'GET',
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        Accept: 'application/json',
-      },
-    });
-    const content = await rawResponse.json();
-    console.log(content);
-  }
-
-  repeatHardWord() {
+  async repeatWrongWord() {
     if (this.isMistake) {
       return;
     }
     this.isMistake = true;
-    if ((this.actualWordsData.length - this.wordPositionInResponse)
-      > this.mistakenWordRepeatInterval) {
-      this.actualWordsData.splice(this.wordPositionInResponse + this.mistakenWordRepeatInterval,
-        0, this.wordData);
+    const difficultyLevel = '0';
+    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+    await this.setWordDifficulty(wordId, difficultyLevel);
+    const updatedWord = await Repository.getOneUserWord(wordId);
+    const nextRepeatUpdatedWord = updatedWord.userWord.optional.playNextDate;
+
+    const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
+    if ((newPosition !== -1)
+        && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
+      this.actualWordsData.splice(newPosition, 0, updatedWord);
     } else {
-      this.actualWordsData.push(this.wordData);
+      this.actualWordsData.splice(this.wordPositionInResponse
+        + this.defaultWordInterval, 0, updatedWord);
     }
+  }
+
+  async removeWord() {
+    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+    await Repository.markWordAsDeleted(wordId);
+  }
+
+  showWarningWindow() {
+    this.warningWindow.classList.remove('hide-window');
+  }
+
+  hideWarningWindow() {
+    this.warningWindow.classList.add('hide-window');
   }
 
   showCard() {
@@ -136,7 +211,7 @@ class Card {
     const wordLength = wordData.word.length;
 
     for (let i = 0; i < wordLength; i += 1) {
-      this.wordField.innerHTML += `<span class="hidden" index="${i}">${this.word[i]}</span>`;
+      this.wordField.innerHTML += `<span class="index-hidden" index="${i}">${this.word[i]}</span>`;
     }
 
     if (this.isTranscription) {
@@ -208,7 +283,6 @@ class Card {
     }
 
     if (this.isTextExample) {
-      console.log(this.wordTextExampleAudio);
       this.wordTextExampleAudio.src = this.wordData.audioExample;
       this.wordTextExampleAudio.classList.remove('d-none');
     }
@@ -224,23 +298,27 @@ class Card {
       return;
     }
     this.isChecked = true;
-    const entryField = document.querySelector('.word-field');
+    this.wordInput.value = this.word;
+    if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
+      setTimeout(() => { this.nextCard(); }, 2000);
+      return;
+    }
     this.nextCardButton.classList.remove('hidden');
     this.wordSettings.classList.remove('hidden');
-    entryField.classList.add('right-letter');
+    this.wordInput.classList.add('right-letter');
     if (this.isWordMeaning || this.isTextExample) {
       const hiddenWords = document.querySelectorAll('.hidden-word');
       hiddenWords.forEach((item) => {
         item.classList.remove('hidden-word');
       });
     }
-    entryField.value = this.word;
+
     if (this.isTranslate) {
       this.showTranslate();
     }
-    this.showAudio();
     this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
     localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
+    this.showAudio();
   }
 
   checkWord() {
@@ -248,7 +326,7 @@ class Card {
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     const wordValue = entryField.value;
     if (this.word !== entryField.value) {
-      this.repeatHardWord();
+      this.repeatWrongWord();
       for (let i = 0; i < hiddenRightWord.length; i += 1) {
         if (wordValue[i] === hiddenRightWord[i].textContent) {
           hiddenRightWord[i].classList.add('right-letter');
@@ -258,7 +336,7 @@ class Card {
       }
       entryField.value = '';
       hiddenRightWord.forEach((item) => {
-        item.classList.remove('hidden');
+        item.classList.remove('index-hidden');
       });
       setTimeout(() => {
         hiddenRightWord.forEach((item) => {
@@ -268,6 +346,9 @@ class Card {
       }, 1000);
     } else {
       this.showRightAnswer();
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      const difficultyLevel = '3';
+      this.setWordDifficulty(wordId, difficultyLevel);
     }
   }
 
@@ -275,6 +356,7 @@ class Card {
     this.wordInput.innerHTML = '';
     this.wordField.innerHTML = '';
     this.wordInput.value = '';
+    this.wordInput.classList.remove('right-letter');
     this.wordAudio.classList.add('d-none');
     this.wordMeaningAudio.classList.add('d-none');
     this.wordTextExampleAudio.classList.add('d-none');
@@ -292,36 +374,32 @@ class Card {
     this.wordsHandler();
   }
 
-  setWordDifficulty(event) {
+  async setWordDifficulty(wordId, difficultyLevel) { // eslint-disable-line class-methods-use-this
+    await Repository.saveWordResult({ wordId, result: difficultyLevel });
+  }
+
+  getWordDifficulty(event) {
     if (!event.target.classList.contains('difficulty-level')) {
       return;
     }
     const difficultyLevel = event.target.value;
-    this.saveUserWord(difficultyLevel);
+    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+    this.setWordDifficulty(wordId, difficultyLevel);
   }
 
-  async saveUserWord(difficultyLevel) {
-    const word = { difficulty: difficultyLevel, optional: { testFieldString: 'test', testFieldBoolean: true } };
-    const rawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words/${this.wordData.id}`, {
-      method: 'POST',
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(word),
-    });
-    const content = await rawResponse.json();
-    console.log(content);
+  async markDifficultWord() {
+    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+    await Repository.markWordAsDeleted(wordId);
   }
 
   setEventListener() {
     this.showAnswerButton.addEventListener('click', this.showRightAnswer.bind(this));
     this.checkWordButton.addEventListener('click', this.checkWord.bind(this));
     this.nextCardButton.addEventListener('click', this.nextCard.bind(this));
-    this.repeatWordButton.addEventListener('click', this.repeatHardWord.bind(this));
-    this.wordDifficultyLevel.addEventListener('click', this.setWordDifficulty.bind(this));
+    this.repeatWordButton.addEventListener('click', this.repeatWrongWord.bind(this));
+    this.wordDifficultyLevel.addEventListener('click', this.getWordDifficulty.bind(this));
+    this.removeWordButton.addEventListener('click', this.removeWord.bind(this));
+    this.difficultWordButton.addEventListener('click', this.markDifficultWord.bind(this));
 
     document.addEventListener('keyup', (event) => {
       if (event.key === 'Enter') {
@@ -333,7 +411,7 @@ class Card {
       const hiddenRightWord = [...this.wordField.children];
       hiddenRightWord.forEach((item) => {
         const currentItem = item;
-        currentItem.className = 'hidden';
+        currentItem.className = 'index-hidden';
       });
     });
   }
