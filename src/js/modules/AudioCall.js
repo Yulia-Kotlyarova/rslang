@@ -84,7 +84,9 @@ async function getCard(taskWord) {
         // eslint-disable-next-line no-use-before-define
         el.removeEventListener('click', wrong);
         el.removeEventListener('click', right);
+        el.classList.add('li-pale-color');
       });
+      element.classList.remove('li-pale-color');
     };
 
     const wrong = (event) => {
@@ -105,7 +107,9 @@ async function getCard(taskWord) {
       wordList.forEach((el) => {
         el.removeEventListener('click', wrong);
         el.removeEventListener('click', right);
+        el.classList.add('li-pale-color');
       });
+      element.classList.remove('li-pale-color');
     };
 
     await wrongAnswer(wrong);
@@ -127,6 +131,10 @@ async function getCard(taskWord) {
       volumeUp.classList.add('hidden');
       resultRight.innerHTML += `<li class="a-c-result-li-right"> <i class="fas fa-music"> </i> <audio src = "${taskWord.audio}"> </audio> <span> ${taskWord.word} - ${taskWord.wordTranslate} </span> </li>`;
       showRightAnswer();
+      wordList.forEach((el) => {
+        el.classList.add('li-pale-color');
+      });
+      element.classList.remove('li-pale-color');
     };
 
     const wrongNumber = (word) => {
@@ -143,6 +151,10 @@ async function getCard(taskWord) {
       volumeUp.classList.add('hidden');
       resultWrong.innerHTML += `<li class="a-c-result-li-wrong"> <i class="fas fa-music"> </i> <audio src = "${taskWord.audio}"> </audio> <span> ${taskWord.word} - ${taskWord.wordTranslate} </span> </li>`;
       showRightAnswer();
+      wordList.forEach((el) => {
+        el.classList.add('li-pale-color');
+      });
+      element.classList.remove('li-pale-color');
     };
 
     window.onkeydown = function Next(e) {
@@ -211,10 +223,14 @@ function removeStartScreen() {
 
 async function getWords() { // change link  get UserWords
   removeStartScreen();
-  try {
-    const response = await Repository.getNewWords(1, 11);
-    const taskWord = response[localStorage.cardNumber.length];
 
+  const levelNumb = document.querySelector('.a-c-level').options.selectedIndex;
+  const pageNumb = document.querySelector('.a-c-page').options.selectedIndex;
+  const userLevel = document.querySelector('.a-c-level').options[levelNumb].value;
+  const userPage = document.querySelector('.a-c-page').options[pageNumb].value;
+  try {
+    const response = await Repository.getWordsFromGroupAndPage(userLevel, userPage);
+    const taskWord = response[localStorage.cardNumber.length];
     const sound = taskWord.audio;
     audio.src = sound;
     audio.autoplay = true;
@@ -273,6 +289,9 @@ function background() {
 const nextCard = () => {
   photo.classList.add('hidden');
   translateContainer.classList.add('hidden');
+  wordList.forEach((el) => {
+    el.classList.remove('li-pale-color');
+  });
   if (localStorage.cardNumber.length >= 10) {
     gameResult();
   } else {
