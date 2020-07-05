@@ -9,9 +9,3 @@ src/css
 *.env
 
 src/js/constants/api-keys.js
-<<<<<<< HEAD
-=======
-.gitignore
-
-
->>>>>>> feat: start screen
