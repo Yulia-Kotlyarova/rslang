@@ -63,6 +63,7 @@ export class GameArea {
     this.buttonDontKnow.addEventListener('click', () => this.helpPlayerHePressedDontKnow());
     this.gameLine.addEventListener('mousedown', () => GameArea.removeOverlays());
     this.resultsButtonContinue.addEventListener('click', async () => {
+      this.body.classList.remove('.scroll-not');
       this.results.classList.add('display-none');
       await this.continueGame();
     });

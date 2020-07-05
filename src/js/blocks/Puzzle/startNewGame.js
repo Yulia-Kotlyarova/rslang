@@ -8,6 +8,7 @@ import { createPuzzleElements, calculatePuzzleEementsParameters } from './Puzzle
 import { Phrases } from './Phrases';
 import paintingsData from './paintingsData';
 import Prompts from './Prompts';
+import MessageModal from '../../modules/MessageModal';
 
 const prompts = new Prompts();
 
@@ -17,38 +18,47 @@ export default class StartNewGame {
   }
 
   static async startGame() {
-    StartNewGame.clearLines();
-    StartNewGame.clearGameData();
-    StartNewGame.removeLineNumbersShadows();
-    StartNewGame.getImageURL();
-    await StartNewGame.updateGameData();
-    StartNewGame.updatePainting();
+    try {
+      StartNewGame.clearLines();
+      StartNewGame.clearGameData();
+      StartNewGame.removeLineNumbersShadows();
+      StartNewGame.getImageURL();
+      await StartNewGame.updateGameData();
+      StartNewGame.updatePainting();
 
-    backgroundPaiting.src = this.url;
-    backgroundPaiting.onload = function onLoad() {
-      const bgWidth = backgroundPaiting.width;
-      const bgHeight = backgroundPaiting.height;
-      calculatePuzzleEementsParameters(bgWidth, bgHeight);
+      backgroundPaiting.src = this.url;
+      backgroundPaiting.onload = function onLoad() {
+        const bgWidth = backgroundPaiting.width;
+        const bgHeight = backgroundPaiting.height;
+        calculatePuzzleEementsParameters(bgWidth, bgHeight);
 
-      setTimeout(() => {
-        createPuzzleElements();
-        GameArea.shufflePuzzleElements();
-        gameArea.addPuzzlesEventListeners();
-        GameArea.addDragAndDropListeners();
-        if (promptsSettings.painting) {
-          Prompts.addPuzzleBackground();
-        }
-        gameArea.setControlButtons('check');
-      }, 500);
-    };
+        setTimeout(() => {
+          createPuzzleElements();
+          GameArea.shufflePuzzleElements();
+          gameArea.addPuzzlesEventListeners();
+          GameArea.addDragAndDropListeners();
+          if (promptsSettings.painting) {
+            Prompts.addPuzzleBackground();
+          }
+          gameArea.setControlButtons('check');
+        }, 500);
+      };
 
-    GameArea.activatePuzzleLines();
+      GameArea.activatePuzzleLines();
 
-    if (promptsSettings.autoAudioPlay) {
-      prompts.playPhraseAudio();
+      if (promptsSettings.autoAudioPlay) {
+        Prompts.playPhraseAudio();
+      }
+
+      prompts.setTranslationText();
+    } catch (error) {
+      const fetchErrorMessage = document.querySelector('.fetchErrorMessage');
+      if (!fetchErrorMessage) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchErrorMessage');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Please try again.');
     }
-
-    prompts.setTranslationText();
   }
 
   static getImageURL() {
