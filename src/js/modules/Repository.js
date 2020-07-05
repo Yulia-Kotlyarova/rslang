@@ -4,6 +4,7 @@ import Authorization from './Authorization';
 
 import defaultSettings from '../constants/defaultSettings';
 import { coefficients, intervals } from '../constants/intervalRepetition';
+import backendOrigin from '../constants/app';
 
 import getTodayShort from '../helpers';
 
@@ -28,7 +29,7 @@ class Repository {
       throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'repeat', 'deleted', 'hard'`);
     }
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
+    const url = `${backendOrigin}/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -91,7 +92,7 @@ class Repository {
   }
 
   static async getWordsFromGroupAndPage(group = 0, page = 0) {
-    const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${group}&page=${page}`;
+    const url = `${backendOrigin}/words?group=${group}&page=${page}`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -108,7 +109,7 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/aggregatedWords/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -128,7 +129,7 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'POST',
@@ -151,7 +152,7 @@ class Repository {
     const updates = { difficulty };
     updates.optional = word.userWord && word.userWord.optional ? word.userWord.optional : { default: 'default' };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     if (!updates.difficulty) {
       updates.difficulty = 'default';
@@ -184,7 +185,7 @@ class Repository {
       updates.optional = updatedValues;
     }
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -219,7 +220,7 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     await fetch(url, {
       method: 'DELETE',
@@ -235,7 +236,7 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -266,7 +267,7 @@ class Repository {
       optional: { ...statistics.optional, ...updatedValues },
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -360,7 +361,7 @@ class Repository {
       optional: statistics.optional,
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -379,7 +380,7 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`;
+    const url = `${backendOrigin}/users/${userId}/settings`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -413,7 +414,7 @@ class Repository {
       optional: { ...settings.optional, ...updatedValues },
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`;
+    const url = `${backendOrigin}/users/${userId}/settings`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -438,7 +439,7 @@ class Repository {
       optional: settings.optional,
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
