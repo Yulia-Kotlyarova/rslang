@@ -9,4 +9,6 @@ src/css
 *.env
 
 src/js/constants/api-keys.js
+.gitignore
+
 
