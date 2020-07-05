@@ -28,6 +28,18 @@
   .a-c-result-right {
     font-size: 1.7rem;
     font-weight: 600;
+    list-style: none;
+
+    .svg-inline--fa {
+      cursor: pointer;
+      margin: 0 10px 0 0;
+      color: grey;
+    }
+
+    .svg-inline--fa:hover {
+      color: $main_font_color;
+    }
+
   }
 
   .a-c-result-wrong > a {
