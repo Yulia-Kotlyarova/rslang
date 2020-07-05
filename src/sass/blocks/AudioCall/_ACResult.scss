@@ -26,10 +26,11 @@
   
   .a-c-result-wrong,
   .a-c-result-right {
-    font-size: 1.7rem;
+    font-size: 1.7em;
     font-weight: 600;
-    list-style: none;
-
+    li {
+      list-style: none;
+    }
     .svg-inline--fa {
       cursor: pointer;
       margin: 0 10px 0 0;
@@ -42,7 +43,7 @@
 
   }
 }
-}
+
 .a-c-result-wrong > a {
   border-radius: 7px;
   padding: 0px 6px;
