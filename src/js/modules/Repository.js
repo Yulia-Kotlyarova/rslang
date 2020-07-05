@@ -488,6 +488,12 @@ class Repository {
       word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
     }
 
+    if (!word.userWord.optional.repetitions) {
+      word.userWord.optional.repetitions = 1;
+    } else {
+      word.userWord.optional.repetitions += 1;
+    }
+
     const wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
     await Repository.incrementLearnedWords(result, isWordNew);
 
