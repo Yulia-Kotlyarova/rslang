@@ -488,19 +488,13 @@ class Repository {
       word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
     }
 
-    if (!word.userWord.optional.repetitions) {
-      word.userWord.optional.repetitions = 1;
-    } else {
-      word.userWord.optional.repetitions += 1;
-    }
-
     const wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
     await Repository.incrementLearnedWords(result, isWordNew);
 
     return wordSaved;
   }
 
-  static async saveGameResult(gameName, isVictory, sessionData) {
+  static async saveGameResult(gameName, isVictory, sessionData, summary) {
     const statistics = await Repository.getStatistics();
     const todayShort = getTodayShort();
 
@@ -546,11 +540,22 @@ class Repository {
       };
     }
 
-    if (!statistics.optional.games[gameName]) {
-      statistics.optional.games[gameName] = [];
+    if (!statistics.optional.games[gameName]
+      || Array.isArray(statistics.optional.games[gameName])) {
+      statistics.optional.games[gameName] = {};
     }
 
-    statistics.optional.games[gameName].push(sessionData);
+    if (!statistics.optional.games[gameName].resultsList) {
+      statistics.optional.games[gameName].resultsList = [];
+    }
+
+    if (sessionData) {
+      statistics.optional.games[gameName].resultsList.push(sessionData);
+    }
+
+    if (summary) {
+      statistics.optional.games[gameName].summary = summary;
+    }
 
     return Repository.updateOptionalStatistics(statistics.optional);
   }
