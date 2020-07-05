@@ -12,13 +12,24 @@
   .bi-arrow-right-circle,
   .a-c-dont-know,
   .a-c-another-game-btn,
-  .a-c-again-btn {
+  .a-c-again-btn,
+  .a-c-go {
     cursor: pointer;
     color: $main_font_color;
   }
+
+  .a-c-next:focus,
+  .a-c-dont-know:focus,
+  .a-c-another-game-btn:focus,
+  .a-c-again-btn:focus,
+  .a-c-go:focus {
+    outline: none;
+  }
+
   .a-c-dont-know,
   .a-c-another-game-btn,
-  .a-c-again-btn {
+  .a-c-again-btn,
+  .a-c-go {
     position: absolute;
     margin: auto;
     left: 0;
@@ -30,9 +41,21 @@
   }
 
   .a-c-another-game-btn,
-  .a-c-again-btn {
+  .a-c-again-btn,
+  .a-c-go {
     border: 1px solid $btn-color;
     background-color: $btn-color;
+  }
+
+  .a-c-another-game-btn:hover,
+  .a-c-again-btn:hover,
+  .a-c-go:hover {
+    filter: brightness(115%);
+  }
+
+  .a-c-go {
+    z-index: 300;
+    top: 110px;
   }
   
   .a-c-dont-know {
