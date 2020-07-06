@@ -1,7 +1,20 @@
+import Repository from '../../../modules/Repository';
+
+import MessageModal from '../../../modules/MessageModal';
+
 class App {
   setMainPage(mainPage) {
     this.mainPage = mainPage;
-    this.api = 'https://afternoon-falls-25894.herokuapp.com/words';
+
+    this.levelsElement = document.querySelector('.levels');
+
+    this.selectWordsElement = document.querySelector('.select-words');
+    this.userWords = true;
+
+    this.selectPageElement = document.querySelector('.user-words-page');
+    this.selectedPage = '1';
+
+    this.level = '0';
   }
 
   setStartScreen(startScreen) {
@@ -20,24 +33,29 @@ class App {
     this.result = result;
   }
 
-  async getWords(page, group) {
-    const url = `${this.api}?page=${page}&group=${group}`;
-    const res = await fetch(url);
-    const json = await res.json();
-    return json;
-  }
+  async getWords() {
+    let words;
 
-  async getRandomPageWords(group) {
-    const page = Math.floor(Math.random() * (29 + 1));
-    const json = await this.getWords(page, group);
-    return json;
+    try {
+      if (this.userWords) {
+        words = await Repository.getAllUserWords(undefined, 10);
+        return words;
+      }
+      words = await Repository
+        .getWordsFromGroupAndPage(this.mainPage.level, Number(this.selectedPage) - 1);
+
+      return words;
+    } catch (e) {
+      MessageModal.showModal(`Cannot get words' data from server. Error: '${e.message}'.`);
+      return [];
+    }
   }
 
   async render(page, level) {
     if (page === 'mainPage') {
       if (level || level === 0) {
         this.level = level;
-        this.wordsData = await this.getRandomPageWords(level);
+        this.wordsData = await this.getWords(level);
       }
       this.mainPage.render(this.wordsData);
       this.startScreen.hide();
@@ -48,13 +66,47 @@ class App {
   }
 
   async initiate() {
-    this.wordsData = await this.getRandomPageWords(0);
+    this.wordsData = await this.getWords();
 
-    window.addEventListener('beforeunload', () => {
-      this.game.finish();
+    window.addEventListener('beforeunload', async () => {
+      await this.game.finish();
     });
-    window.addEventListener('unload', () => {
-      this.game.finish();
+    window.addEventListener('unload', async () => {
+      await this.game.finish();
+    });
+
+    this.selectPageElement.addEventListener('change', async () => {
+      if (Number(this.selectPageElement.value) < 1) {
+        this.selectPageElement.value = '1';
+      } else if (Number(this.selectPageElement.value) > 30) {
+        this.selectPageElement.value = '30';
+      }
+
+      this.selectedPage = this.selectPageElement.value;
+
+      await this.game.finish();
+      this.mainPage.displayWord('img/blank.jpg');
+      this.mainPage.translationDisplay.innerText = '';
+
+      await this.render('mainPage', this.level);
+    });
+
+    this.selectWordsElement.addEventListener('click', async () => {
+      if (this.userWords) {
+        this.selectWordsElement.classList.add('select-words__turned-off');
+        this.selectPageElement.classList.remove('user-words-page__hidden');
+        this.levelsElement.classList.remove('levels__hidden');
+
+        this.userWords = false;
+      } else {
+        this.selectWordsElement.classList.remove('select-words__turned-off');
+        this.selectPageElement.classList.add('user-words-page__hidden');
+        this.levelsElement.classList.add('levels__hidden');
+
+        this.userWords = true;
+      }
+
+      await this.render('mainPage', this.level);
     });
   }
 }

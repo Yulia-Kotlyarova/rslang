@@ -80,7 +80,7 @@ class Result {
     });
 
     this.newGameButton.addEventListener('click', async () => {
-      this.app.game.finish();
+      await this.app.game.finish();
       this.app.mainPage.activateLevel(this.app.mainPage.levelZero);
       this.app.mainPage.displayWord('img/blank.jpg');
       this.app.mainPage.translationDisplay.innerText = '';

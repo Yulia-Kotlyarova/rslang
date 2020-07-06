@@ -12,6 +12,8 @@ import Game from './modules/Game';
 import Recognition from './modules/Recognition';
 import Result from './modules/Result';
 
+import MessageModal from '../../modules/MessageModal';
+
 window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 
 const app = new App();
@@ -36,6 +38,9 @@ window.onload = async () => {
 
   const header = new Header();
   header.run();
+
+  const messageModal = new MessageModal();
+  messageModal.appendSelf('authorization___modal');
 
   app.setMainPage(mainPage);
   app.setStartScreen(startScreen);

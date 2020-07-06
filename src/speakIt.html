@@ -18,14 +18,18 @@
         </div>
         <div class="container">
             <header class="header">
-                <ul class="levels">
-                    <li class="levels__level" data-level="0"></li>
-                    <li class="levels__level" data-level="1"></li>
-                    <li class="levels__level" data-level="2"></li>
-                    <li class="levels__level" data-level="3"></li>
-                    <li class="levels__level" data-level="4"></li>
-                    <li class="levels__level" data-level="5"></li>
-                </ul>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-secondary select-words"><i class="fas fa-user"></i></button>
+                    <ul class="levels levels__hidden">
+                        <li class="levels__level" data-level="0"></li>
+                        <li class="levels__level" data-level="1"></li>
+                        <li class="levels__level" data-level="2"></li>
+                        <li class="levels__level" data-level="3"></li>
+                        <li class="levels__level" data-level="4"></li>
+                        <li class="levels__level" data-level="5"></li>
+                    </ul>
+                    <input type="number" class="user-words-page user-words-page__hidden badge-pill" min="1" max="30" value="1">
+                </div>
                 <div class="score"></div>
             </header>
             <main class="main">
