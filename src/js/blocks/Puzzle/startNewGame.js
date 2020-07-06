@@ -15,6 +15,8 @@ const prompts = new Prompts();
 export default class StartNewGame {
   constructor() {
     this.url = '';
+    this.currentLevelContainer = document.querySelector('.current-level').lastChild;
+    this.currentRoundContainer = document.querySelector('.current-round').lastChild;
   }
 
   static async startGame() {
@@ -51,6 +53,16 @@ export default class StartNewGame {
       }
 
       prompts.setTranslationText();
+      const currentLevelContainer = document.querySelector('.navigation__position .current-level').lastChild;
+      const currentRoundContainer = document.querySelector('.navigation__position .current-round').lastChild;
+      currentLevelContainer.innerText = gameData.level + 1;
+      currentRoundContainer.innerText = gameData.page + 1;
+      const startPage = document.querySelector('.start__page');
+      const gameBody = document.querySelector('body');
+      const results = document.querySelector('.results');
+      startPage.classList.add('display-none');
+      results.classList.add('display-none');
+      gameBody.classList.remove('scroll-not', 'modal-open');
     } catch (error) {
       const fetchErrorMessage = document.querySelector('.fetchErrorMessage');
       if (!fetchErrorMessage) {
