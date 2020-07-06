@@ -11,7 +11,6 @@ export default class Navigation {
   }
 
   static openNavigationModal() {
-    Navigation.updateLines();
     const navigationModal = new NavigationModal();
     navigationModal.appendSelf();
     NavigationModal.showModal(NavigationModal.delete);
