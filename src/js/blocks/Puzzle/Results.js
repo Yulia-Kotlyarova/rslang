@@ -1,4 +1,6 @@
 import { gameData } from './appState';
+import NavigationModal from './NavigationModal';
+import Navigation from './Navigation';
 
 export default class Results {
   constructor() {
@@ -21,6 +23,14 @@ export default class Results {
       }
     });
     this.buttonResults.addEventListener('click', () => this.showResults());
+    this.resultsButtonStatistic.addEventListener('click', () => Results.openNavigationModal());
+  }
+
+  static openNavigationModal() {
+    Navigation.updateLines();
+    const navigationModal = new NavigationModal();
+    navigationModal.appendSelf();
+    NavigationModal.showModal(NavigationModal.delete);
   }
 
   static audioPlay(clickedIcon) {

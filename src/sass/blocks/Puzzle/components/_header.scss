@@ -4,58 +4,32 @@
         font-size: 2rem;
     }
 
-    .navigation__level, .navigation__page {
+    .game-puzzle-header__navigation {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 
-    .level__title, .page__title {
-        padding: 0 10px;
+    .navigation__position {
         display: flex;
-        align-items: center;
+
+        & > div {
+            margin-right: 10px;
+        }
+
+        & > div > span:last-child {
+            font-weight: 700;
+        }
     }
 
-    .level__select, .page__select {
-        width: 60px;
-        height: $button-height;
-        text-align-last: center;
-        font-size: 2rem;
-        color: $color-puzzle-text;
-        background-color: $color-button-standart;
-        border-radius: $small-border-radius;
-        cursor: pointer;
+    .button__statistics-navigation {
+        font-size: 1.5rem;
     }
 
-    .level__select:hover, .page__select:hover {
-        box-shadow: 0 0 2px 2px $color-main-background;
-    }
 
     .game-puzzle__navigation__option {
         text-align: center;
         color: $color-button-standart;
         background-color: #FFFFFF;
         cursor: pointer;
-    }
-
-    .page__select.level_2 > option:nth-child(n+42) {
-        display: none;
-    }
-
-    .page__select.level_3 > option:nth-child(n+41) {
-        display: none;
-    }
-
-    .page__select.level_4 > option:nth-child(n+30) {
-        display: none;
-    }
-
-    .page__select.level_5 > option:nth-child(n+30) {
-        display: none;
-    }
-
-    .page__select.level_6 > option:nth-child(n+25) {
-        display: none;
     }
 
     .prompts-and-logout {
@@ -151,25 +125,5 @@
         font-weight: 600;
         background-color: $translation-area-color;
         border-radius: $small-border-radius;
-    }
-
-    .header__logout {
-        margin-left: 10px;
-        display: flex;
-    }
-    .header__current-user {
-        max-width: 400px;
-        margin: 0 10px;
-        display: flex;
-        align-items: center;
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
-
-    .button__logout {
-        width: 80px;
-        height: $button-height;
-        font-size: 1.5rem;
-        font-weight: 600;
     }
 }

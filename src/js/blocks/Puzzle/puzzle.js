@@ -4,22 +4,32 @@ import '@fortawesome/fontawesome-free/js/all.min';
 import Prompts from './Prompts';
 import { gameArea } from './GameArea';
 import Results from './Results';
-import StartNewGame from './startNewGame';
 import Navigation from './Navigation';
 import Header from '../../modules/Header';
+// import Repository from '../../modules/Repository';
+import NavigationModal from './NavigationModal';
 
 const results = new Results();
 const navigation = new Navigation();
 const prompts = new Prompts();
 const header = new Header();
 
-function closeStartPage() {
-  const startPage = document.querySelector('.start__page');
-  const gameBody = document.querySelector('body');
-  startPage.classList.add('display-none');
-  gameBody.classList.remove('scroll-not');
-  StartNewGame.startGame();
+function openNavigationTable() {
+  const navigationModal = new NavigationModal();
+  navigationModal.appendSelf();
+  NavigationModal.showModal(NavigationModal.delete);
 }
+
+// async function getStatisticsFromBackend() {
+//   const userStatistics = await Repository.getStatistics();
+//   if (userStatistics.optional.games.puzzle.summary) {
+//     const englishPuzzle = userStatistics.optional.games.puzzle.summary;
+//     localStorage.setItem('englishPuzzle', englishPuzzle);
+//   } else {
+
+//   }
+
+// }
 
 window.onload = function onload() {
   header.run();
@@ -30,5 +40,5 @@ window.onload = function onload() {
   gameArea.addEventListeners();
   results.addEventListeners();
   const buttonStart = document.querySelector('.button__start');
-  buttonStart.addEventListener('click', () => closeStartPage());
+  buttonStart.addEventListener('click', () => openNavigationTable());
 };
