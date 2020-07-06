@@ -19,7 +19,8 @@
 
   .results__knowledge {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin: 10px 100px 0;
 
     .results__mistakes, .results__correct {
       flex: 0 0 45%;
@@ -82,12 +83,12 @@
     .results__button {
         width: 230px;
         height: 45px;
-        font-size: 2.4rem;
+        font-size: 2.1rem;
         margin: 5px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: $color-text-dark;
         background-color: $color-button-background;
         border-radius: $button-border-radius;
         border: none;
