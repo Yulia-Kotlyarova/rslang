@@ -6,7 +6,7 @@ class Card {
     this.card = null;
     this.word = null;
     this.wordData = null;
-    this.nextStudyInterval = 0 * 60 * 60 * 1000;
+    this.nextStudyInterval = 12 * 60 * 60 * 1000;
     this.oneHourInMiliseconds = 60 * 60 * 1000;
     this.oneMinuteInMiliseconds = 60 * 1000;
     this.oneSecondInMiliseconds = 1000;
@@ -117,7 +117,8 @@ class Card {
     }
     let hours = Math.trunc((nextStudyTime - timeNow) / this.oneHourInMiliseconds);
     let minutes = Math.trunc((nextStudyTime - timeNow - hours
-      * this.oneHourInMiliseconds) / this.oneMinuteInMiliseconds);
+      * this.oneHourInMiliseconds)
+      / this.oneMinuteInMiliseconds);
     let secondes = Math.trunc((nextStudyTime - timeNow - hours
       * this.oneHourInMiliseconds - minutes * this.oneMinuteInMiliseconds)
       / this.oneSecondInMiliseconds);
@@ -332,7 +333,6 @@ class Card {
     if (this.isTranslate) {
       this.showTranslate();
     }
-
     this.showAudio();
   }
 
