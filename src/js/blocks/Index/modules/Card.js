@@ -6,7 +6,7 @@ class Card {
     this.card = null;
     this.word = null;
     this.wordData = null;
-    this.nextStudyInterval = 12 * 60 * 60 * 1000;
+    this.nextStudyInterval = 0 * 60 * 60 * 1000;
     this.oneHourInMiliseconds = 60 * 60 * 1000;
     this.oneMinuteInMiliseconds = 60 * 1000;
     this.oneSecondInMiliseconds = 1000;
@@ -34,6 +34,7 @@ class Card {
     this.wordDifficultyLevel = document.querySelector('.word-difficulty-level');
 
     this.wordPositionInResponse = 0;
+    this.todayStudiedNewWords = localStorage.getItem('todayStudiedNewWords') ? localStorage.getItem('todayStudiedNewWords') : 0;
     this.todayStudiedWords = localStorage.getItem('todayStudiedWords') ? localStorage.getItem('todayStudiedWords') : 0;
 
     this.settings = JSON.parse(localStorage.getItem('settings'));
@@ -84,7 +85,9 @@ class Card {
   }
 
   checkStudyProgress() {
-    if (Number(this.todayStudiedWords) > Number(this.numberOfCardsByDay)) {
+    if (Number(this.todayStudiedWords) > Number(this.numberOfCardsByDay)
+          || Number(this.todayStudiedNewWords) > Number(this.numberOfNewWordsToStudy)
+          || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
       if (!this.studyFinishAt) {
         this.studyFinishAt = Date.now();
@@ -105,6 +108,12 @@ class Card {
     const timeNow = Date.now();
     if (timeNow > nextStudyTime) {
       this.hideWarningWindow();
+    }
+    if (Number(this.studyFinishAt) > 0 && (timeNow > nextStudyTime)) {
+      this.studyFinishAt = 0;
+      localStorage.setItem('studyFinishAt', this.studyFinishAt);
+      this.todayStudiedNewWords = 0;
+      this.todayStudiedWords = 0;
     }
     let hours = Math.trunc((nextStudyTime - timeNow) / this.oneHourInMiliseconds);
     let minutes = Math.trunc((nextStudyTime - timeNow - hours
@@ -132,9 +141,10 @@ class Card {
           this.wordsHandler(); }
         break;
       case this.wordsToStudy === 'mixed':
-        { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
-          this.actualWordsData = data;
-          this.wordsHandler(); }
+        { const data = await Repository.getMixedWordsWithMandatoryNew(this.numberOfNewWordsToStudy,
+          undefined, this.numberOfCardsByDay);
+        this.actualWordsData = data;
+        this.wordsHandler(); }
         break;
       case this.wordsToStudy === 'repeat':
         { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
@@ -299,6 +309,12 @@ class Card {
     }
     this.isChecked = true;
     this.wordInput.value = this.word;
+    this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
+    localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
+    if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
+      this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
+      localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
+    }
     if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
       setTimeout(() => { this.nextCard(); }, 2000);
       return;
@@ -316,20 +332,18 @@ class Card {
     if (this.isTranslate) {
       this.showTranslate();
     }
-    this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
-    localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
+
     this.showAudio();
   }
 
   checkWord() {
     const entryField = document.querySelector('.word-field');
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
-    const wordValue = entryField.value;
     if (this.word !== entryField.value) {
       for (let i = 0; i < hiddenRightWord.length; i += 1) {
-          hiddenRightWord[i].classList.add('wrong-letter');
-        }
+        hiddenRightWord[i].classList.add('wrong-letter');
       }
+
       entryField.value = '';
       hiddenRightWord.forEach((item) => {
         item.classList.remove('index-hidden');
