@@ -98,7 +98,7 @@
        box-shadow: 0 5px 25px rgba(0,0,0,.5);
        outline: none;
        text-align: center;
-       background:linear-gradient(184deg, #1837E8, #55E815);
+       background:linear-gradient(180deg, #183954, #55E6F7);
        font-weight: 700;
        
        
@@ -117,7 +117,7 @@
       }
       &:focus,
       &:hover {
-          background: linear-gradient(184deg, #183943, #FC6E51);
+          background: linear-gradient(180deg, #183A4F, #FC7270);
       }
       &:active {
         &:after {
@@ -171,7 +171,7 @@
       &:focus,
       &:hover {
         //   background: darken(#FC6E51,7%);
-          background: linear-gradient(184deg, #183943, #FC6E51);
+          background: linear-gradient(180deg, #183A4F, #FC7270);
       }
       &:active {
         &:after {

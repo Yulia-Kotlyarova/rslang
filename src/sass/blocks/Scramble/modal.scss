@@ -1,10 +1,8 @@
-
 .modalScr{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 
 #scrModal {
     position: fixed;
@@ -59,7 +57,9 @@
                 height: 15px;
                 padding: 0 6px;
             }
-            
+            li{
+                font-size: 1.4rem;
+            }
         }
 
         .modalScr__header {
@@ -87,15 +87,6 @@
         }
     }
 }
-
-
-
-
-
-
-
-
-
 .modalScr.modelHide{
     display: none;
 }

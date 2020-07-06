@@ -12,7 +12,7 @@ import { finishGame } from './scrCode9Stat';
 
 const playGame = () => {
   const playButton = document.querySelector('.gameStartButton');
-  const removeHide = document.querySelector('.sectionStart__gameArea');
+  const removeHide = document.querySelector('.sectionStart');
   playButton.addEventListener('click', () => {
     removeHide.classList.remove('gameStart-hidden');
     wordsFromDictionary(document.querySelector('.scrambleLevelSelector').value);
