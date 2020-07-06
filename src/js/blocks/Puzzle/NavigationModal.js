@@ -10,7 +10,7 @@ export default class NavigationModal {
   }
 
   static createModalHTML() {
-    const puzzleStatistics = JSON.parse(localStorage.getItem('puzzleStatistics'));
+    const puzzleStatistic = JSON.parse(localStorage.getItem('puzzleStatistic'));
     let theadTds = '<td></td>';
     for (let i = 0; i < 6; i += 1) {
       theadTds += `<td class="cell-with-data cell-level">level ${i + 1}</td>`;
@@ -21,10 +21,10 @@ export default class NavigationModal {
       let rowMiddleCells = '';
       for (let x = 0; x < 6; x += 1) {
         if (levelsAndPages[x] >= i) {
-          if (puzzleStatistics[`${x}.${i}`]) {
-            const [correct, wrong, date] = puzzleStatistics[`${x}.${i}`];
+          if (puzzleStatistic[`${x}.${i}`]) {
+            const [correct, wrong, date] = puzzleStatistic[`${x}.${i}`];
             let className = '';
-            if (correct === 20) {
+            if (correct === 10) {
               className = 'navigation-table-green';
             } else if (correct > 0) {
               className = 'navigation-table-yellow';

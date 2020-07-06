@@ -183,7 +183,7 @@ export class GameArea {
 
     if (correctWords === puzzlesInMainLine.length + puzzleInTestLine.length) {
       gameData.gameResultsCorrect.push(gameData.activePhrase);
-      GameArea.updateStatistics(1, 0); // эксперимент
+      GameArea.updateStatistics(1, 0);
       GameArea.addShadowToLineNumber('correct');
       this.setControlButtons('continue');
       this.removePuzzlesToMainLine();
@@ -279,49 +279,24 @@ export class GameArea {
   async helpPlayerHePressedDontKnow() {
     this.removePuzzlesToMainLine();
     gameData.gameResultsWrong.push(gameData.activePhrase);
-    await GameArea.updateStatistics(0, 1); // эксперимент
+    GameArea.updateStatistics(0, 1);
     GameArea.addShadowToLineNumber('wrong');
     await this.continueGame();
   }
 
   static async updateStatistics(correct, wrong) {
-    const puzzleStatistics = JSON.parse(localStorage.getItem('puzzleStatistics')) || {};
-    if (puzzleStatistics && puzzleStatistics[`${gameData.level}.${gameData.page}`]) {
-      let [correctAnswers, wrongAnswers, date] = puzzleStatistics[`${gameData.level}.${gameData.page}`];
+    const puzzleStatistic = JSON.parse(localStorage.getItem('puzzleStatistic'));
+    if (puzzleStatistic[`${gameData.level}.${gameData.page}`]) {
+      let [correctAnswers, wrongAnswers, date] = puzzleStatistic[`${gameData.level}.${gameData.page}`];
       correctAnswers += correct;
       wrongAnswers += wrong;
       date = getTodayShort();
-      puzzleStatistics[`${gameData.level}.${gameData.page}`] = [correctAnswers, wrongAnswers, date];
+      puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correctAnswers, wrongAnswers, date];
     } else {
-      puzzleStatistics[`${gameData.level}.${gameData.page}`] = [correct, wrong, getTodayShort()];
+      puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correct, wrong, getTodayShort()];
     }
-    localStorage.setItem('puzzleStatistics', JSON.stringify(puzzleStatistics));
-    // await GameArea.saveStatistic();
-  }
-
-  static async saveStatistic(correct, wrong) {
-    const userStatistics = await Repository.getStatistics();
-    // const [puzzleStatistics] = userStatistics.optional.games.puzzle;
-    let isVictory = false;
-    let puzzleStatistics = {};
-    if (userStatistics.optional.games && userStatistics.optional.games.puzzle) {
-      [puzzleStatistics] = userStatistics.optional.games.puzzle;
-      if (puzzleStatistics[`${gameData.level}.${gameData.page}`]) {
-        let [correctAnswers, wrongAnswers, date] = puzzleStatistics[`${gameData.level}.${gameData.page}`];
-        correctAnswers += correct;
-        wrongAnswers += wrong;
-        date = getTodayShort();
-        puzzleStatistics[`${gameData.level}.${gameData.page}`] = [correctAnswers, wrongAnswers, date];
-        isVictory = correctAnswers === 20;
-      } else {
-        puzzleStatistics[`${gameData.level}.${gameData.page}`] = [correct, wrong, getTodayShort()];
-      }
-    } else {
-      puzzleStatistics[`${gameData.level}.${gameData.page}`] = [correct, wrong, getTodayShort()];
-    }
-
-    await Repository.saveGameResult('puzzle', isVictory, puzzleStatistics);
-    // console.log(userStatistics);
+    localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
+    Repository.saveGameResult('puzzle', null, null, puzzleStatistic);
   }
 
   removePuzzlesToMainLine() {

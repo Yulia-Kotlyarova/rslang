@@ -6,8 +6,8 @@ import { gameArea } from './GameArea';
 import Results from './Results';
 import Navigation from './Navigation';
 import Header from '../../modules/Header';
-// import Repository from '../../modules/Repository';
 import NavigationModal from './NavigationModal';
+import Repository from '../../modules/Repository';
 
 const results = new Results();
 const navigation = new Navigation();
@@ -20,18 +20,20 @@ function openNavigationTable() {
   NavigationModal.showModal(NavigationModal.delete);
 }
 
-// async function getStatisticsFromBackend() {
-//   const userStatistics = await Repository.getStatistics();
-//   if (userStatistics.optional.games.puzzle.summary) {
-//     const englishPuzzle = userStatistics.optional.games.puzzle.summary;
-//     localStorage.setItem('englishPuzzle', englishPuzzle);
-//   } else {
+async function getStatisticsFromBackend() {
+  const userStatistics = await Repository.getStatistics();
+  let puzzleStatistic = {};
+  if (userStatistics.optional.games.puzzle.summary) {
+    puzzleStatistic = userStatistics.optional.games.puzzle.summary;
+    localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
+  } else {
+    Repository.saveGameResult('puzzle', false, [], JSON.stringify(puzzleStatistic));
+  }
+  localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
+}
 
-//   }
-
-// }
-
-window.onload = function onload() {
+window.onload = async function onload() {
+  await getStatisticsFromBackend();
   header.run();
   navigation.addEventListeners();
   prompts.addEventListeners();
