@@ -28,7 +28,7 @@ const startTest = () => {
 
 const showScores = () => {
   let gameOverHtml = '<h2>Result</h2>';
-  gameOverHtml += `<h3 id='score'> Your scores: ${quiz.score}</h3>
+  gameOverHtml += `<h3 id='score'> Твой уровень: ${quiz.score}</h3>
   <span class="testClose">&times;</span>`;
   const element = document.querySelector('.test');
   element.innerHTML = gameOverHtml;

@@ -8,9 +8,9 @@ const objForCorrectWord = {
 
 console.log(objForCorrectWord);
 const endGame = document.querySelector('.sectionStart__closeBtn');
-const addHide = document.querySelector('.sectionStart__gameArea');
+const addHide = document.querySelector('.sectionStart');
 const openModal = document.querySelector('.modalScr');
-const scrCorrectCount = document.querySelector('.modalScr__correct');
+const scrCorrectCount = document.getElementById('modalScr__correct-count');
 const closeStat = document.querySelector('.modalScr__closeBtn');
 
 const addWordsToModal = (array, array1, array2) => {

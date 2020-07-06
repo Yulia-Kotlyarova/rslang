@@ -15,11 +15,10 @@ let newWords = '';
 let randWords = '';
 let wordCounter = 0;
 
-// function playTune() {
-//   audioT.play();
-// }
-// window.playTune = playTune;
-
+function clickTune(song) {
+  const audio = new Audio(song);
+  audio.play();
+}
 const createNewWords = () => {
   const ranNum = wordCounter;
   const newTempSwords = arrayWord[ranNum];
@@ -56,6 +55,7 @@ export const scrambleGameFirst = () => {
     } else {
       const tempWord = scrambleGuess.value;
       if (tempWord === newWords) {
+        clickTune('Right-answer-ding-ding-sound-effect.mp3');
         counterArray.push(10);
         sPlay = false;
         scrambleMsg.innerHTML = `${newWords} - ${arrayWordTranslate[wordCounter - 1]}`;
@@ -70,6 +70,7 @@ export const scrambleGameFirst = () => {
           updateScore();
         }, 1000);
       } else {
+        clickTune('error.wav');
         scrambleMsg.innerHTML = `Почти угадал, попробуй еще раз "${randWords.join('')}"`;
         setTimeout(() => {
           scrambleMsg.innerHTML = randWords.join('');
@@ -87,5 +88,3 @@ export const hintShow = () => {
 };
 
 export { counterArray };
-// export { hintShow, scrambleGameFirst };
-// export default scrambleGameFirst;
