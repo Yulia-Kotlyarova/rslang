@@ -20,3 +20,4 @@ const defaultSettings = {
 export default defaultSettings;
 
 export const scrambleMsg = document.querySelector('.sectionStart__msg');
+export const audioT = document.getElementById('audioT');
