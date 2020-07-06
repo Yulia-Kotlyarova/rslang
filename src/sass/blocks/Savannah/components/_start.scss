@@ -52,10 +52,12 @@
   }
 
   .btn-secondary {
-    border: 1px solid $card-background-day;
-    background-color: $card-background-day;
-    box-shadow: 0 0 10px $shadow-color;
-    border-radius: $button-border-radius;
+    border: 1px solid $color-button-background;
+    background-color: $color-button-background;
     color: $color-text-dark;
+  }
+
+  .btn-secondary:hover {
+    filter: brightness(115%);
   }
 }
