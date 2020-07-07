@@ -35,7 +35,7 @@ $button-border-radius-big: 25px;
       font-size: 2.1em;
     }
   }
- 
+
   .app-header__container {
     position: relative;
     height: 100px;
@@ -155,6 +155,12 @@ $button-border-radius-big: 25px;
 
   .button_authorization_burger > svg {
     color: $color-button-authorization-text;
+  }
+
+  .button_language {
+    color: $color-text;
+    font-size: 25px;
+    font-weight: 900;
   }
 
   .header__dropdown {
