@@ -148,6 +148,14 @@
   display: none!important;
 }
 
+.a-c-loader {
+  width: 95%;
+  height: 4px;
+  background-color: $pale_font_color;
+  border-radius: 2px;
+  margin: 220px 0 0 2.5%;
+}
+
 @media (max-width: 992px) {
   .a-c-pic-wrapper {
     top: 2px;

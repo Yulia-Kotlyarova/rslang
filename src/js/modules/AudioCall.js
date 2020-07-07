@@ -8,6 +8,8 @@ import Header from './Header';
 
 import Repository from './Repository';
 
+import getTodayShort from '../helpers';
+
 const goBtn = document.querySelector('.a-c-go');
 const dontKnowBtn = document.querySelector('.a-c-dont-know');
 const nextBtn = document.querySelector('.a-c-next');
@@ -22,6 +24,7 @@ const resultRight = document.querySelector('.a-c-result-right');
 const body = document.querySelector('.a-c-body');
 const photo = document.querySelector('.audio-call-photo');
 const startScreen = document.querySelector('.a-c-hello-screen');
+const loader = document.querySelector('.a-c-loader');
 
 const word1 = document.querySelector('.word-list-1');
 const word2 = document.querySelector('.word-list-2');
@@ -33,6 +36,7 @@ const wordList = document.querySelectorAll('.word-list > li');
 const volumeUp = document.querySelector('#big-volume-up');
 const littleVolumeUp = document.querySelector('.a-c-little-volume');
 
+let isVictory;
 localStorage.cardNumber = 1;
 localStorage.wrong = '';
 localStorage.right = '';
@@ -51,6 +55,14 @@ function wrongAnswer(wrong) {
   });
 }
 
+function loaderChange() {
+  if (localStorage.cardNumber.length <= 19) {
+    loader.style.width = `${5 * localStorage.cardNumber.length}%`;
+  } else {
+    loader.style.width = '97%';
+  }
+}
+
 // array for each word
 
 function sayWord(sound) { //  TO DO: rebase sound from getWord
@@ -59,7 +71,7 @@ function sayWord(sound) { //  TO DO: rebase sound from getWord
   audio.autoplay = true;
 }
 
-async function getCard(taskWord) {
+async function getCard(taskWord) { // TO DO: change link
   try {
     let resp = await fetch('https://afternoon-falls-25894.herokuapp.com/words?page=1&group=0');
     resp = await resp.json();
@@ -215,6 +227,10 @@ async function getCard(taskWord) {
 }
 
 const audio = new Audio();
+const levelNumb = document.querySelector('.a-c-level').options.selectedIndex;
+const pageNumb = document.querySelector('.a-c-page').options.selectedIndex;
+const userLevel = document.querySelector('.a-c-level').options[levelNumb].value;
+const userPage = document.querySelector('.a-c-page').options[pageNumb].value;
 
 function removeStartScreen() {
   goBtn.classList.add('hidden');
@@ -224,10 +240,6 @@ function removeStartScreen() {
 async function getWords() { // change link  get UserWords
   removeStartScreen();
 
-  const levelNumb = document.querySelector('.a-c-level').options.selectedIndex;
-  const pageNumb = document.querySelector('.a-c-page').options.selectedIndex;
-  const userLevel = document.querySelector('.a-c-level').options[levelNumb].value;
-  const userPage = document.querySelector('.a-c-page').options[pageNumb].value;
   try {
     const response = await Repository.getWordsFromGroupAndPage(userLevel, userPage);
     const taskWord = response[localStorage.cardNumber.length];
@@ -244,6 +256,8 @@ async function getWords() { // change link  get UserWords
       volumeUp.removeEventListener('click', () => audio.play());
       littleVolumeUp.removeEventListener('click', () => audio.play());
     });
+
+    loaderChange();
   } catch (error) {
     // eslint-disable-next-line no-console
     throw new Error(console.error(error));
@@ -257,6 +271,7 @@ goBtn.addEventListener('click', getWords);
 // result of game
 
 function gameResult() {
+  loader.classList.add('hidden');
   document.querySelector('.word-list').classList.add('hidden');
   document.querySelector('.a-c-pic-wrapper').classList.add('hidden');
   nextBtn.classList.add('hidden');
@@ -292,7 +307,7 @@ const nextCard = () => {
   wordList.forEach((el) => {
     el.classList.remove('li-pale-color');
   });
-  if (localStorage.cardNumber.length >= 10) {
+  if (localStorage.cardNumber.length >= 20) { // TO DO: 20 cards
     gameResult();
   } else {
     dontKnowBtn.classList.remove('hidden');
@@ -316,7 +331,16 @@ function playAgain() {
 
 playAgainBtn.addEventListener('click', playAgain);
 
-//  TO DO: add remover counter when go out the game
+window.beforeunload = () => {
+  const sessionData = getTodayShort();
+
+  if (localStorage.wrong.length > 0) {
+    isVictory = false;
+  } else {
+    isVictory = true;
+  }
+  Repository.saveGameResult('Audio Call', isVictory, sessionData);
+};
 
 export {
   showRightAnswer, getCard, sayWord,
