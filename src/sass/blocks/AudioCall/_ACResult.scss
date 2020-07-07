@@ -1,0 +1,23 @@
+
+.a-c-result-wrapper {
+    //display: none;
+    width: 30vw;
+    height: 50vh;
+    position: absolute;
+    top: 70px;
+    left: 40%;
+    overflow: auto;
+    li {
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+    span {
+      font-size: 1.7rem;
+    }
+  }
+  
+  .a-c-result-wrong,
+  .a-c-result-right {
+    font-size: 1.7rem;
+    font-weight: 600;
+  }

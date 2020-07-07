@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="game-puzzle-main-class">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="#" type="image/x-icon">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
         <title>Puzzle | RS Lang</title>
     </head>
-    <body>
+    <body class="hidden-for-header-render scroll-not puzzle-background">
         <div class="start__page">
             <div class="start__page__container">
                 <div class="start__title">ENGLISH PUZZLE</div>
                 <div class="start__instruction"><span>Click on puzzles with words - collect phrases and you wil see a painting.
                 Choose tooltips in menu bar. Have Fun!</span></div>
-                <button type="button" class="btn btn-secondary button__start">Start</button>
+                <button type="button" class="btn btn-info button__start">Start</button>
             </div>
         </div>
-        <section class="header wrapper">
-            <div class="header__navigation">
-                <div class="navigation__level">
+        <section class="game-puzzle-header">
+            <div class="game-puzzle-header__navigation">
+                <div class="navigation__position">
+                    <div class="current-level"><span>Level: </span><span></span></div>
+                    <div class="current-round"><span>Round: </span><span></span></div>
+                </div>
+                <button type="button" class="btn btn-info button__statistics-navigation">Statictics & Navigation</button>
+                <!-- <div class="navigation__level">
                     <div class="level__title">Level</div>
                     <select class="level__select">
                         <option>1</option>
@@ -29,7 +36,7 @@
                     </select>
                 </div>
                 <div class="navigation__page">
-                    <div class="page__title">Page</div>
+                    <div class="page__title">Round</div>
                     <select class="page__select level_1">
                         <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
                         <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
@@ -41,7 +48,7 @@
                         <option>36</option><option>37</option><option>38</option><option>39</option><option>40</option>
                         <option>41</option><option>42</option><option>43</option><option>44</option><option>45</option>
                     </select>
-                </div>
+                </div> -->
             </div>
             <div class="prompts-and-logout">
                 <div class="header__prompts">
@@ -52,7 +59,7 @@
                 </div>
             </div>
         </section>
-        <main class="main wrapper">
+        <main class="game-puzzle-main game-puzzle-wrapper">
             <div class="main__prompts">
                 <button type="button" class="btn btn-secondary prompts__button button__audio-play-once display-none"></button>
                 <div class="main__translation"><span class="translation__text display-none"></span></div>
@@ -113,14 +120,16 @@
                     <div class="results__painting__image"><a href="" target="blank"><img src=""></a></div>
                     <div class="results__painting__info"><span></span></div>
                 </div>
-                <div class="results__knowledge">
-                    <div class="results__know">
-                        <div class="know__count"><span>I know</span><span class="know__number"></span></div>
-                        <div class="know__phrases"></div>
-                    </div>
-                    <div class="results__dont-know">
-                        <div class="dont-know__count"><span>I don't know</span><span class="dont-know__number"></span></div>
-                        <div class="dont-know__phrases"></div>
+                <div class="scrollbar scrollbar-primary">
+                    <div class="results__knowledge">
+                        <div class="results__know">
+                            <div class="know__count"><span>I know</span><span class="know__number"></span></div>
+                            <div class="know__phrases"></div>
+                        </div>
+                        <div class="results__dont-know">
+                            <div class="dont-know__count"><span>I don't know</span><span class="dont-know__number"></span></div>
+                            <div class="dont-know__phrases"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="results__buttons">

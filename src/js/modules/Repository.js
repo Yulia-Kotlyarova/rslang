@@ -1,15 +1,35 @@
+import sortBy from 'lodash/sortBy';
+
 import Authorization from './Authorization';
 
 import defaultSettings from '../constants/defaultSettings';
+import { coefficients, intervals } from '../constants/intervalRepetition';
+import backendOrigin from '../constants/app';
+
+import getTodayShort from '../helpers';
 
 class Repository {
-  static async getAllUserWords(group = '', wordsPerPage = '') {
+  static async getWords(type, group, wordsPerPage) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const filter = '{"userWord": {"$exists": "true"}}';
+    let filter;
+    if (type === 'new') {
+      filter = '{"$and":[{"userWord":null, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+    } else if (type === 'currentSession') {
+      const currentSessionEnd = Date.now() + intervals.defaultCurrentSessionFromNow;
+      filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
+    } else if (type === 'repeat') {
+      filter = '{"$and":[{"userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+    } else if (type === 'deleted') {
+      filter = '{"userWord.optional.isDeleted":true}';
+    } else if (type === 'hard') {
+      filter = '{"userWord.optional.isHard":true}';
+    } else {
+      throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'repeat', 'deleted', 'hard'`);
+    }
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${group ? `group=${group}` : ''}${wordsPerPage ? `wordsPerPage=${wordsPerPage}` : ''}filter=${filter}`;
+    const url = `${backendOrigin}/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -25,11 +45,71 @@ class Repository {
     return content[0].paginatedResults;
   }
 
+  static async getAllUserWords(group, wordsPerPage) {
+    const words = await Repository.getWords('repeat', group, wordsPerPage);
+    return sortBy(words, 'userWord.optional.playNextDate');
+  }
+
+  static async getCurrentSessionUserWords(group, wordsPerPage = 20) {
+    let words = await Repository.getWords('currentSession', group, wordsPerPage);
+    words = sortBy(words, 'userWord.optional.playNextDate');
+    if (words.length > wordsPerPage) {
+      words.length = wordsPerPage;
+    }
+    return words;
+  }
+
+  static async getNewWords(group, wordsPerPage) {
+    return Repository.getWords('new', group, wordsPerPage);
+  }
+
+  static async getMixedWords(group, wordsPerPage = 20) {
+    const userWords = await Repository.getCurrentSessionUserWords(group, wordsPerPage);
+    if (userWords.length === Number(wordsPerPage)) {
+      return userWords;
+    }
+    const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
+    return [...userWords, ...wordsNew];
+  }
+
+  static async getMixedWordsWithMandatoryNew(newWordsNumber = 10, group, wordsPerPage = 20) {
+    const wordsNew = await Repository.getNewWords(group, newWordsNumber);
+    if (wordsNew.length >= Number(wordsPerPage)) {
+      wordsNew.length = wordsPerPage;
+      return wordsNew;
+    }
+    const userWords = await Repository
+      .getCurrentSessionUserWords(group, (wordsPerPage - wordsNew.length));
+    return [...userWords, ...wordsNew];
+  }
+
+  static async getHardWords(group, wordsPerPage) {
+    return Repository.getWords('hard', group, wordsPerPage);
+  }
+
+  static async getDeletedWords(group, wordsPerPage) {
+    return Repository.getWords('deleted', group, wordsPerPage);
+  }
+
+  static async getWordsFromGroupAndPage(group = 0, page = 0) {
+    const url = `${backendOrigin}/words?group=${group}&page=${page}`;
+
+    const rawResponse = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return rawResponse.json();
+  }
+
   static async getOneUserWord(wordId) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/aggregatedWords/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -45,11 +125,11 @@ class Repository {
     return content[0];
   }
 
-  static async createUserWord(wordId, difficulty, optional = {}) {
+  static async createUserWord(wordId, difficulty = 'default', optional = {}) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'POST',
@@ -58,7 +138,7 @@ class Repository {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ difficulty, optional }),
+      body: JSON.stringify({ difficulty, optional: { ...optional, default: 'default' } }),
     });
 
     return rawResponse.json();
@@ -70,9 +150,13 @@ class Repository {
 
     const word = await Repository.getOneUserWord(wordId);
     const updates = { difficulty };
-    updates.optional = word.userWord && word.userWord.optional ? word.userWord.optional : {};
+    updates.optional = word.userWord && word.userWord.optional ? word.userWord.optional : { default: 'default' };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
+
+    if (!updates.difficulty) {
+      updates.difficulty = 'default';
+    }
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -94,14 +178,14 @@ class Repository {
     const word = await Repository.getOneUserWord(wordId);
 
     const updates = {};
-    updates.difficulty = word.userWord && word.userWord.difficulty ? word.userWord.difficulty : '';
+    updates.difficulty = word.userWord && word.userWord.difficulty ? word.userWord.difficulty : 'default';
     if (word.userWord && word.userWord.optional) {
       updates.optional = { ...word.userWord.optional, ...updatedValues };
     } else {
       updates.optional = updatedValues;
     }
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -116,11 +200,27 @@ class Repository {
     return rawResponse.json();
   }
 
+  static async markWordAsDeleted(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isDeleted: true });
+  }
+
+  static async unmarkWordAsDeleted(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isDeleted: false });
+  }
+
+  static async markWordAsHard(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isHard: true });
+  }
+
+  static async unmarkWordAsHard(wordId) {
+    return Repository.updateUserWordOptional(wordId, { isHard: false });
+  }
+
   static async deleteUserWord(wordId) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`;
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     await fetch(url, {
       method: 'DELETE',
@@ -136,7 +236,7 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -167,7 +267,7 @@ class Repository {
       optional: { ...statistics.optional, ...updatedValues },
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -182,17 +282,86 @@ class Repository {
     return rawResponse.json();
   }
 
-  static async incrementLearnedWords() {
+  static async incrementLearnedWords(result, isWordNew) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
+    const isCorrect = Number(result) !== 0;
 
     const statistics = await Repository.getStatistics();
+    const todayShort = getTodayShort();
+
+    if (!statistics.optional) {
+      statistics.optional = {};
+    }
+
+    if (!statistics.learnedWords) {
+      statistics.learnedWords = 0;
+    }
+    if (!statistics.optional.dates) {
+      statistics.optional.dates = {};
+    }
+    if (!statistics.optional.dates[todayShort]) {
+      statistics.optional.dates[todayShort] = {};
+      const todayStatistics = statistics.optional.dates[todayShort];
+
+      if (!isCorrect) {
+        todayStatistics.previousGuessed = false;
+        todayStatistics.correctSeriesToday = 0;
+        todayStatistics.correctMaximumSeriesToday = 0;
+        todayStatistics.correctToday = 0;
+
+        todayStatistics.learnedTotalSoFar = statistics.learnedWords;
+        todayStatistics.learnedToday = 0;
+      } else {
+        todayStatistics.previousGuessed = true;
+        todayStatistics.correctSeriesToday = 1;
+        todayStatistics.correctMaximumSeriesToday = 1;
+        todayStatistics.correctToday = 1;
+
+        if (isWordNew) {
+          todayStatistics.learnedTotalSoFar = statistics.learnedWords + 1;
+          todayStatistics.learnedToday = 1;
+        } else {
+          todayStatistics.learnedTotalSoFar = statistics.learnedWords;
+          todayStatistics.learnedToday = 0;
+        }
+      }
+
+      todayStatistics.answersGivenToday = 1;
+    } else {
+      const todayStatistics = statistics.optional.dates[todayShort];
+
+      if (!isCorrect) {
+        if (todayStatistics.correctSeriesToday > todayStatistics.correctMaximumSeriesToday) {
+          todayStatistics.correctMaximumSeriesToday = todayStatistics.correctSeriesToday;
+        }
+
+        todayStatistics.previousGuessed = false;
+        todayStatistics.correctSeriesToday = 0;
+      } else {
+        todayStatistics.previousGuessed = true;
+        todayStatistics.correctSeriesToday += 1;
+        todayStatistics.correctToday += 1;
+
+        if (todayStatistics.correctSeriesToday > todayStatistics.correctMaximumSeriesToday) {
+          todayStatistics.correctMaximumSeriesToday = todayStatistics.correctSeriesToday;
+        }
+
+        if (isWordNew) {
+          todayStatistics.learnedTotalSoFar += 1;
+          todayStatistics.learnedToday += 1;
+        }
+      }
+
+      todayStatistics.answersGivenToday += 1;
+    }
+
     const newStatistics = {
-      learnedWords: statistics.learnedWords + 1,
+      learnedWords: isCorrect && isWordNew ? statistics.learnedWords + 1 : statistics.learnedWords,
       optional: statistics.optional,
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -211,7 +380,7 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`;
+    const url = `${backendOrigin}/users/${userId}/settings`;
 
     const rawResponse = await fetch(url, {
       method: 'GET',
@@ -245,7 +414,7 @@ class Repository {
       optional: { ...settings.optional, ...updatedValues },
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`;
+    const url = `${backendOrigin}/users/${userId}/settings`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -270,7 +439,7 @@ class Repository {
       optional: settings.optional,
     };
 
-    const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -283,6 +452,112 @@ class Repository {
     });
 
     return rawResponse.json();
+  }
+
+  static async saveWordResult({ wordId, result = '1' }) {
+    let word;
+    let isWordNew = false;
+    word = await Repository.getOneUserWord(wordId);
+
+    if (!word || !word.userWord) {
+      isWordNew = true;
+      await Repository.createUserWord(wordId);
+      word = await Repository.getOneUserWord(wordId);
+    }
+
+    let interval;
+
+    if (result === '0') {
+      interval = intervals.defaultAgainInterval;
+      word.userWord.optional.lastPlayedDate = Date.now();
+      word.userWord.optional.playNextDate = Date.now() + interval;
+    } else {
+      const { lastPlayedDate } = word.userWord.optional;
+
+      if (lastPlayedDate) {
+        interval = Date.now() - lastPlayedDate;
+      } else {
+        interval = intervals.defaultInterval;
+      }
+
+      if (interval < intervals.defaultInterval) {
+        interval = intervals.defaultInterval;
+      }
+
+      word.userWord.optional.lastPlayedDate = Date.now();
+      word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
+    }
+
+    const wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
+    await Repository.incrementLearnedWords(result, isWordNew);
+
+    return wordSaved;
+  }
+
+  static async saveGameResult(gameName, isVictory, sessionData, summary) {
+    const statistics = await Repository.getStatistics();
+    const todayShort = getTodayShort();
+
+    if (!statistics.optional) {
+      statistics.optional = {};
+    }
+    if (!statistics.optional.dates) {
+      statistics.optional.dates = {};
+    }
+
+    if (!statistics.optional.dates[todayShort]) {
+      statistics.optional.dates[todayShort] = {
+        gamesPlayed: 1,
+      };
+
+      if (isVictory) {
+        statistics.optional.dates[todayShort].victories = 1;
+      } else {
+        statistics.optional.dates[todayShort].defeats = 1;
+      }
+    } else {
+      statistics.optional.dates[todayShort]
+        .gamesPlayed = statistics.optional.dates[todayShort].gamesPlayed
+          ? statistics.optional.dates[todayShort].gamesPlayed + 1
+          : 1;
+
+      if (isVictory) {
+        statistics.optional.dates[todayShort]
+          .victories = statistics.optional.dates[todayShort].victories
+            ? statistics.optional.dates[todayShort].victories + 1
+            : 1;
+      } else {
+        statistics.optional.dates[todayShort]
+          .defeats = statistics.optional.dates[todayShort].defeats
+            ? statistics.optional.dates[todayShort].defeats + 1
+            : 1;
+      }
+    }
+
+    if (!statistics.optional.games) {
+      statistics.optional.games = {
+        [gameName]: [],
+      };
+    }
+
+    if (!statistics.optional.games[gameName]
+      || Array.isArray(statistics.optional.games[gameName])) {
+      statistics.optional.games[gameName] = {};
+    }
+
+    if (!statistics.optional.games[gameName].resultsList) {
+      statistics.optional.games[gameName].resultsList = [];
+    }
+
+    if (sessionData) {
+      statistics.optional.games[gameName].resultsList.push(sessionData);
+    }
+
+    if (summary) {
+      statistics.optional.games[gameName].summary = summary;
+    }
+
+    return Repository.updateOptionalStatistics(statistics.optional);
   }
 }
 

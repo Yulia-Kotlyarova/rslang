@@ -1,0 +1,75 @@
+@import "ACconst";
+
+.a-c-btn-wrapper {
+    position: relative;
+    height: 15vh;
+    width: 100%;
+    margin: 0 auto;
+    top: 100px;
+  }
+  
+  .a-c-next,
+  .bi-arrow-right-circle,
+  .a-c-dont-know,
+  .a-c-another-game-btn,
+  .a-c-again-btn {
+    cursor: pointer;
+    color: $main_font_color;
+  }
+  .a-c-dont-know,
+  .a-c-another-game-btn,
+  .a-c-again-btn {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    font-size: 1.6em;
+    border-radius: $btn-radius;
+    height: 35px;
+    padding: 0px 30px;
+  }
+
+  .a-c-another-game-btn,
+  .a-c-again-btn {
+    border: 1px solid $btn-color;
+    background-color: $btn-color;
+  }
+  
+  .a-c-dont-know {
+    top: 130px;
+    border: 1px solid $card-background-day;
+    background-color: $card-background-day;
+    box-shadow: 0 0 10px $shadow-color;
+  }
+
+  .a-c-dont-know:hover {
+    box-shadow: 0 0 20px $shadow-color;
+  }
+  
+  .a-c-another-game-btn {
+    top: 130px;
+  }
+  
+  .a-c-again-btn {
+    top: 170px;
+  }
+  
+  .bi-arrow-right-circle {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 130px;
+  }
+
+  .a-c-next:hover {
+    .bi-arrow-right-circle {
+        width: 3.2rem;
+        height: 3.2rem;
+    }
+  }
+  
+  .hidden {
+    display: none;
+  }
+  

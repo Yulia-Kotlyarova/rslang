@@ -1,4 +1,6 @@
 import { gameData } from './appState';
+import NavigationModal from './NavigationModal';
+import Navigation from './Navigation';
 
 export default class Results {
   constructor() {
@@ -10,6 +12,7 @@ export default class Results {
     this.resultsKnowledge = document.querySelector('.results__knowledge');
     this.resultsButtonStatistic = document.querySelector('.button__statistics');
     this.buttonResults = document.querySelector('.button__results');
+    this.body = document.querySelector('body');
   }
 
   addEventListeners() {
@@ -20,6 +23,14 @@ export default class Results {
       }
     });
     this.buttonResults.addEventListener('click', () => this.showResults());
+    this.resultsButtonStatistic.addEventListener('click', () => Results.openNavigationModal());
+  }
+
+  static openNavigationModal() {
+    Navigation.updateLines();
+    const navigationModal = new NavigationModal();
+    navigationModal.appendSelf();
+    NavigationModal.showModal(NavigationModal.delete);
   }
 
   static audioPlay(clickedIcon) {
@@ -31,6 +42,7 @@ export default class Results {
   }
 
   showResults() {
+    this.body.classList.add('scroll-not');
     this.results.classList.remove('display-none');
     this.dontKnowNumber.innerText = gameData.gameResultsWrong.length;
     this.knowNumber.innerText = gameData.gameResultsCorrect.length;

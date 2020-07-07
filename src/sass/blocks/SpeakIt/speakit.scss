@@ -1,0 +1,12 @@
+.speak-it {
+  @import "./abstract/constants";
+  @import "./base/base";
+
+  @import "./components/start-screen";
+  @import "./components/header";
+  @import "./components/display";
+  @import "./components/cards";
+  @import "./components/controls";
+  @import "./components/results";
+}
+
