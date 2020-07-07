@@ -3,9 +3,19 @@
 @import './components/header';
 @import './components/results';
 @import './components/start';
+@import './components/navigation-table';
 
 .game-puzzle-main-class {
+    font-family: "Lato", sans-serif;
     font-size: 10px;
+
+    body {
+        background-color: $color-main-background;
+    }
+
+    .scroll-not {
+        overflow: hidden;
+    }
 
     .game-puzzle-wrapper {
         max-width: 1200px;
@@ -14,14 +24,14 @@
     }
 
     .game-puzzle-main {
-        height: calc(100vh - 45px);
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: $color-main-background;
     }
 
     .game-puzzle-header {
+        width: $puzzle-width;
+        margin: 20px auto 0 auto;
         display: flex;
         justify-content: space-between;
     }

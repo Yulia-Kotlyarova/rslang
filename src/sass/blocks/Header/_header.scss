@@ -2,14 +2,14 @@ $color-text: #3F5D79;
 $color-button-authorization: #FBC65F;
 $color-button-authorization-text: #886A30;
 $color-header-main: #F8F8F8;
-$color-button-svg-hover: #0000FF;
-$color-dropdown-content-bg: #DDDDDD;
+$color-button-svg-hover: #2b4358;
+$color-dropdown-content-bg: #67697d15;
 $color-box-shadow: #67697D40;
 
 $button-border-radius-small: 10px;
 $header-border-radius: 30px;
-$button-width: 50px;
-$button-height: 50px;
+$button-width: 52px;
+$button-height: 52px;
 $button-border-radius-big: 25px;
 
 .hidden-for-header-render {
@@ -29,13 +29,16 @@ $button-border-radius-big: 25px;
     color: $color-text;
   }
 
-  svg:hover {
-    color: $color-button-svg-hover;
+  .header__button:hover {
+    svg {
+      color: $color-button-svg-hover;
+      font-size: 2.1em;
+    }
   }
-
+ 
   .app-header__container {
     position: relative;
-    height: 112px;
+    height: 100px;
     padding: 0 40px;
     display: flex;
     justify-content: space-between;
@@ -81,6 +84,8 @@ $button-border-radius-big: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
+    letter-spacing: 1px;
     color: $color-text;
     font-weight: 800;
     cursor: pointer;
@@ -92,6 +97,7 @@ $button-border-radius-big: 25px;
 
   .header__logo > div:hover {
     color: $color-button-svg-hover;
+    font-size: 27px;
   }
 
   .header__button {
@@ -129,6 +135,7 @@ $button-border-radius-big: 25px;
 
   .button_authorization {
     width: 90px;
+    height: 41px;
     background-color: $color-button-authorization;
     color: $color-button-authorization-text;
     font-size: 15px;
@@ -137,7 +144,7 @@ $button-border-radius-big: 25px;
   }
 
   .button_authorization:hover {
-    border: 1px solid $color-button-authorization-text;
+    filter: brightness(110%);
   }
 
   .button_authorization_burger {
@@ -161,18 +168,21 @@ $button-border-radius-big: 25px;
     display: none;
     position: absolute;
     background-color: $color-header-main;
-    box-shadow: 0px 8px 16px 0px $color-box-shadow;
-    border-radius: $header-border-radius;
+    box-shadow: 18px 23px 16px -10px $color-box-shadow;
+    border-radius: 0px 0px 30px 30px;
   }
 
   .dropdown-content a {
     padding: 12px 16px;
     text-decoration: none;
+    color: $color-text;
+    font-weight: 600;
     display: block;
   }
 
   .dropdown-content a:hover {
     background-color: $color-dropdown-content-bg;
+    border-radius: 25px;
   }
 
   .header__dropdown:hover .dropdown-content {

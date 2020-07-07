@@ -1,0 +1,17 @@
+@import "../abstract/constants";
+
+.controls {
+  display: flex;
+  width: 100%;
+
+  & button {
+    flex-basis: 20%;
+    margin-right: $controls-button-indent;
+    font-size: $font-size-base * 1.1;
+  }
+
+  &__speak {
+    flex-basis: 40%;
+    flex-grow: 2;
+  }
+}

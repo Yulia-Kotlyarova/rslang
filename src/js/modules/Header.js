@@ -7,9 +7,7 @@ export default class Header {
     this.iconDictionary = '<i class="fas fa-book fa-2x"></i>';
     this.iconCards = '<i class="far fa-file-word fa-2x"></i>';
     this.iconStatistics = '<i class="fas fa-chart-line fa-2x"></i>';
-    this.iconSettings = '<i class="fas fa-cog fa-2x"></i>';
     this.iconGames = '<i class="fas fa-dice fa-2x"></i>';
-    this.iconSettings = '<i class="fas fa-cog fa-2x"></i>';
     this.iconLogOut = '<i class="fas fa-sign-out-alt fa-2x"></i>';
     this.iconTeam = '<i class="fas fa-users-cog fa-2x"></i>';
 
@@ -17,8 +15,7 @@ export default class Header {
 
     this.mainURL = './index.html';
     this.promoURL = './promo.html';
-    this.statisticsURL = './statistics.html';
-    this.settingsURL = './settings.html'; // надо добавить страницу
+    this.statisticsURL = './statistics.html'; // надо добавить страницу
     this.dictionaryURL = './dictionary.html';
     this.teamURL = './team.html';
 
@@ -87,7 +84,6 @@ export default class Header {
     </div>
     </div>`;
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
-    const settingsButton = `<a href=${this.settingsURL}><button class="header__button button_settings">${this.iconSettings}</button></a>`;
     const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
     const logOutButtonMain = '<button class="header__button button_authorization">LOG OUT</button>';
     const logInButtonMain = '<button class="header__button button_authorization">LOG IN</button>';
@@ -105,7 +101,6 @@ export default class Header {
         ${gamesButton}
         ${dictionaryButton}
         ${statisticsButton}
-        ${settingsButton}
         ${teamButton}
         </div>`;
 
