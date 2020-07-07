@@ -1,3 +1,5 @@
+@import '../abstract/consts';
+
 .savannah-html {
   .results {
     position: absolute;
@@ -29,7 +31,8 @@
 
   .results__knowledge {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin: 10px 100px 0;
 
     .results__mistakes, .results__correct {
       flex: 0 0 45%;
@@ -92,21 +95,21 @@
     align-items: center;
 
     .results__button {
-        width: 284px;
-        height: 54px;
-        font-size: 2.4rem;
+        width: 230px;
+        height: 45px;
+        font-size: 2.1rem;
         margin: 5px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: $color-button-text;
+        color: $color-text-dark;
         background-color: $color-button-background;
         border-radius: $button-border-radius;
         border: none;
     }
 
     .results__button:hover {
-        border: 1px solid white;
+        filter: brightness(110%);
     }
   }
 
