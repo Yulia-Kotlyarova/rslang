@@ -1,0 +1,55 @@
+@import "../abstract/constants";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: $font-primary;
+  font-size: $font-size-base;
+}
+
+.button {
+  display: inline-block;
+  padding: $button-padding;
+  border: none;
+  border-radius: $button-border-radius;
+  color: $font-color-1;
+  font-family: $font-primary;
+  text-align: center;
+  font-size: $font-size-base;
+  background: $button-background;
+  cursor: pointer;
+
+  &:hover {
+    background: $button-background-hover;
+  }
+
+  &_results {
+    margin-right: $button-results-margin-right;
+    border: $button-results-border;
+    color: $button-results-color;
+    background: transparent;
+
+    &:hover {
+      background: $button-results-hover-background;
+    }
+  }
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

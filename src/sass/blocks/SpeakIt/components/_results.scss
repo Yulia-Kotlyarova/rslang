@@ -1,0 +1,84 @@
+@import "../abstract/constants";
+
+.results {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: $start-screen-padding;
+  font-size: $font-size-base * 0.9;
+  text-align: center;
+  background-image: url(./img/bg.png);
+  background-size: cover;
+
+  &_hide {
+    display: none;
+  }
+
+  &__cards {
+    margin-bottom: $results-margin-bottom;
+  }
+
+  &-controls {
+    display: flex;
+    margin-bottom: $results-controls-margin-bottom;
+  }
+}
+
+.field {
+  width: 100%;
+  max-width: $field-max-width;
+  min-height: $field-min-height;
+  margin-bottom: 30px;
+  padding: $field-padding;
+  border-radius: $field-border-radius;
+  box-shadow: $field-box-shadow;
+  text-align: left;
+  background-color: $field-background-color;
+
+  &__text {
+    margin: $field-text-margin;
+    font-size: $font-size-base * 0.75;
+  }
+
+  &__count {
+    margin-left: $field-count-margin-left;
+    padding: $field-count-padding;
+    border-radius: $field-count-border-radius;
+    color: $field-count-color;
+
+    &_errors {
+      background-color: $field-errors-background-color;
+    }
+
+    &_correct {
+      background-color: $field-correct-background-color;
+    }
+  }
+}
+
+.games-played {
+  &__title {
+    font-size: $font-size-base * 1.5;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  &__list {
+    list-style-type: decimal;
+  }
+
+  &__game {
+    margin-bottom: 15px;
+
+    &_hide {
+      display: none;
+    }
+  }
+}
