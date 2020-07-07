@@ -159,8 +159,13 @@ $button-border-radius-big: 25px;
 
   .button_language {
     color: $color-text;
-    font-size: 25px;
+    font-size: 1.6em;
     font-weight: 900;
+  }
+
+  .button_language:hover {
+    color: $color-button-svg-hover;
+    font-size: 1.8em;
   }
 
   .header__dropdown {
