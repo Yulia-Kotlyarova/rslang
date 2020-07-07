@@ -175,7 +175,12 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    const word = await Repository.getOneUserWord(wordId);
+    let word = await Repository.getOneUserWord(wordId);
+
+    if (!word || !word.userWord) {
+      await Repository.createUserWord(wordId);
+      word = await Repository.getOneUserWord(wordId);
+    }
 
     const updates = {};
     updates.difficulty = word.userWord && word.userWord.difficulty ? word.userWord.difficulty : 'default';

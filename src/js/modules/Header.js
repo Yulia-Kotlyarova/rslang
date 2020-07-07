@@ -15,11 +15,11 @@ export default class Header {
 
     this.mainURL = './index.html';
     this.promoURL = './promo.html';
-    this.statisticsURL = './statistics.html'; // надо добавить страницу
+    this.statisticsURL = './statistics.html';
     this.dictionaryURL = './dictionary.html';
     this.teamURL = './team.html';
 
-    this.allGamesURL = './games.html'; // добавим страницу, если время останется
+    this.allGamesURL = './games.html'; // TODO: добавим страницу, если время останется
     this.gameSavannaURL = './savannah.html';
     this.gameAudioCallURL = './audioCall.html';
     this.gameSprintURL = './sprint.html';
@@ -32,6 +32,7 @@ export default class Header {
     this.checkUserAuthorization();
     this.renderHeader();
     Header.setEventListeners();
+    localStorage.setItem('app-language', 'en');
     document.body.classList.remove('hidden-for-header-render');
   }
 
@@ -45,10 +46,34 @@ export default class Header {
   static setEventListeners() {
     const authorizationButton = document.querySelector('.button_authorization');
     authorizationButton.addEventListener('click', () => Header.signOfUser());
+
+    const languageButton = document.querySelector('.button_language');
+    languageButton.addEventListener('click', this.changeLanguage);
   }
 
   static signOfUser() {
     Authorization.logOut();
+  }
+
+  static changeLanguage() {
+    const currentLanguage = localStorage.getItem('app-language');
+    const languageButton = document.querySelector('.button_language');
+
+    let newLanguage;
+    if (currentLanguage === 'en') {
+      newLanguage = 'ru';
+    } else if (currentLanguage === 'ru') {
+      newLanguage = 'en';
+    }
+
+    localStorage.setItem('app-language', newLanguage);
+    languageButton.innerText = newLanguage.toUpperCase();
+
+    const elementsToChange = document.querySelectorAll(`[data-${newLanguage}]`);
+    elementsToChange.forEach((elementToChange) => {
+      const element = elementToChange;
+      element.innerText = element.dataset[newLanguage];
+    });
   }
 
   renderHeader() {
@@ -78,15 +103,16 @@ export default class Header {
     const dictionaryButton = `<div class="header__dropdown">
     <a href=${this.dictionaryURL}><button class="header__button button_dictionary">${this.iconDictionary}</button></a>
     <div class="dropdown-content">
-        <a href="#">Все слова</a>
-        <a href="#">Трудные слова</a>
-        <a href="#">Удаленные слова</a>
+        <a href="/dictionary#words-all" data-en="All words" data-ru="Все слова">All words</a> 
+        <a href="/dictionary#words-hard" data-en="Hard words" data-ru="Трудные слова">Hard words</a>
+        <a href="/dictionary#words-deleted" data-en="Deleted words" data-ru="Удаленные слова">Deleted words</a>
     </div>
     </div>`;
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
     const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
-    const logOutButtonMain = '<button class="header__button button_authorization">LOG OUT</button>';
-    const logInButtonMain = '<button class="header__button button_authorization">LOG IN</button>';
+    const languageButton = '<button class="header__button button_language">EN</button>';
+    const logOutButtonMain = '<button class="header__button button_authorization" data-en="LOG OUT" data-ru="ВЫЙТИ">LOG OUT</button>';
+    const logInButtonMain = '<button class="header__button button_authorization" data-en="LOG IN" data-ru="ВОЙТИ">LOG IN</button>';
     const userLoginName = `<div class="header__username"><span>${this.userLoginName}</span></div>`;
 
     let userAutherizationArea;
@@ -102,6 +128,7 @@ export default class Header {
         ${dictionaryButton}
         ${statisticsButton}
         ${teamButton}
+        ${languageButton}
         </div>`;
 
     const headerContainer = `<nav class="navbar navbar-expand-lg navbar-light bg-light app-header__container">
