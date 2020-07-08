@@ -1,50 +1,33 @@
+import '@fortawesome/fontawesome-free/js/all.min';
 import '../../../sass/styles.scss';
-import openModal from './sprintStat';
-import './sprintStart';
-import './sprintGame';
-import './SprintBackend';
+import startTimer from './sprintStart';
+import { init } from './sprintGame';
+import { getWordsFromBackend } from './SprintBackend';
 
-const FULL_DASH_ARRAY = 283;
-const WARNING_THRESHOLD = 10;
-const ALERT_THRESHOLD = 5;
-let runItOnce = true;
-
-const COLOR_CODES = {
+const FULL_DASH_ARRAY2 = 283;
+const COLOR_CODES2 = {
   info: {
     color: 'green',
   },
-  warning: {
-    color: 'orange',
-    threshold: WARNING_THRESHOLD,
-  },
-  alert: {
-    color: 'red',
-    threshold: ALERT_THRESHOLD,
-  },
+
 };
 
-const TIME_LIMIT = 30;
+const remainingPathColor2 = COLOR_CODES2.info.color;
+
+const TIME_LIMIT = 5;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
-const remainingPathColor = COLOR_CODES.info.color;
 
-function onTimesUp() {
+function onTimesUp2() {
   clearInterval(timerInterval);
+  setTimeout(() => {
+    startTimer();
+    init();
+  }, 1000);
 }
 
-function play(song) {
-  const audio = new Audio(song);
-  audio.play();
-}
-
-function uclicked(song) {
-  const audio = new Audio(song);
-  audio.play();
-}
-window.uclicked = uclicked;
-
-function formatTime(time) {
+function formatTime2(time) {
   let seconds = time % 60;
   if (seconds < 10) {
     seconds = `0${seconds}`;
@@ -52,72 +35,49 @@ function formatTime(time) {
   return `${seconds}`;
 }
 
-function calculateTimeFraction() {
+function calculateTimeFraction2() {
   const rawTimeFraction = timeLeft / TIME_LIMIT;
   return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
 }
 
-function setCircleDasharray() {
+function setCircleDasharray2() {
   const circleDasharray = `${(
-    calculateTimeFraction() * FULL_DASH_ARRAY
+    calculateTimeFraction2() * FULL_DASH_ARRAY2
   ).toFixed(0)} 283`;
   document
-    .getElementById('base-timer-path-remaining')
+    .getElementById('base-timer-path-remaining2')
     .setAttribute('stroke-dasharray', circleDasharray);
 }
 
-function setRemainingPathColor() {
-  const { alert, warning, info } = COLOR_CODES;
-  if (timeLeft <= alert.threshold) {
-    document
-      .getElementById('base-timer-path-remaining')
-      .classList.remove(warning.color);
-    document
-      .getElementById('base-timer-path-remaining')
-      .classList.add(alert.color);
-  } else if (timeLeft <= warning.threshold) {
-    document
-      .getElementById('base-timer-path-remaining')
-      .classList.remove(info.color);
-    document
-      .getElementById('base-timer-path-remaining')
-      .classList.add(warning.color);
-  }
-}
-
-export default function startTimer() {
-  timerInterval = setInterval(() => {
-    const timePassed2 = timePassed + 1;
-    timePassed = timePassed2;
-    timeLeft = TIME_LIMIT - timePassed;
-    document.getElementById('base-timer-label').innerHTML = formatTime(
-      timeLeft,
-    );
-    setCircleDasharray();
-    setRemainingPathColor(timeLeft);
-    if (timeLeft === 0) {
-      play('end.wav');
-      onTimesUp();
-      openModal();
-    }
-    if (timeLeft < 5) {
-      if (runItOnce) {
-        play('clock.wav');
-        runItOnce = false;
+function startTimer2() {
+  document.querySelector('.score__score2').addEventListener('click', () => {
+    timerInterval = setInterval(() => {
+      timePassed += 1;
+      timeLeft = TIME_LIMIT - timePassed;
+      document.querySelector('.startText').textContent = 'Приготовьтесь';
+      document.querySelector('.gameLevel').style.display = 'none';
+      document.getElementById('base-timer-label2').innerHTML = formatTime2(
+        timeLeft,
+      );
+      setCircleDasharray2();
+      if (timeLeft === 0) {
+        onTimesUp2();
+        document.querySelector('.wrapperSprint').style.display = 'flex';
+        getWordsFromBackend(document.querySelector('.levelSelector').value);
       }
-    }
-  }, 1000);
+    }, 1000);
+  });
 }
 
-document.getElementById('app').innerHTML = `
-<div class="base-timer">
-  <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <g class="base-timer__circle">
-      <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+document.getElementById('app2').innerHTML = `
+<div class="base-timer2">
+  <svg class="base-timer__svg2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <g class="base-timer__circle2">
+      <circle class="base-timer__path-elapsed2" cx="50" cy="50" r="45"></circle>
       <path
-        id="base-timer-path-remaining"
+        id="base-timer-path-remaining2"
         stroke-dasharray="283"
-        class="base-timer__path-remaining ${remainingPathColor}"
+        class="base-timer__path-remaining2 ${remainingPathColor2}"
         d="
           M 50, 50
           m -45, 0
@@ -127,11 +87,12 @@ document.getElementById('app').innerHTML = `
       ></path>
     </g>
   </svg>
-  <span id="base-timer-label" class="base-timer__label">${formatTime(
+  <span id="base-timer-label2" class="base-timer__label2">${formatTime2(
     timeLeft,
   )}</span>
 </div>
 `;
-setTimeout(() => {
-  startTimer();
-}, 6000);
+
+window.onload = () => {
+  startTimer2();
+};

@@ -1,0 +1,46 @@
+@import "../abstract/constants";
+
+.start-screen {
+  z-index: 1030;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: $start-screen-padding;
+  text-align: center;
+  background-image: url(./img/bg.png);
+  background-size: cover;
+
+  &_hide {
+    display: none;
+    visibility: hidden;
+  }
+
+  &__title {
+    margin-bottom: $start-screen-indent;
+    color: $font-color-2;
+    font-size: $title-font-size;
+    text-transform: uppercase;
+    letter-spacing: $title-letter-spacing;
+  }
+
+  &__intro {
+    max-width: $start-screen-intro-width;
+    margin: $start-screen-intro-margin;
+    color: $font-color-1;
+    font-size: $intro-font-size;
+    line-height: $intro-line-height;
+    letter-spacing: $intro-letter-spacing;
+  }
+
+  &__button {
+    min-width: $start-screen-button-width;
+    margin: $start-screen-button-margin;
+    font-size: $font-size-base * 1.5;
+  }
+}

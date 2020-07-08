@@ -35,4 +35,11 @@
     background-color: #FFFFFF;
     cursor: pointer;
   }
+
+  @media (max-width: 411px) {
+    .control-panel__navigation {
+      flex-direction: column;
+      font-size: 1.5rem;
+    }
+  }
 }

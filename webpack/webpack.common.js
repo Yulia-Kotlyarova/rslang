@@ -23,7 +23,6 @@ module.exports = {
     savannah: path.resolve(__dirname, '../src/js/blocks/Savannah/savannah.js'),
     speakIt: path.resolve(__dirname, '../src/js/blocks/SpeakIt/speakIt.js'),
     sprint: path.resolve(__dirname, '../src/js/blocks/Sprint/sprint.js'),
-    scramble: path.resolve(__dirname, '../src/js/blocks/Scramble/scramble.js'),
     statistics: path.resolve(__dirname, '../src/js/blocks/Statistics/statistics.js'),
     team: path.resolve(__dirname, '../src/js/blocks/Team/team.js'),
   },
@@ -96,11 +95,6 @@ module.exports = {
       chunks: ['sprint'],
     }),
     new HtmlWebpackPlugin({
-      filename: '../dist/scramble.html',
-      template: path.resolve(__dirname, '../src/scramble.html'),
-      chunks: ['scramble'],
-    }),
-    new HtmlWebpackPlugin({
       filename: '../dist/statistics.html',
       template: path.resolve(__dirname, '../src/statistics.html'),
       chunks: ['statistics'],
@@ -112,9 +106,11 @@ module.exports = {
     }),
 
     new CopyPlugin([
+      { from: 'src/img', to: 'img' },
       { from: 'src/favicon.ico', to: 'favicon.ico' },
       { from: 'src/icons', to: 'icons' },
       { from: 'src/assets/', to: '' },
+      { from: 'src/audio/', to: 'audio' },
     ]),
   ],
 };

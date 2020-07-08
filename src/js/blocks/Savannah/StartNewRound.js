@@ -21,7 +21,7 @@ export default class StartNewRound {
   }
 
   returnActiveWordPosition() {
-    this.activeWordContainer.style.top = '-50px';
+    this.activeWordContainer.style.top = '-10px';
   }
 
   distributeAnswers() {
@@ -45,7 +45,7 @@ export default class StartNewRound {
 
   moveDownActiveWord() {
     const fromTop = this.activeWordContainer.offsetTop;
-    if (fromTop < this.wordLimit + 50 && !this.savannahState.isAnswered) {
+    if (fromTop < this.wordLimit + 100 && !this.savannahState.isAnswered) {
       this.activeWordContainer.style.top = `${fromTop + 1}px`;
     } else {
       this.savannahState.isAnswered = true;

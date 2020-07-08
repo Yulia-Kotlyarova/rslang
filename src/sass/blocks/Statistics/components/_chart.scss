@@ -1,0 +1,156 @@
+.statistics {
+
+  .statistics__main__chart {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .statisctics__chart-with-legend__container {
+    display: flex;
+    align-items: center;
+  }
+
+  .statisctics__chart__container {
+    position: relative;
+  }
+
+  .statistics__chart {
+    width: $chart-width-height-desktop;
+    height: $chart-width-height-desktop;
+  }
+
+  .legend-percentage__container {
+    height: $chart-width-height-desktop / 5 * 6;
+    width: 20px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .legend-percentage {
+    height: $chart-width-height-desktop / 5;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1.4rem;
+    color: $color-text-dark;
+  }
+
+  .legend-words__container {
+    position: absolute;
+    bottom: -20px;
+    width: $chart-width-height-desktop;
+    display: flex;
+  }
+
+  .legend-words {
+    flex: 1 1 20%;
+    display: flex;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: $color-text-dark;
+  }
+
+  .chart-range__container {
+    width: $chart-width-height-desktop;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .chart-range {
+    flex: 0 0 80%;
+  }
+
+  .chart-range-refresh {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    font-size: 2rem;
+    background-color: none;
+    color: $color-chart-stroke;
+  }
+
+  .chart-range-refresh:focus {
+    box-shadow: none;
+  }
+
+  .chart-range-refresh:hover {
+    transition: all ease 0.5s;
+    transform: rotate(360deg);
+  }
+
+  .chart__number-of-words {
+    position: absolute;
+    top: $chart-width-height-desktop / 2 - 15px;
+    left: $chart-width-height-desktop / 2 - 80px;
+    font-size: 2rem;
+    color: $color-chart-stroke;
+  }
+
+  .chart__circle {
+    position: absolute;
+    bottom: 0 - $chart-cicle-width-and-height / 2;
+    left: 0 - $chart-cicle-width-and-height / 2;
+    width: $chart-cicle-width-and-height;
+    height: $chart-cicle-width-and-height;
+    background-color: $color-chart-stroke;
+    border-radius: $chart-cicle-width-and-height / 2;
+  }
+
+  .percentage-of-words {
+    color: $color-text-dark;
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 500px) {
+    .statistics__main__chart {
+      padding: 15px;
+    }
+
+    .statistics__chart {
+      width: $chart-width-height-mobile;
+      height: $chart-width-height-mobile;
+    }
+
+    .legend-percentage__container {
+      height: $chart-width-height-mobile / 5 * 6;
+      width: 20px;
+      margin-right: 10px;
+    }
+
+    .legend-percentage {
+      height: $chart-width-height-mobile / 5;
+      font-size: 1.2rem;
+    }
+
+    .legend-words__container {
+      width: $chart-width-height-mobile;
+    }
+
+    .legend-words {
+      font-size: 1.2rem;
+    }
+
+    .chart-range__container {
+      width: $chart-width-height-mobile;
+    }
+
+    .chart-range-refresh {
+      width: 30px;
+      height: 30px;
+      margin-left: 5px;
+      font-size: 1.5rem;
+    }
+
+    .chart__number-of-words {
+      top: $chart-width-height-mobile / 2 - 15px;
+      left: $chart-width-height-mobile / 2 - 80px;
+      font-size: 1.5rem;
+    }
+  }
+}

@@ -67,11 +67,23 @@ class Authorization {
       body: JSON.stringify(user),
     });
 
-    if (!rawResponse.ok && rawResponse.status !== 422) {
-      throw new Error(rawResponse.statusText);
+    const contentType = rawResponse.headers.get('content-type');
+    let contentText;
+    let content;
+
+    if (contentType.startsWith('text')) {
+      contentText = await rawResponse.text();
+    } else if (contentType.startsWith('application/json')) {
+      content = await rawResponse.json();
     }
 
-    const content = await rawResponse.json();
+    if (!rawResponse.ok && rawResponse.status !== 422) {
+      throw new Error(`${rawResponse.statusText}. ${contentText || ''}`);
+    }
+
+    if (!content) {
+      throw new Error('Can not sign up.');
+    }
 
     if (content.error) {
       throw new Error(content.error.errors[0].message);

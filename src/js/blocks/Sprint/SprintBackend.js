@@ -1,15 +1,17 @@
-const wordArray1 = [];
-const wordArray2 = [];
-const wordArray3 = [];
-export { wordArray1, wordArray2, wordArray3 };
+const wordArrayWords = [];
+const wordArrayTranslation = [];
+const wordArrayAudios = [];
+export { wordArrayWords, wordArrayTranslation, wordArrayAudios };
 
 const fetchWords = (api) => {
   fetch(api)
     .then((res) => res.json())
     .then((data) => {
-      data.forEach((val) => wordArray1.push(val.word));
-      data.forEach((val) => wordArray2.push(val.wordTranslate));
-      data.forEach((val) => wordArray3.push(val.audio));
+      data.forEach((val) => {
+        wordArrayWords.push(val.word);
+        wordArrayTranslation.push(val.wordTranslate);
+        wordArrayAudios.push(val.audio);
+      });
     })
     .catch(() => {
     });
@@ -21,7 +23,3 @@ export const getWordsFromBackend = (level) => {
     fetchWords(api);
   }
 };
-
-console.log(wordArray1);
-console.log(wordArray2);
-console.log(wordArray3);

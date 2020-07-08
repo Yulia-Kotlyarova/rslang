@@ -1,0 +1,38 @@
+.card-wrapper {
+  position: relative;
+  text-align: center;
+}
+
+.word-settings {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+.word-difficulty-level {
+  display: flex;
+  flex-direction: column;
+}
+
+.next-card-btn {
+  position: absolute;
+  top: 0;
+  right: 10%;
+}
+
+.warning-window {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+}
+
+.hide-window {
+  left: -10000px;
+}

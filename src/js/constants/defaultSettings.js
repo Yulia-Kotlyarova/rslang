@@ -14,6 +14,8 @@ const defaultSettings = {
   isDifficultButtonVisible: true,
   areAdditionalButtonsVisible: true,
 
+  isSoundAutoPlay: true,
+
   wordsToStudy: 'mixed',
 };
 
