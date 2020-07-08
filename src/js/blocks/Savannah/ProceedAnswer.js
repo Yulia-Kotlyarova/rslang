@@ -1,4 +1,6 @@
 import Results from './Results';
+import Repository from '../../modules/Repository';
+
 import { heartFill, heartStroke } from './consts';
 import { savannahSettings } from './appState';
 
@@ -49,6 +51,10 @@ export default class ProceedAnswer {
 
   catchCorrectAnswer(answer) {
     answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
+
+    const wordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id;
+    Repository.saveWordResult({ wordId, result: '1' }); // без await: тут не нужно ждать записи, игра должна продолжаться
+
     if (savannahSettings.soundOn) {
       const sound = '/src/audio/blocks/Savannah/answer-correct.mp3';
       ProceedAnswer.audioPlay(sound);

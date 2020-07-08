@@ -1,0 +1,120 @@
+$font-size-base: 22px;
+$font-primary: Roboto, sans-serif;
+$font-color-1: #FFFFFF;
+$font-color-2: #6CFDDE;
+
+$background-color-1: #FFFFFF;
+
+$container-max-width: 1140px;
+
+$button-padding: 15px 25px;
+$button-border-radius: 4px;
+
+$title-letter-spacing: 13px;
+$title-font-size: $font-size-base * 2;
+
+$intro-font-size: $font-size-base * 0.85;
+$intro-line-height: 1.5;
+$intro-letter-spacing: 2px;
+
+$button-background: #00C49D;
+$button-background-hover: #00C2B2;
+$button-results-margin-right: 40px;
+$button-results-border: 1px solid rgba(14, 30, 37, .7);
+$button-results-color: rgba(14, 30, 37, .7);
+$button-results-hover-background: rgba(60, 70, 97, .1);
+
+$start-screen-padding: 10px;
+$start-screen-indent: 40px;
+$start-screen-intro-width: 600px;
+$start-screen-intro-margin: 0 auto 60px;
+$start-screen-button-width: 200px;
+$start-screen-button-margin: 0 auto;
+
+$header-height: 40px;
+$header-margin: 30px auto 50px;
+
+$levels-padding: 15px 15px;
+$level-width: 10px;
+$level-height: 10px;
+$level-margin-top: -10px;
+$level-margin-right: 10px;
+$level-padding: 10px;
+$level-border-radius: 50%;
+$level-shadow: 0 0 0 2px #FFFFFF;
+$level-background: #00C49D radial-gradient(#00C49D 0%, #00C49D 50%, #FFFFFF 50%, #FFFFFF 100%);
+$level-hover-shadow: inset 0 0 0 2px #FFFFFF, inset 0 0 0 3px #00C49D;
+$level-active-shadow: 0 0 0 2px #00C49D, inset 0 0 0 2px #FFFFFF, inset 0 0 0 3px #00C49D;
+$level-line-top: 9px;
+$level-line-right: 5px;
+$level-line-width: 30px;
+$level-line-height: 2px;
+$level-line-background: #00C49D;
+
+$score-height: 40px;
+
+$display-image-width: 390px;
+$display-image-height: 260px;
+$display-image-margin-bottom: 10px;
+$display-image-border-radius: 5px;
+$display-image-shadow: 5px 5px 25px rgba(118,118,118,.25);
+$display-translation-color: rgba(14, 30, 37, .7);
+$display-translation-min-height: 44px;
+$display-translation-indent: 20px;
+$display-input-max-width: 1140px;
+$display-input-height: 50px;
+$display-input-margin: 0 auto 14px;
+$display-input-padding: 5px 35px;
+$display-input-border: 0;
+$display-input-border-bottom: 1px solid rgb(206, 212, 218);
+$display-input-color: rgba(14, 30, 37, .7);
+$display-input-font-size: 25px;
+$display-input-line-height: 40px;
+$display-input-background-position: 10px 15px;
+$display-input-background-size: 20px;
+
+$cards-indent: 20px;
+$card-min-width: 200px;
+$card-min-height: 70px;
+$card-margin: 10px;
+$card-padding: 10px 10px 10px 40px;
+$card-border: 1px solid #CED4DA;
+$card-border-radius: 5px;
+$card-line-height: 1.4;
+$card-hover-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 2px 4px 0 rgba(14,30,37,.12);
+$card-active-border: 1px solid #00AD9F;
+$card-active-background: rgba(0, 173, 159, .15);
+$audio-icon-top: 18px;
+$audio-icon-left: 10px;
+$audio-icon-width: 34px;
+$audio-icon-height: 34px;
+$audio-icon-color: #5F9EA0;
+$audio-icon-font-size: 18px;
+$card-text-margin: 0;
+$card-text-padding: 0 5px;
+$card-text-color: #0E1E25;
+$card-result-min-height: 35px;
+$card-result-margin: 0;
+$card-result-padding: 0 0 0 50px;
+$card-result-border: 0;
+$audio-icon-result-top: 1px;
+$audio-icon-result-left: 9px;
+
+$controls-button-indent: 20px;
+
+$results-margin-bottom: 40px;
+$results-controls-margin-bottom: 10px;
+
+$field-max-width: 780px;
+$field-min-height: 600px;
+$field-padding: 40px 100px;
+$field-border-radius: 8px;
+$field-box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 2px 4px 0 rgba(14,30,37,.12);
+$field-background-color: #FFFFFF;
+$field-text-margin: 20px 0;
+$field-count-margin-left: 5px;
+$field-count-padding: 0 14px;
+$field-count-border-radius: 21px;
+$field-count-color: #FFFFFF;
+$field-errors-background-color: #DA5B4C;
+$field-correct-background-color: #01AF61;

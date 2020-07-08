@@ -1,12 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="statistics">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
         <title>Statistics | RS Lang</title>
     </head>
-    <body>
-        <h1>Statistics</h1>
+    <body class="hidden-for-header-render statistic-background">
+        <div class="statistics__main">
+            <div class="statistics__main__chart">
+                <div class="statisctics__chart-with-legend__container">
+                    <div class="legend-percentage__container">
+                        <div class="legend-percentage">100%</div>
+                        <div class="legend-percentage">80%</div>
+                        <div class="legend-percentage">60%</div>
+                        <div class="legend-percentage">40%</div>
+                        <div class="legend-percentage">20%</div>
+                        <div class="legend-percentage">0%</div>
+                    </div>
+                    <div class="statisctics__chart__container">
+                        <canvas class="statistics__chart"></canvas>
+                        <div class="legend-words__container">
+                            <div class="legend-words">1000</div>
+                            <div class="legend-words">2000</div>
+                            <div class="legend-words">3000</div>
+                            <div class="legend-words">4000</div>
+                            <div class="legend-words">5000</div>
+                        </div>
+                        <div class="chart__number-of-words"></div>
+                        <div class="chart__circle"></div>
+                    </div>
+                </div>
+                <form>
+                    <div class="form-group chart-range__container">
+                        <input type="range" min="0" max="46" value="0" class="form-control-range chart-range" id="formControlRange">
+                        <button type="button" class="btn chart-range-refresh"><i class="fas fa-redo"></i></button>
+                    </div>
+
+                </form>
+                <div class="percentage-of-words"></div>
+            </div>
+            <div class="statistics__main__calendar">
+                <div class="calendar__title">Daily results</div>
+                <div class=" scrollbar scrollbar-primary">
+                    <div class="calendar__container"></div>
+                </div>
+                <button type="button" class="btn btn-secondary statistics-today-button">Show statistics for today</button>
+            </div>
+        </div>
     </body>
 </html>

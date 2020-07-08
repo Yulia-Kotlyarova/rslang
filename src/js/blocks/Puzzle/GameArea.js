@@ -4,9 +4,9 @@ import {
 } from './appState';
 import StartNewGame from './startNewGame';
 import Prompts from './Prompts';
-import Navigation from './Navigation';
+import getTodayShort from '../../helpers';
+import Repository from '../../modules/Repository';
 
-const navigation = new Navigation();
 const prompts = new Prompts();
 export class GameArea {
   constructor(puzzle, puzzleMatchingPartsWidth) {
@@ -18,6 +18,7 @@ export class GameArea {
     this.puzzle = document.querySelector('.puzzle');
     this.resultsButtonContinue = document.querySelector('.button__continue-results');
     this.results = document.querySelector('.results');
+    this.body = document.querySelector('body');
 
     this.puzzleMatchingPartsWidth = puzzleMatchingPartsWidth;
     this.breakPoints = [];
@@ -63,6 +64,7 @@ export class GameArea {
     this.buttonDontKnow.addEventListener('click', () => this.helpPlayerHePressedDontKnow());
     this.gameLine.addEventListener('mousedown', () => GameArea.removeOverlays());
     this.resultsButtonContinue.addEventListener('click', async () => {
+      this.body.classList.remove('scroll-not');
       this.results.classList.add('display-none');
       await this.continueGame();
     });
@@ -137,6 +139,7 @@ export class GameArea {
 
   replacePuzzleElement(event) {
     GameArea.removeOverlays();
+
     if (event.target.closest('.puzzle__element')) {
       this.currentPuzzleElement = event.target.closest('.puzzle__element');
       let targetLine;
@@ -150,6 +153,7 @@ export class GameArea {
   }
 
   checkResult() {
+    GameArea.removeOverlays();
     const mainPuzzleLine = document.getElementById(`line_${gameData.activePhrase}`);
     const testPuzzleLine = document.getElementById(`game_line_${gameData.activePhrase}`);
     const puzzlesInMainLine = mainPuzzleLine.querySelectorAll('.puzzle__element');
@@ -179,6 +183,7 @@ export class GameArea {
 
     if (correctWords === puzzlesInMainLine.length + puzzleInTestLine.length) {
       gameData.gameResultsCorrect.push(gameData.activePhrase);
+      GameArea.updateStatistics(1, 0);
       GameArea.addShadowToLineNumber('correct');
       this.setControlButtons('continue');
       this.removePuzzlesToMainLine();
@@ -215,7 +220,7 @@ export class GameArea {
       this.setControlButtons('check');
       this.addPuzzlesEventListeners();
       if (promptsSettings.autoAudioPlay) {
-        prompts.playPhraseAudio();
+        Prompts.playPhraseAudio();
       }
       prompts.setTranslationText();
     } else if (painting.classList.contains('display-none')) {
@@ -224,11 +229,9 @@ export class GameArea {
       prompts.clearTranslationText();
       this.setControlButtons('continue+results');
     } else {
-      const prevLevel = gameData.level;
       GameArea.defineNextlevelAndPage();
       this.setControlButtons('none');
       await StartNewGame.startGame();
-      navigation.updatetNavigationFields(prevLevel);
     }
   }
 
@@ -276,8 +279,24 @@ export class GameArea {
   async helpPlayerHePressedDontKnow() {
     this.removePuzzlesToMainLine();
     gameData.gameResultsWrong.push(gameData.activePhrase);
+    GameArea.updateStatistics(0, 1);
     GameArea.addShadowToLineNumber('wrong');
     await this.continueGame();
+  }
+
+  static async updateStatistics(correct, wrong) {
+    const puzzleStatistic = JSON.parse(localStorage.getItem('puzzleStatistic'));
+    if (puzzleStatistic[`${gameData.level}.${gameData.page}`]) {
+      let [correctAnswers, wrongAnswers, date] = puzzleStatistic[`${gameData.level}.${gameData.page}`];
+      correctAnswers += correct;
+      wrongAnswers += wrong;
+      date = getTodayShort();
+      puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correctAnswers, wrongAnswers, date];
+    } else {
+      puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correct, wrong, getTodayShort()];
+    }
+    localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
+    Repository.saveGameResult('puzzle', null, null, puzzleStatistic);
   }
 
   removePuzzlesToMainLine() {

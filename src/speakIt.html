@@ -1,12 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="speak-it">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Speak It | RS Lang</title>
+        <title>Speak It</title>
     </head>
-    <body>
-        <h1>Speak It</h1>
+    <body class="hidden-for-header-render speak-it-background">
+        <div class="start-screen">
+            <h1 class="start-screen__title">Speakit</h1>
+            <p class="start-screen__intro">
+                Click on the words to hear them sound.
+                <br>
+                Click on the button and speak the words into the microphone.
+            </p>
+            <button class="button start-screen__button">Start</button>
+        </div>
+        <div class="container">
+            <header class="header">
+                <ul class="levels">
+                    <li class="levels__level" data-level="0"></li>
+                    <li class="levels__level" data-level="1"></li>
+                    <li class="levels__level" data-level="2"></li>
+                    <li class="levels__level" data-level="3"></li>
+                    <li class="levels__level" data-level="4"></li>
+                    <li class="levels__level" data-level="5"></li>
+                </ul>
+                <div class="score"></div>
+            </header>
+            <main class="main">
+                <div class="display">
+                    <img class="display__image" src="img/blank.jpg" alt="">
+                    <p class="display__translation"></p>
+                    <input class="display__input display__input_hide" type="text" readonly="">
+                </div>
+                <div class="cards"></div>
+                <div class="controls">
+                    <button class="button controls__restart">
+                        Restart
+                    </button>
+                    <button class="button controls__speak">
+                        Speak please
+                    </button>
+                    <button class="button controls__result">
+                        Results
+                    </button>
+                </div>
+            </main>
+        </div>
+        <div class="results results_hide">
+            <div class="field">
+                <p class="field__text">
+                    Ошибок
+                    <span class="field__count field__count_errors"></span>
+                </p>
+                <div class="results__cards results__cards_errors">
+                </div>
+                <p class="field__text">Знаю
+                    <span class="field__count field__count_correct"></span>
+                </p>
+                <div class="results__cards results__cards_success">
+                </div>
+                <div class="results-controls">
+                    <button class="button button_return button_results">
+                        Return
+                    </button>
+                    <button class="button button_new-game button_results">
+                        New game
+                    </button>
+                </div>
+            </div>
+            
+            <div class="field games-played">
+                <h3 class="games-played__title">Games played</h3>
+                <div class="games-played__game games-played__game_hide"></div>
+                <ol class="games-played__list"></ol>
+            </div>
+        </div>
     </body>
 </html>
