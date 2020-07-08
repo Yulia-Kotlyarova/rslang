@@ -6,7 +6,41 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dictionary | RS Lang</title>
     </head>
-    <body class = "dictionary-background">
-        <h1>Dictionary</h1>
+    <body class = "hidden-for-header-render dictionary-background">
+        <div class="dictionary container">
+            <ul class="nav nav-pills my-5 dictionary__nav" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="dictionary-tab__user" data-toggle="pill" href="#words-user-tab" role="tab" aria-controls="words-user-tab" aria-selected="false" data-en="Words in progress" data-ru="Изучаемые слова">Words in progress</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="dictionary-tab__hard" data-toggle="pill" href="#words-hard-tab" role="tab" aria-controls="words-hard-tab" aria-selected="false" data-en="Hard words" data-ru="Трудные слова">Hard words</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="dictionary-tab__deleted" data-toggle="pill" href="#words-deleted-tab" role="tab" aria-controls="words-deleted-tab" aria-selected="false" data-en="Deleted words" data-ru="Удаленные слова">Deleted words</a>
+                </li>
+            </ul>
+            <div class="card dictionary__container">
+                <div class="tab-content card-body">
+                    <div class="tab-pane fade" id="words-user-tab" role="tabpanel" aria-labelledby="dictionary-tab__user">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status"></div>
+                            <p data-en="Getting words..." data-ru="Получаем слова...">Getting words...</p>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="words-hard-tab" role="tabpanel" aria-labelledby="dictionary-tab__hard">
+                        <div class="text-center">
+                            <div class="spinner-border text-success" role="status"></div>
+                            <p data-en="Getting words..." data-ru="Получаем слова...">Getting words...</p>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="words-deleted-tab" role="tabpanel" aria-labelledby="dictionary-tab__deleted">
+                        <div class="text-center">
+                            <div class="spinner-border text-danger" role="status"></div>
+                            <p data-en="Getting words..." data-ru="Получаем слова...">Getting words...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

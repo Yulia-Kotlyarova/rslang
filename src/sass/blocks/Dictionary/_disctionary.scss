@@ -1,0 +1,31 @@
+.dictionary {
+  &__word-audio {
+    cursor: pointer;
+  }
+
+  &__word-restore {
+    cursor: pointer;
+  }
+
+  &__word-image {
+    max-width: 390px;
+  }
+
+  &__progress {
+    &_1 {
+      color: #FF934D;
+    }
+    &_2 {
+      color: #BED7D7;;
+    }
+    &_3 {
+      color: #8BBAC1;;
+    }
+    &_4 {
+      color: #338C99;;
+    }
+    &_5 {
+      color: #43D281;;
+    }
+  }
+}

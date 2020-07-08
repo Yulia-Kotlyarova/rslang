@@ -103,9 +103,9 @@ export default class Header {
     const dictionaryButton = `<div class="header__dropdown">
     <a href=${this.dictionaryURL}><button class="header__button button_dictionary">${this.iconDictionary}</button></a>
     <div class="dropdown-content">
-        <a href="/dictionary#words-all" data-en="All words" data-ru="Все слова">All words</a> 
-        <a href="/dictionary#words-hard" data-en="Hard words" data-ru="Трудные слова">Hard words</a>
-        <a href="/dictionary#words-deleted" data-en="Deleted words" data-ru="Удаленные слова">Deleted words</a>
+        <a href="dictionary.html#words-user" data-en="Words in progress" data-ru="Изучаемые слова">Words in progress</a> 
+        <a href="dictionary.html#words-hard" data-en="Hard words" data-ru="Трудные слова">Hard words</a>
+        <a href="dictionary.html#words-deleted" data-en="Deleted words" data-ru="Удаленные слова">Deleted words</a>
     </div>
     </div>`;
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;

@@ -1,15 +1,29 @@
+const prependZero = (number) => {
+  let temp = number;
+  if (temp < 10) {
+    temp = `0${temp}`;
+  }
+  return temp;
+};
+
 const getTodayShort = () => {
   const now = new Date();
+
   const year = now.getFullYear();
-  let month = now.getMonth() + 1;
-  if (month < 10) {
-    month = `0${month}`;
-  }
-  let date = now.getDate();
-  if (date < 10) {
-    date = `0${date}`;
-  }
+  const month = prependZero(now.getMonth() + 1);
+  const date = prependZero(now.getDate());
+
   return `${year}-${month}-${date}`;
+};
+
+export const formatDateTime = (date) => {
+  const year = date.getFullYear();
+  const month = prependZero(date.getMonth() + 1);
+  const dateDay = prependZero(date.getDate());
+  const hours = prependZero(date.getHours());
+  const minutes = prependZero(date.getMinutes());
+
+  return `${hours}:${minutes} ${dateDay}.${month}.${year}`;
 };
 
 export default getTodayShort;
