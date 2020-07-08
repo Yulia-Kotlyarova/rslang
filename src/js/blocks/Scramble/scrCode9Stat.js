@@ -1,4 +1,4 @@
-// arrayWord, arrayWordTranslate
+import Repository from '../../modules/Repository';
 
 const objForCorrectWord = {
   eng: [],
@@ -6,7 +6,6 @@ const objForCorrectWord = {
   audio: [],
 };
 
-console.log(objForCorrectWord);
 const endGame = document.querySelector('.sectionStart__closeBtn');
 const addHide = document.querySelector('.sectionStart');
 const openModal = document.querySelector('.modalScr');
@@ -32,6 +31,10 @@ const scrOpenModal = () => {
 const closeModal = () => {
   closeStat.addEventListener('click', () => {
     openModal.classList.add('modelHide');
+    Repository.updateOptionalStatistics();
+    Repository.getStatistics().then((result) => {
+      console.log(result);
+    });
   });
 };
 

@@ -9,6 +9,8 @@ import './test/scrCode6Test';
 import './test/scrCode7TestController';
 import startTest from './test/scrCode8App';
 import { finishGame } from './scrCode9Stat';
+import 'bootstrap/js/dist/collapse';
+import Header from '../../modules/Header';
 
 const playGame = () => {
   const playButton = document.querySelector('.gameStartButton');
@@ -27,6 +29,8 @@ function clickTune(song) {
 window.clickTune = clickTune;
 
 window.onload = () => {
+  const header = new Header();
+  header.run();
   startTest();
   playGame();
   hintShow();

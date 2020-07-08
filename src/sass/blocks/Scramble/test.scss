@@ -12,6 +12,32 @@
     justify-content: space-between;
     flex-direction: column;
     align-items: flex-start;
+    
+    @media screen and (min-width: 1px) and (max-width: 480px) {
+        left: 50%;
+        width: 95%;
+        padding: 10px 10px;
+        height: 60%;
+    }
+    @media screen and (min-width: 481px) and (max-width: 600px) {
+        left: 50%;
+        width: 80%;
+        padding: 10px 10px;
+        height: 60%;
+    }
+    @media screen and (min-width: 601px) and (max-width: 992px) {
+        left: 50%;
+        width: 50%;
+        padding: 10px 10px;
+        height: 65%;        
+    }
+    @media screen and (min-width: 993px) and (max-width: 1400px) {
+        left: 50%;
+        width: 50%;
+        padding: 10px 10px;
+        height: 65%;        
+    }
+    
     #score{
         margin: auto 0;
         font-size: 3rem;
@@ -22,16 +48,20 @@
         margin: 0; 
     }
     .h2 {
-        margin-bottom: -0.5rem;
+        margin-bottom: 10px;
         font-weight: 500;
         line-height: 1.2;
         color: #162032;
+        @media screen and (min-width: 1px) and (max-width: 800px) {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
     }
 
     
     #test__question{
         font-family: sans-serif;
-        font-size: 1.7rem;
+        font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1600 - 300)));
         font-weight: 700;
         color: #162032;
     }
@@ -44,12 +74,25 @@
         #btn0, #btn1, #btn2, #btn3{
             background-color: #20494C;
             width: 220px;
-            font-size: 20px;
+            font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
             color: #ffff;
             border: 1px solid #1d3c6a;
             border-radius: 50px;
-            margin: 10px 40px 10px 0px;
+            margin: 10px 30px 10px 0px;
             padding: 10px 10px;
+            
+            @media screen and (min-width: 1px) and (max-width: 480px) {
+                margin: 0px 0px 15px 0px;
+                width: 200px;
+            }
+            @media screen and (min-width: 800px) and (max-width: 600px) {
+               
+            }
+            @media screen and (min-width: 601px) and (max-width: 992px) {
+                       
+            }
+            
+            
         }
         
         #btn0:hover, #btn1:hover, #btn2:hover, #btn3:hover{
@@ -65,8 +108,13 @@
         position: absolute;
         right: 25px;
         top: 10px;
-        font-size: 2rem;
+        font-size: 10px;
         cursor: pointer;
+        @media screen and (min-width: 1px) and (max-width: 992px) {
+            right: 0px;
+            top: -10px;
+            font-size: 1.5rem;
+        }
     }
     .test__footer{
         #progress{
@@ -88,13 +136,29 @@
     top: 45%;
     left: 50%;
     transform: translate(-50%, -60%);
+    
+    @media screen and (min-width: 1px) and (max-width: 480px) {
+        width: 70%;
+        top: 40%;
+        font-weight: bold;
+    }
+    @media screen and (min-width: 481px) and (max-width: 600px) {
+            width: 50%;
+            top: 42%;
+            font-weight: bold;
+    }
+    @media screen and (min-width: 601px) and (max-width: 992px) {
+        width: 35%;
+        top: 42%;       
+        font-weight: bold; 
+    }
 
     .take__button{
        color: #162032;
        padding: 5%;
        width: 100%;
        border: none;
-       font-size: 20px;
+       font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
        box-shadow: 0 5px 25px rgba(0,0,0,.5);
        outline: none;
        text-align: center;
@@ -125,13 +189,7 @@
           height: 200px;
         }
       }
-       
-       
-       
     }
-    
-    
-    
 }
 
 
@@ -142,13 +200,27 @@
     left: 50%;
     transform: translate(-50%, -70%);
     
+    @media screen and (min-width: 1px) and (max-width: 480px) {
+        width: 70%;
+        top: 50%;
+    }
+    @media screen and (min-width: 481px) and (max-width: 600px) {
+            width: 50%;
+            top: 54%;
+    }
+    @media screen and (min-width: 601px) and (max-width: 992px) {
+        width: 35%;
+        top: 54%;
+    }
+    
+    
     .gameStart__button{
         background: #183949;
        color: #162032;
        padding: 5%;
        width: 100%;
        border: none;
-       font-size: 22px;
+       font-size: calc(14px + (20 - 14) * ((100vw - 300px) / (1600 - 300)));
        box-shadow: 0 5px 25px rgba(0,0,0,.5);
        outline: none;
        text-align: center;

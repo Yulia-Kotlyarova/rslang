@@ -2,6 +2,10 @@
     display: flex;
     width: 100%;
     height: 25%;
+    @media screen and (min-width: 1px) and (max-width: 650px) {
+      height: 20%;
+      padding: 0;
+  }
     justify-content: space-around;
     .sectionStart--div{
         --size: 20%;
@@ -11,10 +15,14 @@
         background-color: #ffff;
         border-radius: 10px;
         width: var(--size);
+        @media screen and (min-width: 1px) and (max-width: 650px) {
+          --size: 24%;
+        }
         @supports (resize: both) {
             resize: horizontal;
             overflow: auto;
         }
+       
         .text-size {
             --fontStretch: 500%;
 	        --fontSize: 1.1rem;          
@@ -48,6 +56,9 @@
     text-align: center;
     animation: blink 12s infinite;
     cursor: pointer;
+    @media screen and (min-width: 1px) and (max-width: 650px) {
+      font-size: calc(8px + 2vh);
+    }
   }
   
   @-webkit-keyframes blink {

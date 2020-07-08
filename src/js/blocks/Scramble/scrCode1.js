@@ -68,7 +68,7 @@ export const scrambleGameFirst = () => {
         counterContainer.classList.remove('hidden');
         setTimeout(() => {
           updateScore();
-        }, 1000);
+        }, 700);
       } else {
         clickTune('error.wav');
         scrambleMsg.innerHTML = `Почти угадал, попробуй еще раз "${randWords.join('')}"`;
