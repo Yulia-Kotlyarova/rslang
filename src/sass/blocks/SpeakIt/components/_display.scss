@@ -1,0 +1,51 @@
+@import "../abstract/constants";
+
+.display {
+  &__image {
+    width: $display-image-width;
+    height: $display-image-height;
+    margin-bottom: $display-image-margin-bottom;
+    border-radius: $display-image-border-radius;
+    box-shadow: $display-image-shadow;
+    object-fit: cover;
+  }
+
+  &__translation {
+    color: $display-translation-color;
+    text-align: center;
+    min-height: $display-translation-min-height;
+    margin-bottom: $display-translation-indent;
+
+    &_hide {
+      display: none;
+    }
+  }
+
+  &__input {
+    display: block;
+    width: 100%;
+    max-width: $display-input-max-width;
+    height: $display-input-height;
+    margin: $display-input-margin;
+    padding: $display-input-padding;
+    border: $display-input-border;
+    border-bottom: $display-input-border-bottom;
+    color: $display-input-color;
+    font-size: $display-input-font-size;
+    line-height: $display-input-line-height;
+    text-align: center;
+    background-color: transparent;
+    background-image: url(img/microphone.svg);
+    background-position: $display-input-background-position;
+    background-repeat: no-repeat;
+    background-size: $display-input-background-size;
+
+    &:focus {
+      outline: none;
+    }
+
+    &_hide {
+      display: none;
+    }
+  }
+}
