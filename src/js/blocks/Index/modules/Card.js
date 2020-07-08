@@ -110,8 +110,6 @@ class Card {
       this.hideWarningWindow();
     }
     if (Number(this.studyFinishAt) > 0 && (timeNow > nextStudyTime)) {
-      this.studyFinishAt = 0;
-      localStorage.setItem('studyFinishAt', this.studyFinishAt);
       this.todayStudiedNewWords = 0;
       this.todayStudiedWords = 0;
     }
@@ -310,26 +308,26 @@ class Card {
     }
     this.isChecked = true;
     this.wordInput.value = this.word;
-    this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
-    localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
-    if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
-      this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
-      localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
-    }
-    if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
-      setTimeout(() => { this.nextCard(); }, 2000);
-      return;
-    }
-    this.nextCardButton.classList.remove('hidden');
-    this.wordSettings.classList.remove('hidden');
     this.wordInput.classList.add('right-letter');
     if (this.isWordMeaning || this.isTextExample) {
       const hiddenWords = document.querySelectorAll('.hidden-word');
       hiddenWords.forEach((item) => {
         item.classList.remove('hidden-word');
       });
+      this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
+      localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
+      if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
+        this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
+        localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
+      }
+      if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
+        setTimeout(() => { this.nextCard(); }, 2000);
+        return;
+      }
+      this.nextCardButton.classList.remove('hidden');
+      this.wordSettings.classList.remove('hidden');
+      this.wordInput.classList.add('right-letter');
     }
-
     if (this.isTranslate) {
       this.showTranslate();
     }
@@ -341,9 +339,10 @@ class Card {
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     if (this.word !== entryField.value) {
       for (let i = 0; i < hiddenRightWord.length; i += 1) {
-        hiddenRightWord[i].classList.add('wrong-letter');
+        if (this.word[i] === entryField.value[i]) {
+          hiddenRightWord[i].classList.add('right-letter');
+        } else { hiddenRightWord[i].classList.add('wrong-letter'); }
       }
-
       entryField.value = '';
       hiddenRightWord.forEach((item) => {
         item.classList.remove('index-hidden');

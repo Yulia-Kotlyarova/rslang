@@ -165,11 +165,11 @@
                 <audio class="word-audio word-text-example-audio d-none" controls="controls"></audio>
             </div>
             <div class="card-controls">
-                <button class="show-answer hidden" type="button">Show answer</button>
-                <button class="check" type="button">Check</button>
-                <button class="difficult-word hidden" type="button">Hard</button>
-                <button class="delete-word hidden" type="button">Delete</button>
-                <button class="next-card-btn hidden" type="button">Next</button>
+                <button class="btn btn-info show-answer hidden" type="button" data-en="Show answer" data-ru="Показать ответ">Show answer</button>
+                <button class="btn btn-info check" type="button" data-en="Check" data-ru="Проверить">Check</button>
+                <button class="btn btn-info difficult-word hidden" type="button" data-en="Hard" data-ru="Сложно">Hard</button>
+                <button class="btn btn-info delete-word hidden" type="button" data-en="Delete" data-ru="Удалть">Delete</button>
+                <button class="btn btn-info next-card-btn hidden" type="button" data-en="Next" data-ru="Следующее">Next</button>
             </div>
             <div class="today-progress">
                 <span class="today-studied-words"></span>
@@ -177,15 +177,15 @@
                 <span class="max-available-words"></span>
             </div>
             <div class="word-settings hidden">
-                <button class="again" type="button" value="again">Again</button>
-                <div class="word-difficulty-level">
-                    <button class="difficulty-level" type="button" value="1">Difficult</button>
-                    <button class="difficulty-level" type="button" value="2">Normal</button>
-                    <button class="difficulty-level" type="button" value="3">Easy</button>
+                <button class="btn btn-primary again" type="button" value="again" data-en="Again" data-ru="Снова">Again</button>
+                <div class="btn-group-vertical word-difficulty-level">
+                    <button class="btn btn-primary difficulty-level" type="button" value="1" data-en="Difficult" data-ru="Трудно">Difficult</button>
+                    <button class="btn btn-primary difficulty-level" type="button" value="2" data-en="Normal" data-ru="Нормально">Normal</button>
+                    <button class="btn btn-primary difficulty-level" type="button" value="3" data-en="Easy" data-ru="Просто">Easy</button>
                 </div>
             </div>
             <div class="warning-window hide-window">
-                <p class="message">You have studied all the planned words for today. The next training will be available through: <span class="timeout"></span> </p>
+                <p class="message" data-en="You have studied all the planned words for today. The next training will be available through:" data-ru="Вы уже выучили все слова за сегодня. Следующее обучение начнется через:">You have studied all the planned words for today. The next training will be available through: <span class="timeout"></span> </p>
             </div>
         </div>
 

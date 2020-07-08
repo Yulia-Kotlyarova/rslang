@@ -16,7 +16,7 @@ window.onload = async () => {
   await settingsModal.initiate();
 
   const card = new Card();
-  card.getWord();
+  await card.getWord();
   card.showCard();
   card.setEventListener();
 };
