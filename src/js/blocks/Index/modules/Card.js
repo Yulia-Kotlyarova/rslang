@@ -1,4 +1,5 @@
 import Repository from '../../../modules/Repository';
+import ShortStatistics from '../../Statistics/ShortStatistics';
 
 class Card {
   constructor() {
@@ -84,11 +85,13 @@ class Card {
     }
   }
 
-  checkStudyProgress() {
+  async checkStudyProgress() {
     if (Number(this.todayStudiedWords) > Number(this.numberOfCardsByDay)
           || Number(this.todayStudiedNewWords) > Number(this.numberOfNewWordsToStudy)
           || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
+      const shortStatistics = new ShortStatistics();
+      await shortStatistics.showModal();
       if (!this.studyFinishAt) {
         this.studyFinishAt = Date.now();
         localStorage.setItem('studyFinishAt', this.studyFinishAt);
@@ -134,6 +137,11 @@ class Card {
 
   async getWord() {
     switch (true) {
+      case window.location.hash === '#hardWords':
+        { const data = await Repository.getHardWords(undefined, 3600);
+          this.actualWordsData = data;
+          this.wordsHandler(); }
+        break;
       case this.wordsToStudy === 'new':
         { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
           this.actualWordsData = data;

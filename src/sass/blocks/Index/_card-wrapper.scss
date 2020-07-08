@@ -3,7 +3,7 @@
   text-align: center;
   width: 90%;
   min-height: 50%;
-  margin: 0 auto;
+  margin: 0 auto 30px;
 }
 
 .word-settings {
@@ -12,6 +12,7 @@
   left: 10%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 15px;
 }
 
 .again {
@@ -29,6 +30,10 @@
   right: 10%;
 }
 
+.card-controls {
+  margin-bottom: 15px;
+}
+
 .warning-window {
   position: absolute;
   top: 0;
@@ -38,6 +43,10 @@
   justify-content: center;
   align-items: center;
   background-color: #eee;
+}
+
+.word-image {
+  margin-bottom: 15px;
 }
 
 .hide-window {
