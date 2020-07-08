@@ -9,6 +9,7 @@ import { Phrases } from './Phrases';
 import paintingsData from './paintingsData';
 import Prompts from './Prompts';
 import MessageModal from '../../modules/MessageModal';
+import Navigation from './Navigation';
 
 const prompts = new Prompts();
 
@@ -21,6 +22,7 @@ export default class StartNewGame {
 
   static async startGame() {
     try {
+      Navigation.updateLines();
       StartNewGame.clearLines();
       StartNewGame.clearGameData();
       StartNewGame.removeLineNumbersShadows();

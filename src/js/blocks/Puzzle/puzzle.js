@@ -23,11 +23,12 @@ function openNavigationTable() {
 async function getStatisticsFromBackend() {
   const userStatistics = await Repository.getStatistics();
   let puzzleStatistic = {};
-  if (userStatistics.optional.games.puzzle.summary) {
+  const path = userStatistics.optional.games;
+  if (path && path.puzzle) {
     puzzleStatistic = userStatistics.optional.games.puzzle.summary;
     localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
   } else {
-    Repository.saveGameResult('puzzle', false, [], JSON.stringify(puzzleStatistic));
+    Repository.saveGameResult('puzzle', false, [], puzzleStatistic);
   }
   localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
 }
