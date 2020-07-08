@@ -444,7 +444,7 @@ class Repository {
       optional: settings.optional,
     };
 
-    const url = `${backendOrigin}/users/${userId}/statistics`;
+    const url = `${backendOrigin}/users/${userId}/settings`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
