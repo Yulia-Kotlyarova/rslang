@@ -4,25 +4,24 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://kit.fontawesome.com/748e06960e.js" crossorigin="anonymous"></script>
         <title>Scramble | RS Lang</title>
     </head>
     <body class="scramble-body hidden-for-header-render">
         <div class="gameStartButton">
-            <button type="submit" class="gameStart__button">Играть</button>
+            <button type="submit" class="gameStart__button" data-en="Play" data-ru="Играть">Играть</button>
         </div>
         <div class="take-test">
-            <button type="submit" class="take__button">Узнай свой уровень английского</button>
+            <button type="submit" class="take__button" data-en="Check your English level" data-ru="Узнай свой уровень английского">Узнай свой уровень английского</button>
         </div>
         <div class="scrambleLevel">
             <select class="scrambleLevelSelector">
-                <option>Выбери уровень</option>
-                <option value="0">Уровень 0</option>
-                <option value="1">Уровень 1</option>
-                <option value="2">Уровень 2</option>
-                <option value="3">Уровень 3</option>
-                <option value="4">Уровень 4</option>
-                <option value="5">Уровень 5</option>
+                <option data-en="Select level" data-ru="Выбери уровень">Выбери уровень</option>
+                <option value="0" data-en="Level 0" data-ru="Уровень 0">Уровень 0</option>
+                <option value="1" data-en="Level 1" data-ru="Уровень 1">Уровень 1</option>
+                <option value="2" data-en="Level 2" data-ru="Уровень 2">Уровень 2</option>
+                <option value="3" data-en="Level 3" data-ru="Уровень 3">Уровень 3</option>
+                <option value="4" data-en="Level 4" data-ru="Уровень 4">Уровень 4</option>
+                <option value="5" data-en="Level 5" data-ru="Уровень 5">Уровень 5</option>
             </select>
         </div>   
         <section class="sectionStart gameStart-hidden">
@@ -33,7 +32,7 @@
                     <span class="counter__box counter__second-number">0</span>
                     <span class="counter__box counter__first-number">0</span>
                 </div>
-                <p class="sectionStart__pressForHint hidden">Подсказка</p>
+                <p class="sectionStart__pressForHint hidden" data-en="Hint" data-ru="Подсказка">Подсказка</p>
                 <div class="sectionStart__hintArea hidden">
                     <div class="sectionStart__img sectionStart--mouse sectionStart--div">
                         <img src="" alt="">
@@ -48,19 +47,19 @@
                         <p class="text-size"></p>
                     </div>
                 </div>
-                <h3 class="sectionStart__msg">Guess the word game</h3>                
+                <h3 class="sectionStart__msg" data-en="Guess the word" data-ru="Собери слово">Собери слово</h3>                
                 <form action="javascript:void(0);" method="post" class="sectionStart__form">
                     <input type="text" id="sectionStart__input" name="sectionStart__input" class="hidden" autocomplete="off" autofocus >
-                    <button class="sectionStart__btn">Click here to start</button>
+                    <button class="sectionStart__btn" data-en="Click to start" data-ru="Начинать">Начинать</button>
                 </form>
                 <p class="sectionStart__sentence hidden"></p>
             </div>
         </section>
         <section class="test testHidden">
             <span class="testClose">&times;</span>
-            <h2 class="h2">Вопросы</h2>
+            <h2 class="h2" data-en="Questions" data-ru="Вопросы">Вопросы</h2>
             <hr class="striped-border">
-            <p id="test__question">Some question</p>
+            <p id="test__question"></p>
             <div class="test__buttons">
                 <button id="btn0"><span id="choice0"></span></button>
                 <button id="btn1"><span id="choice1"></span></button>
@@ -68,19 +67,19 @@
                 <button id="btn3"><span id="choice3"></span></button>
             </div>
             <div class="test__footer">
-                <p class="" id="progress">Quiz progress 20%</p>
+                <p class="" id="progress"></p>
             </div>
         </section>
         <div id="scrModal" class="modalScr modelHide">
             <div class="modalScr__content">
                 <div class="modalScr__header">
-                    <h4>Твой результат</h4>
+                    <h4 data-en="Result" data-ru="Твой результат">Твой результат</h4>
                     <span class="modalScr__closeBtn">&times;</span>
                 </div>
                 <div class="modalScr__body">
                     <hr>
                     <div class="modalScr__correct">
-                        <h5>Правильно <span id="modalScr__correct-count"></span></h5>
+                        <h5 data-en="Correct" data-ru="Правильно">Правильно<span id="modalScr__correct-count"></span></h5>
                     </div>
                 </div>
             </div>

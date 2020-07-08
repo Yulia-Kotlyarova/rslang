@@ -71,7 +71,7 @@ export const scrambleGameFirst = () => {
         }, 700);
       } else {
         clickTune('error.wav');
-        scrambleMsg.innerHTML = `Почти угадал, попробуй еще раз "${randWords.join('')}"`;
+        scrambleMsg.innerHTML = `Попробуй еще раз "${randWords.join('')}"`;
         setTimeout(() => {
           scrambleMsg.innerHTML = randWords.join('');
         }, 5000);
