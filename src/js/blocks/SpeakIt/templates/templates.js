@@ -4,7 +4,7 @@ import createElementFromHTML from './elementCreater';
 
 const templates = {
   card: (word) => createElementFromHTML(`
-    <div class="card" data-word="${word.word}" data-translation="${word.wordTranslate}" data-id="${word._id}">
+    <div class="card" data-word="${word.word}" data-translation="${word.wordTranslate}" data-id="${word._id || word.id}">
         <span class="card__audio-icon ">
             <i class="fas fa-volume-down fa-2x"></i>
         </span>

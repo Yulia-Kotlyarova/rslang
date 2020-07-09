@@ -50,8 +50,6 @@ class Game {
     games.push(gameSessionData);
     localStorage.setItem('speakit-games', JSON.stringify(games));
 
-    // await Promise.all();
-
     [...this.app.mainPage.cardsElement.children].map(
       (wordElement) => {
         if (wordElement.classList.contains('card_active')) {
