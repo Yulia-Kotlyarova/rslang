@@ -1,14 +1,16 @@
 @import "~bootstrap/scss/bootstrap";
+
 @import "blocks/Header/header";
 @import "blocks/Authorization/authorization";
-@import "blocks/Scramble/scramble.scss";
 
+@import "blocks/AudioCall/AudioCall";
 @import "blocks/Puzzle/puzzle-style";
 @import "blocks/Index/index";
 @import "blocks/Statistics/statistics_style";
 @import "blocks/SpeakIt/speakit";
 @import "blocks/sprint/sprint.scss";
 @import "blocks/Dictionary/disctionary";
+@import "blocks/Scramble/scramble.scss";
 
 @import "blocks/Sprint/sprint-back";
 @import "blocks/SpeakIt/speakIt-back";
@@ -17,4 +19,3 @@
 @import "blocks/Cards/cards-back";
 @import "blocks/Dictionary/dictionary-back";
 @import "blocks/Promo/promo-back";
-
