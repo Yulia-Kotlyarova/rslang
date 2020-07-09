@@ -6,35 +6,83 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Audio Call | RS Lang</title>
     </head>
-    <body class = "a-c-body">
+    <body class = "a-c-body hidden-for-header-render">
         <h2 class="audio-call-h2">Audio Call</h2>
-        <div class="Audio-Call-Wrapper">
-            <div class="a-c-pic-wrapper">
-                <img src="./img/icons/volume.svg" class = "volume-up" alt = "volume icon">
-                <img src="" class = "audio-call-photo">
+        <div class="a-c-hello-screen">
+            <p data-en="Listen and choose right word." data-ru="Слушайте слова и выбирайте верный перевод"> Listen and choose right word. </p>
+            <p data-en="You can use a mouse or keys:" data-ru="Вы можете использовать мышь или клавиши:"> You can use a mouse or keys: </p>
+            <p data-en="&#34 1	&#34,&#34 2	&#34,&#34 3	&#34,&#34 4	&#34,&#34 5	&#34,&#34 Enter	&#34 and &#34 Right Arrow &#34" data-ru="&#34 1	&#34,&#34 2	&#34,&#34 3	&#34,&#34 4	&#34,&#34 5	&#34,&#34 Enter	&#34 и &#34 Right Arrow &#34"> "1", "2", "3", "4", "5", "Enter" and "Right Arrow".</p>
+            <div class="a-c-nav-wrapper">
+                <div class="a-c-navigation-level">
+                    <div> Level </div>
+                    <select class="a-c-level">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                    </select>
+                </div>
+                <div class="a-c-navigation-page">
+                    <div> Page </div>
+                    <select class="a-c-page">
+                        <option>1</option><option>2</option><option>3</option><option>4</option>
+                        <option>5</option><option>6</option><option>7</option><option>8</option>
+                        <option>9</option><option>10</option><option>11</option><option>12</option>
+                        <option>13</option><option>14</option><option>15</option><option>16</option>
+                        <option>17</option><option>18</option><option>19</option><option>20</option>
+                        <option>21</option><option>22</option><option>23</option><option>24</option>
+                        <option>25</option><option>26</option><option>27</option><option>28</option>
+                        <option>29</option><option>30</option>
+                    </select>
+                </div>
             </div>
-            <img src="./img/icons/volume.svg" class = "a-c-little-volume">
-            <a class = "a-c-translate"> </a>
-            <ul>
-                <li> word </li>
-                <li> word </li>
-                <li> word </li>
-                <li> word </li>
-                <li> word </li>
-            </ul>
-            <div class="a-c-result-wrapper">
-                <ul class = "a-c-result-wrong"> Mistakes:
-                    <li class="a-c-result-li-wrong"></li>
-                </ul>
-                <ul class = "a-c-result-right"> Right:
-                    <li class="a-c-result-li-right"></li>
-                </ul>
-            </div>
-            <div class="a-c-btn-wrapper">
-                <img  src="./img/icons/arrow-right.svg" class="a-c-next">
-                <button class="a-c-don't-know"> I don't know( </button>
-                <button class="a-c-another-game-btn"> another game </button>
-                <button class="a-c-again-btn"> play again </button>
+        </div>
+        <div class="a-c-main-wrapper">
+            <div class="Audio-Call-Wrapper">
+                <div class="a-c-pic-wrapper">
+                    <div class = "volume-up"> 
+                        <audio src="" autoplay=""></audio>
+                        <div id="big-volume-up">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                    </div>
+                    <img src="" class = "audio-call-photo hidden">
+                </div>
+                <div class="volume-trans hidden">
+                    <div class = "a-c-little-volume">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <a class = "a-c-translate"> translate </a>
+                </div>
+                <ol type="1" class = "word-list">
+                    <li class = "word-list-1"> </li>
+                    <li class = "word-list-2"> </li>
+                    <li class = "word-list-3"> </li>
+                    <li class = "word-list-4"> </li>
+                    <li class = "word-list-5"> </li>
+                </ol>
+                <div class="a-c-result-wrapper hidden">
+                    <ol class = "a-c-result-wrong"> <span  data-en="Mistakes &#58" data-ru="Ошибки &#58"> Mistakes: </span> <a></a>
+                    </ol>
+                    <ol class = "a-c-result-right" > <span data-en="Right &#58" data-ru="Правильно &#58"> Right: </span><a></a>
+                    </ol>
+                </div>
+                <div class="a-c-btn-wrapper">
+                    <button class="a-c-go" data-en="Let's go" data-ru="Старт"> Let's go </button>
+                    <div class="a-c-next">
+                        <svg class="bi bi-arrow-right-circle" width="3em" height="3em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path fill-rule="evenodd" d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z"/>
+                            <path fill-rule="evenodd" d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                    </div>
+                    <button class="a-c-dont-know" data-en="I don't know(" data-ru="Я не знаю("> I don't know( </button>
+                    <button class="a-c-another-game-btn hidden" data-en="another game" data-ru="другая игра"> another game </button>
+                    <button class="a-c-again-btn hidden" data-en="play again" data-ru="играть снова"> play again </button>
+                </div>
+                <div class="a-c-loader"></div>
             </div>
         </div>
     </body>
