@@ -1,3 +1,5 @@
+import shuffle from 'lodash/shuffle';
+
 import Repository from '../../../modules/Repository';
 
 import MessageModal from '../../../modules/MessageModal';
@@ -44,7 +46,7 @@ class App {
       words = await Repository
         .getWordsFromGroupAndPage(this.mainPage.level, Number(this.selectedPage) - 1);
 
-      return words;
+      return shuffle(words);
     } catch (e) {
       MessageModal.showModal(`Cannot get words' data from server. Error: '${e.message}'.`);
       return [];
