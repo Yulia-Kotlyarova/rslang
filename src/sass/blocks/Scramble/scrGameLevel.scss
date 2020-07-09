@@ -1,68 +1,68 @@
 .scrambleLevel{
-    width: 30%;
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    
-    @media screen and (min-width: 1px) and (max-width: 480px) {
-      width: 70%;
-      margin: 0;
-    }
-    @media screen and (min-width: 481px) and (max-width: 600px) {
-          width: 50%;
-          margin: 0;
-    }
-    @media screen and (min-width: 601px) and (max-width: 992px) {
-      width: 35%;
-      margin: 0;
-    }
+  width: 30%;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  
+  @media screen and (min-width: 1px) and (max-width: 480px) {
+    width: 70%;
+    margin: 0;
+  }
+  @media screen and (min-width: 481px) and (max-width: 600px) {
+        width: 50%;
+        margin: 0;
+  }
+  @media screen and (min-width: 601px) and (max-width: 992px) {
+    width: 35%;
+    margin: 0;
+  }
 
-    &:after {
-        content: "";
-        position: absolute;
-        width: 0;
-        height: 0;
-        top: 50%;
-        left: 50%;
-        transform-style: flat;
-        transform: translate3d(-50%,-50%,0);
-        background: rgba(white,.1);
-        border-radius: 100%;
-        transition: width .3s ease, height .3s ease;
+  &:after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: 50%;
+      left: 50%;
+      transform-style: flat;
+      transform: translate3d(-50%,-50%,0);
+      background: rgba(white,.1);
+      border-radius: 100%;
+      transition: width .3s ease, height .3s ease;
+    }
+    &:focus,
+    &:hover {
+        background: darken(#FC6E51,7%);
+    }
+    &:active {
+      &:after {
+        width: 200px;
+        height: 200px;
       }
-      &:focus,
-      &:hover {
-          background: darken(#FC6E51,7%);
-      }
-      &:active {
-        &:after {
-          width: 200px;
-          height: 200px;
-        }
-      }
-    
-   select{
-       display: flex;
-       justify-content: center;
-       color: #162032;
-       padding: 5%;
-       width: 100%;
-       border: none;
-       font-size: calc(12px + (20 - 12) * ((100vw - 300px) / (1600 - 300)));
-       box-shadow: 0 5px 25px rgba(0,0,0,.5);
-       outline: none;
-       background:linear-gradient(184deg, #1838F5, #12a08da4);
-       font-weight: 700;
-       text-align-last:center;
-       cursor: pointer;
-       
-       option {
-        margin: 40px;
-        background: #183949;
-        color: #fff;
-        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-      }
-   }
+    }
+  
+ select{
+     display: flex;
+     justify-content: center;
+     color: #162032;
+     padding: 5%;
+     width: 100%;
+     border: none;
+     font-size: calc(12px + (20 - 12) * ((100vw - 300px) / (1600 - 300)));
+     box-shadow: 0 5px 25px rgba(0,0,0,.5);
+     outline: none;
+     background:linear-gradient(184deg, #1838F5, #12a08da4);
+     font-weight: 700;
+     text-align-last:center;
+     cursor: pointer;
+     
+     option {
+      margin: 40px;
+      background: #183949;
+      color: #fff;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+ }
 }

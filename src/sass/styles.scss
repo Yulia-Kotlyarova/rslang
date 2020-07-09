@@ -1,18 +1,12 @@
 @import "~bootstrap/scss/bootstrap";
 @import "blocks/Header/header";
 @import "blocks/Authorization/authorization";
-
 @import "blocks/Scramble/scramble.scss";
-@import "blocks/Scramble/counter.scss";
-@import "blocks/Scramble/test.scss";
-@import "blocks/Scramble/scrGameLevel.scss";
-@import "blocks/Scramble/modal.scss"
+
 @import "blocks/Puzzle/puzzle-style";
 @import "blocks/Index/index";
 @import "blocks/Statistics/statistics_style";
 @import "blocks/SpeakIt/speakit";
-@import "blocks/sprint/sprint.scss";
-@import "blocks/scramble/scramble.scss";
 
 @import "blocks/Sprint/sprint-back";
 @import "blocks/SpeakIt/speakIt-back";

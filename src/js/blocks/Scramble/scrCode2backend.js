@@ -6,8 +6,11 @@ const arrayAudio = [];
 const arraySentence = [];
 const arrayTranscription = [];
 const arrayImage = [];
+const arrayWordId = [];
+
 export {
-  arrayWord, arrayWordTranslate, arrayAudio, arraySentence, arrayTranscription, arrayImage,
+  arrayWord, arrayWordTranslate, arrayAudio, arraySentence, arrayTranscription,
+  arrayImage, arrayWordId,
 };
 
 const fetchWords = (api) => {
@@ -21,15 +24,15 @@ const fetchWords = (api) => {
         arraySentence.push(val.textMeaningTranslate);
         arrayTranscription.push(val.transcription);
         arrayImage.push(val.image);
+        arrayWordId.push(val.id);
       });
-      console.log(data);
     })
     .catch(() => {
     });
 };
 
-const fetchMixedWords = () => {
-  Repository.getMixedWords(2, 20).then((result) => {
+const fetchMixedWords = (j) => {
+  Repository.getMixedWords(j, 15).then((result) => {
     result.forEach((val) => {
       arrayWord.push(val.word);
       arrayWordTranslate.push(val.wordTranslate);
@@ -38,13 +41,14 @@ const fetchMixedWords = () => {
       arrayTranscription.push(val.transcription);
       arrayImage.push(val.image);
     });
-    console.log(result);
   });
 };
 
 export const wordsFromDictionary = (level) => {
-  if (level === 'Выбери уровень' || level === 'Select level') {
-    fetchMixedWords();
+  if (level === 'Learnt words' || level === 'Изученные слова') {
+    for (let j = 0; j < 6; j += 1) {
+      fetchMixedWords(j);
+    }
   } else {
     for (let i = 0; i < 2; i += 1) {
       const api = `https://afternoon-falls-25894.herokuapp.com/words?page=${i}&group=${level}`;

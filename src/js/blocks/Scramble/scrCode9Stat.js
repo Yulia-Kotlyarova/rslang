@@ -4,6 +4,7 @@ const objForCorrectWord = {
   eng: [],
   ru: [],
   audio: [],
+  id: [],
 };
 
 const endGame = document.querySelector('.sectionStart__closeBtn');
@@ -31,10 +32,6 @@ const scrOpenModal = () => {
 const closeModal = () => {
   closeStat.addEventListener('click', () => {
     openModal.classList.add('modelHide');
-    Repository.updateOptionalStatistics();
-    Repository.getStatistics().then((result) => {
-      console.log(result);
-    });
   });
 };
 
@@ -42,6 +39,9 @@ const finishGame = () => {
   endGame.addEventListener('click', () => {
     addHide.classList.add('gameStart-hidden');
     openModal.classList.remove('modelHide');
+    objForCorrectWord.id.forEach((val) => {
+      Repository.saveWordResult({ wordId: val, result: '2' });
+    });
     scrOpenModal();
     closeModal();
   });

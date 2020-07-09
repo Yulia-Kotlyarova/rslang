@@ -1,5 +1,6 @@
 import {
-  arrayWordTranslate, arrayAudio, arraySentence, arrayTranscription, arrayImage, arrayWord,
+  arrayWordTranslate, arrayAudio, arraySentence, arrayTranscription, arrayImage,
+  arrayWord, arrayWordId,
 } from './scrCode2backend';
 import { audioT } from '../../constants/defaultSettings';
 import { objForCorrectWord } from './scrCode9Stat';
@@ -33,6 +34,7 @@ const addHintsToBoxes = (i) => {
   objForCorrectWord.eng.push(arrayWord[i]);
   objForCorrectWord.ru.push(arrayWordTranslate[i]);
   objForCorrectWord.audio.push(arrayAudio[i]);
+  objForCorrectWord.id.push(arrayWordId[i]);
   // this is function to listen word
   onMouseMovePlay();
 };

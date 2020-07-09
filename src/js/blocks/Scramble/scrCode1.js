@@ -45,8 +45,6 @@ export const scrambleGameFirst = () => {
       pressForHint.classList.remove('hidden');
       newWords = createNewWords();
       randWords = scrambleWords(newWords.split(''));
-
-      console.log(newWords);
       scrambleMsg.innerHTML = randWords.join('');
       scrSentence.classList.add('hidden');
       counterContainer.classList.add('hidden');

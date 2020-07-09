@@ -1,16 +1,14 @@
 @import './hintArea.scss';
+@import './counter.scss';
+@import './test.scss';
+@import './scrGameLevel.scss';
+@import './modal.scss';
 
-.scramble{
+.scramble {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
-    //  div, h3 input, button {
-    //     margin: 0;
-    //     padding: 0;
-    // }
 }
-
 .scramble-body{
     background: url(mainPage.PNG) no-repeat center center fixed;
     background-size: cover;
