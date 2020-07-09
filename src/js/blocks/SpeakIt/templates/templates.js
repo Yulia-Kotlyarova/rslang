@@ -17,7 +17,7 @@ const templates = {
   `),
 
   gameItem: (game) => createElementFromHTML(`
-    <div class="games-played__game">${game.date}. Level: ${game.level}. Guessed: ${game.guessed}, not guessed: ${game.errors}.</div>
+    <div class="games-played__game">${game.date}. Level: ${game.useOnlyUserWords ? '-' : game.level}. Guessed: ${game.guessed}, not guessed: ${game.errors}.</div>
   `),
 };
 
