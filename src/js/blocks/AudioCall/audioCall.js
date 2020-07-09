@@ -300,7 +300,7 @@ window.onload = () => {
     wordList.forEach((el) => {
       el.classList.remove('li-pale-color');
     });
-    if (localStorage.cardNumber.length >= 3) {
+    if (localStorage.cardNumber.length >= 20) {
       gameResult();
     } else {
       dontKnowBtn.classList.remove('hidden');
