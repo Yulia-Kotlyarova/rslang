@@ -10,11 +10,11 @@
         <div class="start-screen">
             <h1 class="start-screen__title">Speakit</h1>
             <p class="start-screen__intro">
-                Click on the words to hear them sound.
+                <span data-en="Click on the words to hear them sound." data-ru="Кликайте по словам, чтобы услышать звучание.">Click on the words to hear them sound.</span>
                 <br>
-                Click on the button and speak the words into the microphone.
+                <span data-en="Click on the button and speak the words into the microphone." data-ru="Кликнике на кнопку и произносите слова в микрофон.">Click on the button and speak the words into the microphone.</span>
             </p>
-            <button class="button start-screen__button">Start</button>
+            <button class="button start-screen__button" data-en="Start" data-ru="Начать">Start</button>
         </div>
         <div class="container">
             <header class="header">
@@ -40,13 +40,13 @@
                 </div>
                 <div class="cards"></div>
                 <div class="controls">
-                    <button class="button controls__restart">
+                    <button class="button controls__restart" data-en="Restart" data-ru="Начать заново">
                         Restart
                     </button>
-                    <button class="button controls__speak">
-                        Speak please
+                    <button class="button controls__speak" data-en="Start / Stop" data-ru="Начать / Остановить">
+                        Start / Stop
                     </button>
-                    <button class="button controls__result">
+                    <button class="button controls__result" data-en="Results" data-ru="Результаты">
                         Results
                     </button>
                 </div>
@@ -55,28 +55,29 @@
         <div class="results results_hide">
             <div class="field field_top">
                 <p class="field__text">
-                    Ошибок
+                    <span data-en="Errors" data-ru="Ошибок">Errors</span>
                     <span class="field__count field__count_errors"></span>
                 </p>
                 <div class="results__cards results__cards_errors">
                 </div>
-                <p class="field__text">Знаю
+                <p class="field__text">
+                    <span data-en="Correct" data-ru="Правильно">Correct</span>
                     <span class="field__count field__count_correct"></span>
                 </p>
                 <div class="results__cards results__cards_success">
                 </div>
                 <div class="results-controls">
                     <button class="button button_return button_results">
-                        Return
+                        <span data-en="Return" data-ru="Вернуться">Return</span>
                     </button>
                     <button class="button button_new-game button_results">
-                        New game
+                        <span data-en="New game" data-ru="Новая игра">New game</span>
                     </button>
                 </div>
             </div>
             
             <div class="field games-played">
-                <h3 class="games-played__title">Games played</h3>
+                <h3 class="games-played__title" data-en="Games played" data-ru="Игр сыграно">Games played</h3>
                 <div class="games-played__game games-played__game_hide"></div>
                 <ol class="games-played__list"></ol>
             </div>
