@@ -25,8 +25,10 @@ class Repository {
       filter = '{"userWord.optional.isDeleted":true}';
     } else if (type === 'hard') {
       filter = '{"userWord.optional.isHard":true}';
+    } else if (type === 'allUser') {
+      filter = '{"userWord":{"$ne": null}}';
     } else {
-      throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'repeat', 'deleted', 'hard'`);
+      throw new Error(`Type '${type}' is not valid. Use one of: 'new', 'currentSession', 'repeat', 'deleted', 'hard', 'allUser`);
     }
 
     const url = `${backendOrigin}/users/${userId}/aggregatedWords?${group || Number(group) === 0 ? `group=${group}` : ''}${wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : ''}&filter=${filter}`;
@@ -48,6 +50,10 @@ class Repository {
   static async getAllUserWords(group, wordsPerPage) {
     const words = await Repository.getWords('repeat', group, wordsPerPage);
     return sortBy(words, 'userWord.optional.playNextDate');
+  }
+
+  static async getAllUserWordsIncludingHardDeleted(wordsPerPage) {
+    return Repository.getWords('allUser', undefined, wordsPerPage);
   }
 
   static async getCurrentSessionUserWords(group, wordsPerPage = 20) {
