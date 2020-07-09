@@ -50,14 +50,16 @@ class Game {
     games.push(gameSessionData);
     localStorage.setItem('speakit-games', JSON.stringify(games));
 
-    await Promise.all([...this.app.mainPage.cardsElement.children].map(
+    // await Promise.all();
+
+    [...this.app.mainPage.cardsElement.children].map(
       (wordElement) => {
         if (wordElement.classList.contains('card_active')) {
           return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '2' });
         }
         return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '0' });
       },
-    ));
+    );
 
     await Repository.saveGameResult('speakit', !!gameSessionData.errors, gameSessionData);
   }

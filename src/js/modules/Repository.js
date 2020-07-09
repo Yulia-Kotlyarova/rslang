@@ -46,8 +46,12 @@ class Repository {
   }
 
   static async getAllUserWords(group, wordsPerPage) {
-    const words = await Repository.getWords('repeat', group, wordsPerPage);
-    return sortBy(words, 'userWord.optional.playNextDate');
+    let words = await Repository.getWords('repeat', group, wordsPerPage);
+    words = sortBy(words, 'userWord.optional.playNextDate');
+    if (words.length > wordsPerPage) {
+      words.length = wordsPerPage;
+    }
+    return words;
   }
 
   static async getCurrentSessionUserWords(group, wordsPerPage = 20) {
