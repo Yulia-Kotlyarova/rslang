@@ -2,6 +2,7 @@ import $ from 'jquery';
 import keyBy from 'lodash/keyBy';
 
 import Repository from '../../../modules/Repository';
+import MessageModal from '../../../modules/MessageModal';
 
 import templates from '../templates/templates';
 
@@ -99,15 +100,42 @@ class App {
   async initiate() {
     this.switchTabs();
 
-    this.settings = (await Repository.getSettings()).optional;
-    await this.getWords();
-    this.populateWords();
-
     window.addEventListener('hashchange', () => {
       if (this.reloadOnHashChange) {
         window.location.reload();
       }
     }, false);
+
+    this.dictionaryNav.addEventListener('click', (event) => {
+      const button = event.target.closest('a');
+
+      if (!button) {
+        return;
+      }
+
+      const newHash = button.getAttribute('aria-controls').replace('-tab', '');
+      this.reloadOnHashChange = false;
+      window.location.hash = newHash;
+      setTimeout(() => {
+        this.reloadOnHashChange = true;
+      }, 250);
+    });
+
+    try {
+      this.settings = (await Repository.getSettings()).optional;
+    } catch (e) {
+      MessageModal.showModal(`Error getting user's settings. Message: ${e.message || 'no message provided'}. Try again later.`);
+      return;
+    }
+
+    try {
+      await this.getWords();
+    } catch (e) {
+      MessageModal.showModal(`Cannot get words. Message: ${e.message || 'no message provided'}. Try again later.`);
+      return;
+    }
+
+    this.populateWords();
 
     this.dictionaryContainer.addEventListener('click', async (event) => {
       const wordElement = event.target.closest('.dictionary__word');
@@ -126,27 +154,20 @@ class App {
 
       if (restoreIcon) {
         if (wordElement.classList.contains('dictionary__word_hard')) {
-          await Repository.unmarkWordAsHard(wordId);
+          try {
+            await Repository.unmarkWordAsHard(wordId);
+          } catch (e) {
+            MessageModal.showModal(`Cannot unmark word as hard. Error message: ${e.message || 'no message provided'}. Try again later.`);
+          }
         } else if (wordElement.classList.contains('dictionary__word_deleted')) {
-          await Repository.unmarkWordAsDeleted(wordId);
+          try {
+            await Repository.unmarkWordAsDeleted(wordId);
+          } catch (e) {
+            MessageModal.showModal(`Cannot restore word. Error message: ${e.message || 'no message provided'}. Try again later.`);
+          }
         }
         window.location.reload();
       }
-    });
-
-    this.dictionaryNav.addEventListener('click', (event) => {
-      const button = event.target.closest('a');
-
-      if (!button) {
-        return;
-      }
-
-      const newHash = button.getAttribute('aria-controls').replace('-tab', '');
-      this.reloadOnHashChange = false;
-      window.location.hash = newHash;
-      setTimeout(() => {
-        this.reloadOnHashChange = true;
-      }, 250);
     });
   }
 }

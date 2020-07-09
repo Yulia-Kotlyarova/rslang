@@ -13,9 +13,9 @@ window.onload = async () => {
   const header = new Header();
   header.run();
 
-  const app = new App();
-  await app.initiate();
-
   const messageModal = new MessageModal();
   messageModal.appendSelf('authorization___modal');
+
+  const app = new App();
+  await app.initiate();
 };
