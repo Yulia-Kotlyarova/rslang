@@ -1,8 +1,8 @@
 .gameLevel{
-    margin-top: 40px;
+   margin-top: 40px;
    display: flex;
    justify-content: center; 
-   width: 30%;
+   width: 20%;
    
    
    select{
@@ -14,5 +14,8 @@
        font-size: 20px;
        box-shadow: 0 5px 25px rgba(0,0,0,.5);
        outline: none;
+       border-bottom-left-radius: 16px;
+       border-bottom-right-radius: 16px;
+       text-align-last:center;
    }
 }
