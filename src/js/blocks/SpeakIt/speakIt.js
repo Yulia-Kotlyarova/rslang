@@ -48,8 +48,9 @@ window.onload = async () => {
   app.setRec(rec);
   app.setResult(result);
 
-  startScreen.initiate();
   result.initiate();
   mainPage.initiate();
   await app.initiate();
+
+  startScreen.initiate();
 };
