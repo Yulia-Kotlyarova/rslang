@@ -128,8 +128,9 @@ class MainPage {
       }
 
       const { level } = levelElement.dataset;
+      this.level = level;
 
-      this.app.game.finish();
+      await this.app.game.finish();
       this.activateLevel(levelElement);
       this.displayWord('img/blank.jpg');
       this.translationDisplay.innerText = '';
@@ -138,8 +139,9 @@ class MainPage {
     });
 
     this.restartButton.addEventListener('click', async () => {
-      this.app.game.finish();
+      await this.app.game.finish();
       this.activateLevel(this.levelZero);
+      this.level = '0';
       this.displayWord('img/blank.jpg');
       this.translationDisplay.innerText = '';
 
