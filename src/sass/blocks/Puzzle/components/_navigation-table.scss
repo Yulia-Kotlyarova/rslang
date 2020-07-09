@@ -5,7 +5,9 @@
     flex-direction: column;
     align-items: center;
 
-    h3 {
+
+    h4 {
+      margin-top: 30px;
       color: $color-level-round-cells-text;
     }
 
@@ -13,50 +15,78 @@
       margin-bottom: 10px;
       color: $color-level-round-cells-text;
     }
+
   }
 
-  .navigation-table {
-    .cell-with-data {
+  .navigation__user-words {
+    display: flex;
+
+    .user-words__level {
       width: 70px;
       padding: 3px;
+      margin: 0 2px;
+      font-size: 1.2rem;
+      color: $color-user-wrods-level-text;
       text-align: center;
       border: 1px solid $color-navigation-table-borders;
-    }
-    .cell-level, .cell-round {
-      color: $color-level-round-cells-text;
-      font-weight: 700;
-    }
-
-    .navigation-table-green {
-      background-color: $color-navigation-table-correct;
-    }
-
-    .navigation-table-yellow {
-      background-color: $color-navigation-table-middle;
-    }
-
-    .navigation-table-red {
-      background-color: $color-navigation-table-wrong;
-    }
-
-    .navigation-table-grey {
-      color: $color-navigation-table-neverplayed-text;
-      background-color: $color-navigation-table-neverplayed;
-    }
-
-    .navigation-table-green,
-    .navigation-table-red,
-    .navigation-table-yellow,
-    .navigation-table-grey {
-      cursor: pointer;
       opacity: 0.7;
+      cursor: pointer;
     }
-    .navigation-table-green:hover,
-    .navigation-table-red:hover,
-    .navigation-table-yellow:hover,
-    .navigation-table-grey:hover {
-      opacity:1;
+
+    .user-words__level:hover {
+      opacity: 1;
     }
+  }
+
+  .not-enough-words {
+    color: $color-navigation-table-wrong;
+    transform: rotateX(90deg);
+  }
+
+  .not-enough-words_show {
+    transform: none;
+  }
+
+  .cell-with-data {
+    width: 70px;
+    padding: 3px;
+    text-align: center;
+    border: 1px solid $color-navigation-table-borders;
+  }
+  .cell-level, .cell-round {
+    color: $color-level-round-cells-text;
+    font-weight: 700;
+  }
+
+  .navigation-table-green {
+    background-color: $color-navigation-table-correct;
+  }
+
+  .navigation-table-yellow {
+    background-color: $color-navigation-table-middle;
+  }
+
+  .navigation-table-red {
+    background-color: $color-navigation-table-wrong;
+  }
+
+  .navigation-table-grey {
+    color: $color-navigation-table-neverplayed-text;
+    background-color: $color-navigation-table-neverplayed;
+  }
+
+  .navigation-table-green,
+  .navigation-table-red,
+  .navigation-table-yellow,
+  .navigation-table-grey {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .navigation-table-green:hover,
+  .navigation-table-red:hover,
+  .navigation-table-yellow:hover,
+  .navigation-table-grey:hover {
+    opacity:1;
   }
 }
 

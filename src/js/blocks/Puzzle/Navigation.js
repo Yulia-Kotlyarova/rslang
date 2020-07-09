@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { gameData } from './appState';
 import NavigationModal from './NavigationModal';
 

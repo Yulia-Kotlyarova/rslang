@@ -6,7 +6,7 @@
         width: 100vw;
         height: 110vh;
         background-color: $color-main-background;
-        background-image: url("data:image/svg+xml,%3Csvg width='44' height='12' viewBox='0 0 44 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 12v-2L0 0v10l4 2h16zm18 0l4-2V0L22 10v2h16zM20 0v8L4 0h16zm18 0L22 8V0h16z' fill='%234da9ca' fill-opacity='0.33' fill-rule='evenodd'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231595a1' fill-opacity='0.48' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
         z-index: 20;
     }
 
@@ -20,8 +20,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: $color-main-background-opacity;
-        border-radius: $small-border-radius;
+        background-color: $color-start-container-bg;
+        border-radius: 30px;
+        box-shadow: 20px 20px 10px #67697D40;
     }
 
     .start__title {
@@ -44,7 +45,6 @@
     }
 
     .button__start {
-        width: 150px;
         height: $button-height;
         font-size: 1.8rem;
         font-weight: 400;
