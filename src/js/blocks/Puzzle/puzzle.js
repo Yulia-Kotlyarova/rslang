@@ -8,6 +8,7 @@ import Navigation from './Navigation';
 import Header from '../../modules/Header';
 import NavigationModal from './NavigationModal';
 import Repository from '../../modules/Repository';
+import MessageModal from '../../modules/MessageModal';
 
 const results = new Results();
 const navigation = new Navigation();
@@ -15,20 +16,37 @@ const prompts = new Prompts();
 const header = new Header();
 
 function openNavigationTable() {
-  const navigationModal = new NavigationModal();
-  navigationModal.appendSelf();
-  NavigationModal.showModal(NavigationModal.delete);
+  function backToAuthorizationPage() {
+    window.location.href = 'authorization.html';
+  }
+  if (localStorage.getItem('settings')) {
+    const navigationModal = new NavigationModal();
+    navigationModal.appendSelf();
+    NavigationModal.showModal(NavigationModal.delete);
+  } else {
+    const fetchErrorMessage = document.querySelector('.fetchErrorMessageOnLoad');
+    if (!fetchErrorMessage) {
+      const messageModal = new MessageModal();
+      messageModal.appendSelf('fetchErrorMessageOnLoad');
+    }
+    MessageModal.showModal('Sorry, something went wrong. Did you sign in?', backToAuthorizationPage);
+  }
 }
 
 async function getStatisticsFromBackend() {
-  const userStatistics = await Repository.getStatistics();
-  let puzzleStatistic = {};
-  const path = userStatistics.optional.games;
-  if (path && path.puzzle) {
-    puzzleStatistic = userStatistics.optional.games.puzzle.summary;
-    localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
-  } else {
-    Repository.saveGameResult('puzzle', false, [], puzzleStatistic);
+  let userStatistics;
+  let puzzleStatistic = { init: 0 };
+  try {
+    userStatistics = await Repository.getStatistics();
+  } catch (error) {
+    userStatistics = {};
+  } finally {
+    const path = userStatistics.optional.games;
+    if (path && path.puzzle) {
+      puzzleStatistic = userStatistics.optional.games.puzzle.summary;
+    } else {
+      Repository.saveGameResult('puzzle', false, [], puzzleStatistic);
+    }
   }
   localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
 }

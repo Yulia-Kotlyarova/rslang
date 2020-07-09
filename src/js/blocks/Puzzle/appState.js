@@ -21,6 +21,8 @@ export const gameData = {
   imageData: {},
   gameResultsCorrect: [],
   gameResultsWrong: [],
+  userWords: false,
+  userWordsLevel: 0,
 };
 
 export const promptsSettings = {

@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import random from 'lodash/random';
 import {
   gameData, painting, paintingInfo, resultsPainting,
   resultsPaintingInfo, puzzleLineNumbers, promptsSettings, backgroundPaiting,
@@ -29,6 +30,7 @@ export default class StartNewGame {
       StartNewGame.getImageURL();
       await StartNewGame.updateGameData();
       StartNewGame.updatePainting();
+      gameData.userWords = false;
 
       backgroundPaiting.src = this.url;
       backgroundPaiting.onload = function onLoad() {
@@ -75,11 +77,80 @@ export default class StartNewGame {
     }
   }
 
+  static async startGameWithUserWords(level, filteredUserWords) {
+    try {
+      Navigation.updateLines();
+      StartNewGame.clearLines();
+      StartNewGame.clearGameData();
+      StartNewGame.removeLineNumbersShadows();
+      const paintingID = StartNewGame.getImageURLforUserWords();
+
+      gameData.wordsCollection = filteredUserWords;
+      const newPhrasesData = Phrases.getPhrasesToDisplay(gameData.wordsCollection);
+      gameData.phrasesToDisplay = newPhrasesData.phrasesToDisplay;
+      gameData.wordsLengthOfAllPhrases = newPhrasesData.wordsLengthOfAllPhrases;
+      gameData.userWords = true;
+      gameData.userWordsLevel = level;
+      StartNewGame.updatePaintingForUserWords(paintingID);
+
+      backgroundPaiting.src = this.url;
+      backgroundPaiting.onload = function onLoad() {
+        const bgWidth = backgroundPaiting.width;
+        const bgHeight = backgroundPaiting.height;
+        calculatePuzzleEementsParameters(bgWidth, bgHeight);
+
+        setTimeout(() => {
+          createPuzzleElements();
+          GameArea.shufflePuzzleElements();
+          gameArea.addPuzzlesEventListeners();
+          GameArea.addDragAndDropListeners();
+          if (promptsSettings.painting) {
+            Prompts.addPuzzleBackground();
+          }
+          gameArea.setControlButtons('check');
+        }, 500);
+      };
+
+      GameArea.activatePuzzleLines();
+
+      if (promptsSettings.autoAudioPlay) {
+        Prompts.playPhraseAudio();
+      }
+
+      prompts.setTranslationText();
+      const currentLevelContainer = document.querySelector('.navigation__position .current-level').lastChild;
+      const currentRoundContainer = document.querySelector('.navigation__position .current-round').lastChild;
+      currentLevelContainer.innerText = level;
+      currentRoundContainer.innerText = 'user words';
+      const startPage = document.querySelector('.start__page');
+      const gameBody = document.querySelector('body');
+      const results = document.querySelector('.results');
+      startPage.classList.add('display-none');
+      results.classList.add('display-none');
+      gameBody.classList.remove('scroll-not', 'modal-open');
+    } catch (error) {
+      const fetchErrorMessage = document.querySelector('.fetchErrorMessage');
+      if (!fetchErrorMessage) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchErrorMessage');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Please try again.');
+    }
+  }
+
   static getImageURL() {
     const level = gameData.level + 1;
     const page = (`0${gameData.page}`).slice(-2);
     gameData.imageData = paintingsData[`${level}_${page}`];
     this.url = `https://raw.githubusercontent.com/anna234365/RSLang-images/master/images/${level}_${page}.jpg`;
+  }
+
+  static getImageURLforUserWords() {
+    const level = random(1, 6);
+    const page = (`0${random(20)}`).slice(-2);
+    gameData.imageData = paintingsData[`${level}_${page}`];
+    this.url = `https://raw.githubusercontent.com/anna234365/RSLang-images/master/images/${level}_${page}.jpg`;
+    return `${level}_${page}`;
   }
 
   static clearLines() {
@@ -108,6 +179,18 @@ export default class StartNewGame {
     painting.classList.add('display-none');
     paintingInfo.classList.add('display-none');
     const paintingInfoID = paintingsData[`${gameData.level + 1}_${(`0${gameData.page}`).slice(-2)}`];
+    const paintingInfoText = `<b>${paintingInfoID.name}.</b><br>Author: <b>${paintingInfoID.author}</b>. Year: <b>${paintingInfoID.year}</b>`;
+    paintingInfo.firstChild.innerHTML = paintingInfoText;
+    painting.firstChild.src = this.url;
+    resultsPainting.firstChild.href = this.url;
+    resultsPainting.firstChild.firstChild.src = this.url;
+    resultsPaintingInfo.firstChild.innerHTML = paintingInfoText;
+  }
+
+  static updatePaintingForUserWords(paintingID) {
+    painting.classList.add('display-none');
+    paintingInfo.classList.add('display-none');
+    const paintingInfoID = paintingsData[paintingID];
     const paintingInfoText = `<b>${paintingInfoID.name}.</b><br>Author: <b>${paintingInfoID.author}</b>. Year: <b>${paintingInfoID.year}</b>`;
     paintingInfo.firstChild.innerHTML = paintingInfoText;
     painting.firstChild.src = this.url;
