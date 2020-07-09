@@ -14,6 +14,11 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
+
+  @media (max-width: 650px) {
+    top: -15px;
+    left: 0;
+  }
 }
 
 .again {
@@ -31,9 +36,14 @@
   top: 0;
   right: 10%;
   margin-top: 15px;
+
+  @media (max-width: 650px) {
+    top: -15px;
+    right: 0;
+  }
 }
 
-.card-controls {
+.show-answer, .check, .difficult-word, .delete-word{
   margin-bottom: 15px;
 }
 
@@ -50,6 +60,10 @@
 
 .word-image {
   margin-bottom: 15px;
+
+  @media (max-width: 450px) {
+    width: 100%;
+  }
 }
 
 .hide-window {

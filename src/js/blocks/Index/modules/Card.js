@@ -226,6 +226,7 @@ class Card {
   showWordInput(wordData) {
     this.word = wordData.word;
     const wordLength = wordData.word.length;
+    this.wordInput.setAttribute('maxlength', wordLength);
 
     for (let i = 0; i < wordLength; i += 1) {
       this.wordField.innerHTML += `<span class="index-hidden" index="${i}">${this.word[i]}</span>`;
@@ -322,20 +323,20 @@ class Card {
       hiddenWords.forEach((item) => {
         item.classList.remove('hidden-word');
       });
-      this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
-      localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
-      if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
-        this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
-        localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
-      }
-      if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
-        setTimeout(() => { this.nextCard(); }, 2000);
-        return;
-      }
-      this.nextCardButton.classList.remove('hidden');
-      this.wordSettings.classList.remove('hidden');
-      this.wordInput.classList.add('right-letter');
     }
+    this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
+    localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
+    if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
+      this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
+      localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
+    }
+    if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
+      setTimeout(() => { this.nextCard(); }, 2000);
+      return;
+    }
+    this.nextCardButton.classList.remove('hidden');
+    this.wordSettings.classList.remove('hidden');
+
     if (this.isTranslate) {
       this.showTranslate();
     }
