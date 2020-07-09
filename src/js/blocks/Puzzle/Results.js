@@ -10,7 +10,7 @@ export default class Results {
     this.dontKnowPhrases = document.querySelector('.dont-know__phrases');
     this.knowPhrases = document.querySelector('.know__phrases');
     this.resultsKnowledge = document.querySelector('.results__knowledge');
-    this.resultsButtonStatistic = document.querySelector('.button__statistics');
+    this.resultsButtonClose = document.querySelector('.results__button-close');
     this.buttonResults = document.querySelector('.button__results');
     this.body = document.querySelector('body');
   }
@@ -23,7 +23,10 @@ export default class Results {
       }
     });
     this.buttonResults.addEventListener('click', () => this.showResults());
-    this.resultsButtonStatistic.addEventListener('click', () => Results.openNavigationModal());
+    this.resultsButtonClose.addEventListener('click', () => {
+      this.body.classList.remove('scroll-not');
+      this.results.classList.add('display-none');
+    });
   }
 
   static openNavigationModal() {

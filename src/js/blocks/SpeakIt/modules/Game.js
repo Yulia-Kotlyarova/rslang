@@ -1,3 +1,7 @@
+import Repository from '../../../modules/Repository';
+
+import getTodayShort from '../../../helpers';
+
 class Game {
   constructor(app) {
     this.game = {};
@@ -10,14 +14,14 @@ class Game {
     this.game.on = true;
   }
 
-  finish() {
+  async finish() {
     this.app.mainPage.stopListening();
     this.app.rec.recognition.stop();
-    this.updateGamesInStorage();
+    await this.updateGamesInStorage();
     this.game = {};
   }
 
-  updateGamesInStorage() {
+  async updateGamesInStorage() {
     if (!this.game.on) {
       return;
     }
@@ -31,15 +35,31 @@ class Game {
       games = [];
     }
 
-    const now = new Date();
-
-    games.push({
-      date: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`,
-      errors: this.game.guessed ? (10 - this.game.guessed) : 10,
+    const gameSessionData = {
+      date: getTodayShort(),
+      errors: Number(this.game.guessed) ? (10 - Number(this.game.guessed)) : 10,
       guessed: this.game.guessed || 0,
-      level: this.app.level || 0,
-    });
+    };
+
+    if (this.app.userWords) {
+      gameSessionData.useOnlyUserWords = true;
+    } else {
+      gameSessionData.level = this.app.level || 0;
+    }
+
+    games.push(gameSessionData);
     localStorage.setItem('speakit-games', JSON.stringify(games));
+
+    [...this.app.mainPage.cardsElement.children].map(
+      (wordElement) => {
+        if (wordElement.classList.contains('card_active')) {
+          return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '2' });
+        }
+        return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '0' });
+      },
+    );
+
+    await Repository.saveGameResult('speakit', !!gameSessionData.errors, gameSessionData);
   }
 
   compareWords(word) {

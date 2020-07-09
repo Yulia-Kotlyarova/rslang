@@ -6,7 +6,6 @@ export default class StatisticCalendar {
     this.statistics = null;
     this.allDates = null;
     this.error = null;
-    this.additionalRows = '<tr><td></td><td>0</td><td>0</td></tr>'.repeat(20); // для образца
   }
 
   async creatCalendar() {
@@ -14,7 +13,7 @@ export default class StatisticCalendar {
       this.statistics = await Repository.getStatistics();
       this.allDates = Object.keys(this.statistics.optional.dates).reverse();
     } catch (error) {
-      this.error = error; // так можно? чтобы ничего не делать с ошибкой
+      this.allDates = [];
     }
     this.createTable();
   }
@@ -35,14 +34,13 @@ export default class StatisticCalendar {
         const tableLine = `
         <tr>
           <td>${date}</td>
-          <td>${answersGivenToday}</td>
-          <td>${learnedToday}</td>
+          <td>${answersGivenToday || 0}</td>
+          <td>${learnedToday || 0}</td>
         </tr>
         `;
         calendarTableHTML += tableLine;
       });
     }
-    calendarTableHTML += this.additionalRows;
     this.calendarContainer.innerHTML = `${calendarTableHTML}</tbody><table>`;
   }
 }

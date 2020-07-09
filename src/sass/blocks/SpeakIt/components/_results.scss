@@ -42,6 +42,10 @@
   text-align: left;
   background-color: $field-background-color;
 
+  &_top {
+    margin-top: 140px;
+  }
+
   &__text {
     margin: $field-text-margin;
     font-size: $font-size-base * 0.75;

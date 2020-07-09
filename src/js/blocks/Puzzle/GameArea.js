@@ -6,6 +6,7 @@ import StartNewGame from './startNewGame';
 import Prompts from './Prompts';
 import getTodayShort from '../../helpers';
 import Repository from '../../modules/Repository';
+import Navigation from './Navigation';
 
 const prompts = new Prompts();
 export class GameArea {
@@ -63,11 +64,6 @@ export class GameArea {
     this.buttonContinue.addEventListener('click', () => this.continueGame());
     this.buttonDontKnow.addEventListener('click', () => this.helpPlayerHePressedDontKnow());
     this.gameLine.addEventListener('mousedown', () => GameArea.removeOverlays());
-    this.resultsButtonContinue.addEventListener('click', async () => {
-      this.body.classList.remove('scroll-not');
-      this.results.classList.add('display-none');
-      await this.continueGame();
-    });
   }
 
   static addDragAndDropListeners() {
@@ -183,6 +179,8 @@ export class GameArea {
 
     if (correctWords === puzzlesInMainLine.length + puzzleInTestLine.length) {
       gameData.gameResultsCorrect.push(gameData.activePhrase);
+      const currentWordId = gameData.wordsCollection[gameData.activePhrase].id;
+      Repository.saveWordResult({ wordId: currentWordId, result: '2' });
       GameArea.updateStatistics(1, 0);
       GameArea.addShadowToLineNumber('correct');
       this.setControlButtons('continue');
@@ -228,6 +226,8 @@ export class GameArea {
       paintingInfo.classList.remove('display-none');
       prompts.clearTranslationText();
       this.setControlButtons('continue+results');
+    } else if (gameData.userWords) {
+      Navigation.openNavigationModal();
     } else {
       GameArea.defineNextlevelAndPage();
       this.setControlButtons('none');
@@ -279,6 +279,10 @@ export class GameArea {
   async helpPlayerHePressedDontKnow() {
     this.removePuzzlesToMainLine();
     gameData.gameResultsWrong.push(gameData.activePhrase);
+    const alternativeId = '_id';
+    const currentWordId = gameData.wordsCollection[gameData.activePhrase].id
+    || gameData.wordsCollection[gameData.activePhrase][alternativeId];
+    Repository.saveWordResult({ wordId: currentWordId, result: '0' });
     GameArea.updateStatistics(0, 1);
     GameArea.addShadowToLineNumber('wrong');
     await this.continueGame();
@@ -286,17 +290,31 @@ export class GameArea {
 
   static async updateStatistics(correct, wrong) {
     const puzzleStatistic = JSON.parse(localStorage.getItem('puzzleStatistic'));
-    if (puzzleStatistic[`${gameData.level}.${gameData.page}`]) {
-      let [correctAnswers, wrongAnswers, date] = puzzleStatistic[`${gameData.level}.${gameData.page}`];
-      correctAnswers += correct;
-      wrongAnswers += wrong;
-      date = getTodayShort();
-      puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correctAnswers, wrongAnswers, date];
+    if (gameData.userWords) {
+      if (puzzleStatistic[`level_${gameData.userWordsLevel}`] && gameData.activePhrase !== 0) {
+        let [correctAnswers, wrongAnswers, date] = puzzleStatistic[`level_${gameData.userWordsLevel}`];
+        correctAnswers += correct;
+        wrongAnswers += wrong;
+        date = getTodayShort();
+        puzzleStatistic[`level_${gameData.userWordsLevel}`] = [correctAnswers, wrongAnswers, date];
+      } else {
+        puzzleStatistic[`level_${gameData.userWordsLevel}`] = [correct, wrong, getTodayShort()];
+      }
+      localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
+      Repository.saveGameResult('puzzle', null, null, puzzleStatistic);
     } else {
-      puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correct, wrong, getTodayShort()];
+      if (puzzleStatistic[`${gameData.level}.${gameData.page}`] && gameData.activePhrase !== 0) {
+        let [correctAnswers, wrongAnswers, date] = puzzleStatistic[`${gameData.level}.${gameData.page}`];
+        correctAnswers += correct;
+        wrongAnswers += wrong;
+        date = getTodayShort();
+        puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correctAnswers, wrongAnswers, date];
+      } else {
+        puzzleStatistic[`${gameData.level}.${gameData.page}`] = [correct, wrong, getTodayShort()];
+      }
+      localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
+      Repository.saveGameResult('puzzle', null, null, puzzleStatistic);
     }
-    localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
-    Repository.saveGameResult('puzzle', null, null, puzzleStatistic);
   }
 
   removePuzzlesToMainLine() {

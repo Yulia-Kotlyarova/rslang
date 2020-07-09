@@ -21,6 +21,10 @@
     border-radius: 30px;
   }
 
+  .hidden {
+    display: none;
+  }
+
   @media (max-width: 1019px) {
     .statistics__main {
       width: 60vw;
