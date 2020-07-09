@@ -1,4 +1,6 @@
+import 'bootstrap/js/dist/collapse';
 import '@fortawesome/fontawesome-free/js/all.min';
+import Header from '../../modules/Header';
 import '../../../sass/styles.scss';
 import startTimer from './sprintStart';
 import { init } from './sprintGame';
@@ -63,9 +65,9 @@ function startTimer2() {
       if (timeLeft === 0) {
         onTimesUp2();
         document.querySelector('.wrapperSprint').style.display = 'flex';
-        getWordsFromBackend(document.querySelector('.levelSelector').value);
       }
     }, 1000);
+    getWordsFromBackend(document.querySelector('.levelSelector').value);
   });
 }
 
@@ -94,5 +96,7 @@ document.getElementById('app2').innerHTML = `
 `;
 
 window.onload = () => {
+  const header = new Header();
+  header.run();
   startTimer2();
 };
