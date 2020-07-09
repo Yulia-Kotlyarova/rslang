@@ -7,7 +7,7 @@ export default class Chart {
     this.chart = document.querySelector('.statistics__chart');
     this.chartRange = document.querySelector('.chart-range');
     this.chartWordsNumber = document.querySelector('.chart__number-of-words');
-    this.percentageOfWordsContainer = document.querySelector('.percentage-of-words');
+    this.percentageOfWordsContainer = document.querySelector('.percentage-of-words').firstChild;
     this.chartCircle = document.querySelector('.chart__circle');
     this.totalWordsNumber = 0;
     this.percentageOfWords = 0;
@@ -22,12 +22,12 @@ export default class Chart {
       const messageModal = new MessageModal();
       MessageModal.createModalHTML('userChartError');
       messageModal.appendSelf('userChartError');
-      MessageModal.showModal('Please sign in to see your statistics');
+      MessageModal.showModal('Sorry, something went wrong. Did you sign in?');
     } finally {
       this.chartRange.value = this.calculateChartRangeValue();
       this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
       this.chartWordsNumber.innerText = `Your Words: ${this.totalWordsNumber}`;
-      this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% of words of any text`;
+      this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% `;
       this.drawChart();
     }
   }
@@ -123,7 +123,7 @@ export default class Chart {
     this.totalWordsNumber = chartDataKeys[chartRangeValue];
     this.percentageOfWords = chartData[chartDataKeys[chartRangeValue]];
     this.chartWordsNumber.innerText = `Words: ${this.totalWordsNumber}`;
-    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% of words of any text`;
+    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% `;
     this.drawChart();
   }
 }
