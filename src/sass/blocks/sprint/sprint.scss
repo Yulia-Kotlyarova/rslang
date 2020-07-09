@@ -12,8 +12,6 @@
     }
 }
 
-
-
 body.sprint__body {
     background: url(mainPage.PNG) no-repeat center center fixed;
     background-size: cover;
@@ -21,11 +19,13 @@ body.sprint__body {
     overflow: hidden;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
     .wrapperSprint {
-        width: 85vw;
-        height: 90vh;
-        border-radius: 5px;
+        width: 80vw;
+        height: 82vh;
+        border-radius: 10px;
         background: url(sprint-game-board.png) no-repeat center center;
         background-size: cover;
         justify-content: center;
@@ -34,6 +34,7 @@ body.sprint__body {
         position: absolute;
         bottom: 0;
         display: none;
+        margin-bottom: 15px;
 
         .game {
             margin-top: 2%;
@@ -389,16 +390,4 @@ body.sprint__body {
             transition-duration: 0.4s;
         }
     } 
-}
-
-
-
-
-
-.a {
-    border: 1px solid red;
-}
-
-.b {
-    border: 1px solid blue;
 }
