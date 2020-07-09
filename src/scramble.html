@@ -1,12 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scramble">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Savannah | RS Lang</title>
+        <title>Scramble | RS Lang</title>
     </head>
-    <body>
-        <h1>Savannah</h1>
+    <body class="scramble-body hidden-for-header-render">
+        <div class="gameStartButton">
+            <button type="submit" class="gameStart__button" data-en="Play" data-ru="Играть">Играть</button>
+        </div>
+        <div class="take-test">
+            <button type="submit" class="take__button" data-en="Check your English level" data-ru="Узнай свой уровень английского">Узнай свой уровень английского</button>
+        </div>
+        <div class="scrambleLevel">
+            <select class="scrambleLevelSelector">
+                <option data-en="Learnt words" data-ru="Изученные слова">Изученные слова</option>
+                <option value="0" data-en="Level 1" data-ru="Уровень 1">Уровень 1</option>
+                <option value="1" data-en="Level 2" data-ru="Уровень 2">Уровень 2</option>
+                <option value="2" data-en="Level 3" data-ru="Уровень 3">Уровень 3</option>
+                <option value="3" data-en="Level 4" data-ru="Уровень 4">Уровень 4</option>
+                <option value="4" data-en="Level 5" data-ru="Уровень 5">Уровень 5</option>
+                <option value="5" data-en="Level 6" data-ru="Уровень 6">Уровень 6</option>
+            </select>
+        </div>   
+        <section class="sectionStart gameStart-hidden">
+            <span class="sectionStart__closeBtn"><i class="fas fa-window-close"></i></span>
+            <div class="sectionStart__gameArea ">
+                <div class="counter hidden">
+                    <span class="counter__box counter__third-number">0</span>
+                    <span class="counter__box counter__second-number">0</span>
+                    <span class="counter__box counter__first-number">0</span>
+                </div>
+                <p class="sectionStart__pressForHint hidden" data-en="Hint" data-ru="Подсказка">Подсказка</p>
+                <div class="sectionStart__hintArea hidden">
+                    <div class="sectionStart__img sectionStart--mouse sectionStart--div">
+                        <img src="" alt="">
+                    </div>
+                    <div class="sectionStart__voice sectionStart--mouse sectionStart--div">
+                        <div id="audioT"><i class="fas fa-volume-up"></i></div>
+                    </div>
+                    <div class="sectionStart__transcript box-size sectionStart--mouse sectionStart--div">
+                        <p class="text-size"></p>
+                    </div>
+                    <div class="sectionStart__translate box-size sectionStart--mouse sectionStart--div">
+                        <p class="text-size"></p>
+                    </div>
+                </div>
+                <h3 class="sectionStart__msg" data-en="Guess the word" data-ru="Собери слово">Собери слово</h3>                
+                <form action="javascript:void(0);" method="post" class="sectionStart__form">
+                    <input type="text" id="sectionStart__input" name="sectionStart__input" class="hidden" autocomplete="off" autofocus >
+                    <button class="sectionStart__btn" data-en="Click to start" data-ru="Начинать">Начинать</button>
+                </form>
+                <p class="sectionStart__sentence hidden"></p>
+            </div>
+        </section>
+        <section class="test testHidden">
+            <span class="testClose">&times;</span>
+            <h2 class="h2" data-en="Questions" data-ru="Вопросы">Вопросы</h2>
+            <hr class="striped-border">
+            <p id="test__question"></p>
+            <div class="test__buttons">
+                <button id="btn0"><span id="choice0"></span></button>
+                <button id="btn1"><span id="choice1"></span></button>
+                <button id="btn2"><span id="choice2"></span></button>
+                <button id="btn3"><span id="choice3"></span></button>
+            </div>
+            <div class="test__footer">
+                <p class="" id="progress"></p>
+            </div>
+        </section>
+        <div id="scrModal" class="modalScr modelHide">
+            <div class="modalScr__content">
+                <div class="modalScr__header">
+                    <h4 data-en="Result" data-ru="Твой результат">Твой результат</h4>
+                    <span class="modalScr__closeBtn">&times;</span>
+                </div>
+                <div class="modalScr__body">
+                    <hr>
+                    <div class="modalScr__correct">
+                        <h5 data-en="Total words " data-ru="Всего слов ">Всего слов <span id="modalScr__correct-count"></span></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
