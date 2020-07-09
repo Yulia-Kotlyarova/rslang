@@ -87,13 +87,13 @@ class App {
 
     if (hash === '#words-hard') {
       $('#words-hard-tab').tab('show');
-      this.wordsUserButton.classList.add('active');
+      this.wordsHardButton.classList.add('active');
     } else if (hash === '#words-deleted') {
       $('#words-deleted-tab').tab('show');
-      this.wordsHardButton.classList.add('active');
+      this.wordsDeletedButton.classList.add('active');
     } else {
       $('#words-user-tab').tab('show');
-      this.wordsDeletedButton.classList.add('active');
+      this.wordsUserButton.classList.add('active');
     }
   }
 

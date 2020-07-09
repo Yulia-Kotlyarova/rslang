@@ -91,7 +91,7 @@ ${
 }
           ${progressHTML}
               <p>
-                  <span data-en="Repetitions: " data-ru="Повторенрий: ">Repetitions: </span>${repetitions} |
+                  <span data-en="Repetitions: " data-ru="Повторений: ">Repetitions: </span>${repetitions} |
                   <span> </span>
                   <span data-en="Last: " data-ru="Последнее: ">Last: </span>${lastPlayedDate ? formatDateTime(new Date(lastPlayedDate)) : '-'} |
 ${
