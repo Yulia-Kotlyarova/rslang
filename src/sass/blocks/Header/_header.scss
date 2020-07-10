@@ -239,7 +239,31 @@ $button-border-radius-big: 25px;
     }
     .dropdown-content {
       top: 10px;
-      left: 60px;
+      left: 120px;
+      box-shadow: 11px 4px 27px -7px $color-box-shadow;
+      width: 210px;
+      border-radius: 0px $header-border-radius $header-border-radius 0px;
     }
   }
 }
+  @media (max-width: 320px) {
+    .app-header {
+      padding: 0 7px;
+    }
+
+    .navbar-nav {
+      width: 84%;
+      left: 25px;
+    }
+
+    .header__buttons {
+      width: 50px;
+      left: 60px;
+    }
+
+    .dropdown-content {
+      left: 60px!important;
+      width: 181px!important;
+      border-radius: 0px!important;
+    }
+  }
