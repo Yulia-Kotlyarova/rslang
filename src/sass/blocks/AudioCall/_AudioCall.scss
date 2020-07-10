@@ -7,7 +7,6 @@
 .a-c-html {
     height: 100%;
     font-family: $font;
-    font-size: 10px;
   }
 
 .a-c-body {
@@ -23,7 +22,7 @@
     }
 
     .fa-volume-up {
-      font-size: 6rem;
+      font-size: 4rem;
       cursor: pointer;
     }
   }
@@ -35,18 +34,22 @@
   .Audio-Call-Wrapper,
   .a-c-hello-screen {
     position: absolute;
-    margin: 35px 160px 0px;
+    margin: 130px auto;
+    top: 1vh; 
+    left: 0; 
+    bottom: 0; 
+    right: 0;
     width: 70vw;
-    height: 320px;
+    height: 70%;
     background-color:$card-background-day;
     box-shadow: 10px 10px 15px $shadow-color;
     border-radius: 15px;
+    font-size: 17px;
   }
 
   .a-c-hello-screen {
     z-index: 200;
     padding: 50px 30px;
-    font-size: 1.8em;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-align: center;
@@ -114,7 +117,7 @@
   }
 
   .a-c-translate {
-    font-size: 1.8em;
+    font-size: 17px;
     letter-spacing: 1px;
     font-weight: 600;
     position: absolute;
@@ -130,10 +133,20 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    font-size: 1.8em;
+    font-size: 17px;
     font-weight: 600;
     letter-spacing: 1px;
     cursor: pointer;
+    li {
+      color: #5c7791;
+    }
+    .li-hover:hover {
+      background-color: $color-dropdown-content-bg;
+      border-radius: 3px;
+    }
+    span {
+      color: $main_font_color;
+    }
   }
 
 .li-pale-color {
@@ -149,11 +162,11 @@
 }
 
 .a-c-loader {
-  width: 95%;
+  width: 0%;
   height: 4px;
   background-color: $pale_font_color;
   border-radius: 2px;
-  margin: 220px 0 0 2.5%;
+  margin: 30% 0 0 2.5%;
 }
 
 @media (max-width: 992px) {
