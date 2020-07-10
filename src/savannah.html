@@ -7,7 +7,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
         <title>Savannah | RS Lang</title>
     </head>
-    <body class="savannah__body ">
+    <body class="savannah__body hidden-for-header-render">
         <div class="start-page">
             <div class="start-page__container">
                 <div class="start__title">SAVANNAH</div>
@@ -19,19 +19,14 @@
                 <button type="button" class="btn btn-secondary button__start">Start</button>
             </div>
         </div>
-    <div class="savanna__game-area">
-        <div class="control-panel savannah-wrapper">
-            <div class="control-panel__navigation">
-                <div class="navigation__level">
-                    <div class="level__title">Level</div>
-                    <select class="level__select">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                    </select>
+        <div class="savanna__game-area">
+            <div class="control-panel savannah-wrapper">
+                <div class="control-panel__navigation">
+                    <div class="navigation__position">
+                        <div class="current-level"><span data-en="Level: " data-ru="Уровень: ">Level: </span><span></span></div>
+                        <div class="current-round"><span data-en="Round: " data-ru="Раунд: ">Round: </span><span></span></div>
+                    </div>
+                    <button type="button" class="btn btn-info button__statistics-navigation" data-en="Statictics & Navigation" data-ru="Статистика и навигация">Statictics & Navigation</button>
                 </div>
                 <div class="control-panel__container">
                     <div class="control__sound"></div>
@@ -49,8 +44,6 @@
                 </div>
             </div>
         </div>
-
-    </div>
         <div class="results hidden">
             <div class="results__container">
                 <div class="scrollbar scrollbar-primary">
@@ -64,17 +57,17 @@
                             <div class="correct__words"></div>
                         </div>
                     </div>
-                    <div class="results__buttons">
-                        <button type="button" class="btn btn-secondary results__button button__play-again">play again</button>
-                        <button type="button" class="btn btn-secondary results__button button__play-next-game">play next game</button>
-                    </div>
+                </div>
+                <div class="results__buttons">
+                    <button type="button" class="btn btn-secondary results__button button__play-again">play again</button>
+                    <button type="button" class="btn btn-secondary results__button button__play-next-game">play next game</button>
                 </div>
             </div>
-            <audio></audio>
-            <div class="attribution">
-                Sound from <a href="https://www.zapsplat.com">https://www.zapsplat.com</a>
-                Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
-            </div>
+        </div>
+        <audio></audio>
+        <div class="attribution">
+            Sound from <a href="https://www.zapsplat.com">https://www.zapsplat.com</a>
+            Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
         </div>
     </body>
 </html>

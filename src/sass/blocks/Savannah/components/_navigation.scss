@@ -4,37 +4,21 @@
     font-size: 2rem;
   }
 
-  .navigation__level, .navigation__page {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .navigation__position {
+      display: flex;
+
+      & > div {
+          margin-right: 10px;
+      }
+
+      & > div > span:last-child {
+          font-weight: 700;
+      }
   }
 
-  .level__title, .page__title {
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-  }
-
-  .level__select, .page__select {
-    width: 60px;
-    height: 30px;
-    text-align-last: center;
-    font-size: 2rem;
-    color: $color-text-additional;
-    border-radius: $button-border-radius;
-    cursor: pointer;
-  }
-
-  .level__select:hover, .page__select:hover {
-    box-shadow: 0 0 2px 2px black;
-  }
-
-  option {
-    text-align: center;
-    background-color: #FFFFFF;
-    cursor: pointer;
-  }
+.button__statistics-navigation {
+    font-size: 1.5rem;
+}
 
   @media (max-width: 411px) {
     .control-panel__navigation {

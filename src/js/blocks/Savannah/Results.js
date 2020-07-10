@@ -1,8 +1,7 @@
 export default class Results {
-  constructor(startNewGame, savannahState, navigation) {
+  constructor(startNewGame, savannahState) {
     this.startNewGame = startNewGame;
     this.savannahState = savannahState;
-    this.navigation = navigation;
     this.answersArea = document.querySelector('.game__answers');
     this.activeWordContainer = document.querySelector('.game__active-word');
     this.resultsContainer = document.querySelector('.results');
@@ -23,7 +22,6 @@ export default class Results {
     this.buttonPlayNextGame.addEventListener('click', () => {
       this.resultsContainer.classList.add('hidden');
       this.defineNextlevelAndPage();
-      this.navigation.updatetNavigationFields();
       this.startNewGame.startGame();
     });
   }
@@ -31,12 +29,12 @@ export default class Results {
   defineNextlevelAndPage() {
     if (this.savannahState.currentLevel === 5) {
       this.savannahState.currentLevel = 0;
-      this.savannahState.currentPage = 0;
-    } else if (this.savannahState.currentPage < 29) {
-      this.savannahState.currentPage += 1;
+      this.savannahState.currentRound = 0;
+    } else if (this.savannahState.currentRound < 29) {
+      this.savannahState.currentRound += 1;
     } else {
       this.savannahState.currentLevel += 1;
-      this.savannahState.currentPage = 0;
+      this.savannahState.currentRound = 0;
     }
   }
 
