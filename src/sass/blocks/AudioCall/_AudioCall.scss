@@ -13,6 +13,19 @@
 .a-c-body {
     height: 100%;
     color: $main_font_color;
+    
+    .volume-up {
+      margin: 10px;
+    }
+
+    .volume-up {
+      margin: 27px;
+    }
+
+    .fa-volume-up {
+      font-size: 6rem;
+      cursor: pointer;
+    }
   }
 
   .audio-call-h2 {
@@ -61,19 +74,6 @@
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 0 10px $shadow-color;
-  }
-
-  .volume-up {
-    margin: 10px;
-  }
-
-  .volume-up {
-    margin: 27px;
-  }
-
-  .fa-volume-up {
-    font-size: 6rem;
-    cursor: pointer;
   }
 
   .audio-call-photo {
