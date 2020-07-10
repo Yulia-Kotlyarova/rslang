@@ -25,6 +25,7 @@ export default class Header {
     this.gameSprintURL = './sprint.html';
     this.gameSpeakItURL = './speakIt.html';
     this.gamePuzzleURL = './puzzle.html';
+    this.gameScrambleURL = './scramble.html';
     this.authorizationURL = './authorization.html';
   }
 
@@ -97,6 +98,7 @@ export default class Header {
       <a href=${this.gameSavannaURL}>Savanna</a>
       <a href=${this.gameSprintURL}>Sprint</a>
       <a href=${this.gameAudioCallURL}>AudioCall</a>
+      <a href=${this.gameScrambleURL}>Scramble</a>
     </div>
     </div>`;
 
