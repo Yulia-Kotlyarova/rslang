@@ -33,7 +33,7 @@ window.onload = () => {
   const word3 = document.querySelector('.word-list-3');
   const word4 = document.querySelector('.word-list-4');
   const word5 = document.querySelector('.word-list-5');
-  const wordList = document.querySelectorAll('.word-list > li');
+  const wordList = document.querySelectorAll('.word-list > li > span');
 
   const volumeUp = document.querySelector('#big-volume-up');
   const littleVolumeUp = document.querySelector('.a-c-little-volume');
@@ -41,8 +41,8 @@ window.onload = () => {
   const audio = new Audio();
   const levelNumb = document.querySelector('.a-c-level').options.selectedIndex;
   const pageNumb = document.querySelector('.a-c-page').options.selectedIndex;
-  const userLevel = document.querySelector('.a-c-level').options[levelNumb].value;
-  const userPage = document.querySelector('.a-c-page').options[pageNumb].value;
+  const userLevel = document.querySelector('.a-c-level').options[levelNumb].value - 1;
+  const userPage = document.querySelector('.a-c-page').options[pageNumb].value - 1;
 
   let isVictory;
   localStorage.cardNumber = 1;
@@ -96,6 +96,7 @@ window.onload = () => {
           el.removeEventListener('click', wrong);
           el.removeEventListener('click', right);
           el.classList.add('li-pale-color');
+          el.classList.remove('li-hover');
         });
         element.classList.remove('li-pale-color');
       };
@@ -119,6 +120,7 @@ window.onload = () => {
           el.removeEventListener('click', wrong);
           el.removeEventListener('click', right);
           el.classList.add('li-pale-color');
+          el.classList.remove('li-hover');
         });
         element.classList.remove('li-pale-color');
       };
@@ -299,6 +301,7 @@ window.onload = () => {
     translateContainer.classList.add('hidden');
     wordList.forEach((el) => {
       el.classList.remove('li-pale-color');
+      el.classList.add('li-hover');
     });
     if (localStorage.cardNumber.length >= 20) {
       gameResult();
@@ -307,6 +310,7 @@ window.onload = () => {
       volumeUp.classList.remove('hidden');
       wordList.forEach((e) => {
         e.style.textDecoration = 'none';
+        e.classList.add('li-hover');
       });
       localStorage.cardNumber += 1;
       getWords(); // relaunch loop
@@ -324,7 +328,7 @@ window.onload = () => {
 
   playAgainBtn.addEventListener('click', playAgain);
 
-  window.beforeunload = () => {
+  window.beforeunload = async function saveResult() {
     const sessionData = getTodayShort();
 
     if (localStorage.wrong.length > 0) {
@@ -332,6 +336,6 @@ window.onload = () => {
     } else {
       isVictory = true;
     }
-    Repository.saveGameResult('Audio Call', isVictory, sessionData);
+    await Repository.saveGameResult('Audio Call', isVictory, sessionData);
   };
 };

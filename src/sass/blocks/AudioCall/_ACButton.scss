@@ -34,7 +34,7 @@
     margin: auto;
     left: 0;
     right: 0;
-    font-size: 1.6em;
+    font-size: 17px;
     border-radius: $btn-radius;
     height: 35px;
     padding: 0px 30px;
@@ -55,11 +55,11 @@
 
   .a-c-go {
     z-index: 300;
-    top: 110px;
+    top: 150%;
   }
   
   .a-c-dont-know {
-    top: 130px;
+    top: 210%;
     border: 1px solid $card-background-day;
     background-color: $card-background-day;
     box-shadow: 0 0 10px $shadow-color;
@@ -82,13 +82,13 @@
     margin: auto;
     left: 0;
     right: 0;
-    top: 130px;
+    top: 210%;
   }
 
   .a-c-next:hover {
     .bi-arrow-right-circle {
-        width: 3.2rem;
-        height: 3.2rem;
+        width: 1.7rem;
+        height: 1.7rem;
     }
   }
   
