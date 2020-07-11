@@ -1,4 +1,6 @@
 import Repository from '../../../modules/Repository';
+import MessageModal from '../../../modules/MessageModal';
+import ShortStatistics from '../../Statistics/ShortStatistics';
 
 class Card {
   constructor() {
@@ -84,11 +86,17 @@ class Card {
     }
   }
 
-  checkStudyProgress() {
+  async checkStudyProgress() {
     if (Number(this.todayStudiedWords) > Number(this.numberOfCardsByDay)
           || Number(this.todayStudiedNewWords) > Number(this.numberOfNewWordsToStudy)
           || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
+      try {
+        const shortStatistics = new ShortStatistics();
+        await shortStatistics.showModal();
+      } catch (error) {
+        return;
+      }
       if (!this.studyFinishAt) {
         this.studyFinishAt = Date.now();
         localStorage.setItem('studyFinishAt', this.studyFinishAt);
@@ -110,8 +118,6 @@ class Card {
       this.hideWarningWindow();
     }
     if (Number(this.studyFinishAt) > 0 && (timeNow > nextStudyTime)) {
-      this.studyFinishAt = 0;
-      localStorage.setItem('studyFinishAt', this.studyFinishAt);
       this.todayStudiedNewWords = 0;
       this.todayStudiedWords = 0;
     }
@@ -135,27 +141,42 @@ class Card {
   }
 
   async getWord() {
-    switch (true) {
-      case this.wordsToStudy === 'new':
-        { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
+    try {
+      switch (true) {
+        case window.location.hash === '#hardWords':
+          { const data = await Repository.getHardWords(undefined, 3600);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        case this.wordsToStudy === 'new':
+          { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        case this.wordsToStudy === 'mixed':
+          { const data = await Repository.getMixedWordsWithMandatoryNew(
+            this.numberOfNewWordsToStudy, undefined, this.numberOfCardsByDay,
+          );
           this.actualWordsData = data;
           this.wordsHandler(); }
-        break;
-      case this.wordsToStudy === 'mixed':
-        { const data = await Repository.getMixedWordsWithMandatoryNew(this.numberOfNewWordsToStudy,
-          undefined, this.numberOfCardsByDay);
-        this.actualWordsData = data;
-        this.wordsHandler(); }
-        break;
-      case this.wordsToStudy === 'repeat':
-        { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
+          break;
+        case this.wordsToStudy === 'repeat':
+          { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        default:
+        { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
           this.actualWordsData = data;
           this.wordsHandler(); }
-        break;
-      default:
-      { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
-        this.actualWordsData = data;
-        this.wordsHandler(); }
+      }
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
     }
   }
 
@@ -163,26 +184,44 @@ class Card {
     if (this.isMistake) {
       return;
     }
-    this.isMistake = true;
-    const difficultyLevel = '0';
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await this.setWordDifficulty(wordId, difficultyLevel);
-    const updatedWord = await Repository.getOneUserWord(wordId);
-    const nextRepeatUpdatedWord = updatedWord.userWord.optional.playNextDate;
+    try {
+      this.isMistake = true;
+      const difficultyLevel = '0';
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      await this.setWordDifficulty(wordId, difficultyLevel);
+      const updatedWord = await Repository.getOneUserWord(wordId);
+      const nextRepeatUpdatedWord = updatedWord.userWord.optional.playNextDate;
 
-    const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
-    if ((newPosition !== -1)
-        && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
-      this.actualWordsData.splice(newPosition, 0, updatedWord);
-    } else {
-      this.actualWordsData.splice(this.wordPositionInResponse
-        + this.defaultWordInterval, 0, updatedWord);
+      const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
+      if ((newPosition !== -1)
+          && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
+        this.actualWordsData.splice(newPosition, 0, updatedWord);
+      } else {
+        this.actualWordsData.splice(this.wordPositionInResponse
+          + this.defaultWordInterval, 0, updatedWord);
+      }
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
     }
   }
 
   async removeWord() {
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await Repository.markWordAsDeleted(wordId);
+    try {
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      await Repository.markWordAsDeleted(wordId);
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   showWarningWindow() {
@@ -218,8 +257,11 @@ class Card {
   }
 
   showWordInput(wordData) {
+    const overlay = document.querySelector('.overlay-window');
+    overlay.classList.add('hide-window');
     this.word = wordData.word;
     const wordLength = wordData.word.length;
+    this.wordInput.setAttribute('maxlength', wordLength);
 
     for (let i = 0; i < wordLength; i += 1) {
       this.wordField.innerHTML += `<span class="index-hidden" index="${i}">${this.word[i]}</span>`;
@@ -310,6 +352,13 @@ class Card {
     }
     this.isChecked = true;
     this.wordInput.value = this.word;
+    this.wordInput.classList.add('right-letter');
+    if (this.isWordMeaning || this.isTextExample) {
+      const hiddenWords = document.querySelectorAll('.hidden-word');
+      hiddenWords.forEach((item) => {
+        item.classList.remove('hidden-word');
+      });
+    }
     this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
     localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
     if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
@@ -322,13 +371,6 @@ class Card {
     }
     this.nextCardButton.classList.remove('hidden');
     this.wordSettings.classList.remove('hidden');
-    this.wordInput.classList.add('right-letter');
-    if (this.isWordMeaning || this.isTextExample) {
-      const hiddenWords = document.querySelectorAll('.hidden-word');
-      hiddenWords.forEach((item) => {
-        item.classList.remove('hidden-word');
-      });
-    }
 
     if (this.isTranslate) {
       this.showTranslate();
@@ -341,9 +383,10 @@ class Card {
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     if (this.word !== entryField.value) {
       for (let i = 0; i < hiddenRightWord.length; i += 1) {
-        hiddenRightWord[i].classList.add('wrong-letter');
+        if (this.word[i] === entryField.value[i]) {
+          hiddenRightWord[i].classList.add('right-letter');
+        } else { hiddenRightWord[i].classList.add('wrong-letter'); }
       }
-
       entryField.value = '';
       hiddenRightWord.forEach((item) => {
         item.classList.remove('index-hidden');
@@ -385,7 +428,16 @@ class Card {
   }
 
   async setWordDifficulty(wordId, difficultyLevel) { // eslint-disable-line class-methods-use-this
-    await Repository.saveWordResult({ wordId, result: difficultyLevel });
+    try {
+      await Repository.saveWordResult({ wordId, result: difficultyLevel });
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   getWordDifficulty(event) {
@@ -398,8 +450,17 @@ class Card {
   }
 
   async markDifficultWord() {
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await Repository.markWordAsDeleted(wordId);
+    try {
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      await Repository.markWordAsDeleted(wordId);
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   setEventListener() {
