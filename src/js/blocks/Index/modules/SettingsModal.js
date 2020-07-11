@@ -112,6 +112,7 @@ class SettingsModal {
 
         await Repository.updateWordsPerDay(wordsPerDay);
         await Repository.updateOptionalSettings(newSettings);
+        document.location.reload();
       }
     });
   }

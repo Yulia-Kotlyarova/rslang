@@ -2,7 +2,7 @@ import {
   arrayWordTranslate, arrayAudio, arraySentence, arrayTranscription, arrayImage,
   arrayWord, arrayWordId,
 } from './scrCode2backend';
-import { audioT } from '../../constants/defaultSettings';
+
 import { objForCorrectWord } from './scrCode9Stat';
 
 const scrImg = document.querySelector('.sectionStart__img img');
@@ -10,6 +10,7 @@ const scrTranslate = document.querySelector('.sectionStart__translate p');
 const scrTranscript = document.querySelector('.sectionStart__transcript p');
 const scrSentence = document.querySelector('.sectionStart__sentence');
 const playTune = document.querySelector('.sectionStart__voice');
+const audioT = document.getElementById('audioT');
 
 function myPlay(url) {
   const audio = new Audio(url);

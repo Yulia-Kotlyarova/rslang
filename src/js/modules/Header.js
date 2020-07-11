@@ -1,5 +1,7 @@
 import Authorization from './Authorization';
 
+import { renderNewLanguageInElement } from '../helpers';
+
 export default class Header {
   constructor() {
     this.isSingedUp = false;
@@ -25,6 +27,7 @@ export default class Header {
     this.gameSprintURL = './sprint.html';
     this.gameSpeakItURL = './speakIt.html';
     this.gamePuzzleURL = './puzzle.html';
+    this.gameScrambleURL = './scramble.html';
     this.authorizationURL = './authorization.html';
   }
 
@@ -32,7 +35,17 @@ export default class Header {
     this.checkUserAuthorization();
     this.renderHeader();
     Header.setEventListeners();
-    localStorage.setItem('app-language', 'en');
+
+    let language = localStorage.getItem('app-language');
+    if (!language) {
+      language = 'en';
+      localStorage.setItem('app-language', 'en');
+    }
+
+    if (language !== 'en') {
+      Header.renderLanguage(language);
+    }
+
     document.body.classList.remove('hidden-for-header-render');
   }
 
@@ -57,7 +70,6 @@ export default class Header {
 
   static changeLanguage() {
     const currentLanguage = localStorage.getItem('app-language');
-    const languageButton = document.querySelector('.button_language');
 
     let newLanguage;
     if (currentLanguage === 'en') {
@@ -67,13 +79,15 @@ export default class Header {
     }
 
     localStorage.setItem('app-language', newLanguage);
-    languageButton.innerText = newLanguage.toUpperCase();
 
-    const elementsToChange = document.querySelectorAll(`[data-${newLanguage}]`);
-    elementsToChange.forEach((elementToChange) => {
-      const element = elementToChange;
-      element.innerText = element.dataset[newLanguage];
-    });
+    Header.renderLanguage(newLanguage);
+  }
+
+  static renderLanguage(language) {
+    const languageButton = document.querySelector('.button_language');
+    languageButton.innerText = language.toUpperCase();
+
+    renderNewLanguageInElement(document, language);
   }
 
   renderHeader() {
@@ -97,6 +111,7 @@ export default class Header {
       <a href=${this.gameSavannaURL}>Savanna</a>
       <a href=${this.gameSprintURL}>Sprint</a>
       <a href=${this.gameAudioCallURL}>AudioCall</a>
+      <a href=${this.gameScrambleURL}>Scramble</a>
     </div>
     </div>`;
 
