@@ -1,4 +1,5 @@
 import sortBy from 'lodash/sortBy';
+import keyBy from 'lodash/keyBy';
 
 import Authorization from './Authorization';
 
@@ -53,11 +54,14 @@ class Repository {
     if (words.length > wordsPerPage) {
       words.length = wordsPerPage;
     }
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
     return words;
   }
 
   static async getAllUserWordsIncludingHardDeleted(wordsPerPage) {
-    return Repository.getWords('allUser', undefined, wordsPerPage);
+    const words = await Repository.getWords('allUser', undefined, wordsPerPage);
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getCurrentSessionUserWords(group, wordsPerPage = 20) {
@@ -66,31 +70,42 @@ class Repository {
     if (words.length > wordsPerPage) {
       words.length = wordsPerPage;
     }
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
     return words;
   }
 
   static async getNewWords(group, wordsPerPage) {
-    return Repository.getWords('new', group, wordsPerPage);
+    const words = await Repository.getWords('new', group, wordsPerPage);
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getMixedWords(group, wordsPerPage = 20) {
+    let words;
     const userWords = await Repository.getCurrentSessionUserWords(group, wordsPerPage);
     if (userWords.length === Number(wordsPerPage)) {
-      return userWords;
+      words = userWords;
+    } else {
+      const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
+      words = [...userWords, ...wordsNew];
     }
-    const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
-    return [...userWords, ...wordsNew];
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getMixedWordsWithMandatoryNew(newWordsNumber = 10, group, wordsPerPage = 20) {
+    let words;
     const wordsNew = await Repository.getNewWords(group, newWordsNumber);
     if (wordsNew.length >= Number(wordsPerPage)) {
       wordsNew.length = wordsPerPage;
-      return wordsNew;
+      words = wordsNew;
+    } else {
+      const userWords = await Repository
+        .getCurrentSessionUserWords(group, (wordsPerPage - wordsNew.length));
+      words = [...userWords, ...wordsNew];
     }
-    const userWords = await Repository
-      .getCurrentSessionUserWords(group, (wordsPerPage - wordsNew.length));
-    return [...userWords, ...wordsNew];
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getHardWords(group, wordsPerPage) {
@@ -116,6 +131,14 @@ class Repository {
   }
 
   static async getOneUserWord(wordId) {
+    const wordsLocalJSON = localStorage.getItem('words');
+    if (wordsLocalJSON) {
+      const wordsLocal = JSON.parse(wordsLocalJSON);
+      if (wordsLocal && wordsLocal[wordId]) {
+        return wordsLocal[wordId];
+      }
+    }
+
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
@@ -154,6 +177,19 @@ class Repository {
     return rawResponse.json();
   }
 
+  static updateWordInStorage(wordId, newUserWord) {
+    const wordsLocalJSON = localStorage.getItem('words');
+    if (!wordsLocalJSON) {
+      return;
+    }
+    const wordsLocal = JSON.parse(wordsLocalJSON);
+    if (!wordsLocal[wordId]) {
+      return;
+    }
+    wordsLocal[wordId].userWord = newUserWord;
+    localStorage.setItem('words', JSON.stringify(wordsLocal));
+  }
+
   static async updateUserWordDifficulty(wordId, difficulty) {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
@@ -177,6 +213,8 @@ class Repository {
       },
       body: JSON.stringify(updates),
     });
+
+    Repository.updateWordInStorage(wordId, updates);
 
     return rawResponse.json();
   }
@@ -211,6 +249,8 @@ class Repository {
       },
       body: JSON.stringify(updates),
     });
+
+    Repository.updateWordInStorage(wordId, updates);
 
     return rawResponse.json();
   }
@@ -247,7 +287,15 @@ class Repository {
     });
   }
 
+  // STATISTICS
+
   static async getStatistics() {
+    const statistics = localStorage.getItem('statistics');
+
+    if (statistics) {
+      return JSON.parse(statistics);
+    }
+
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
@@ -262,14 +310,13 @@ class Repository {
       },
     });
 
-    if (rawResponse.status.toString() === '404') {
-      return {
-        learnedWords: 0,
-        optional: {},
-      };
+    const statisticsFromDB = await rawResponse.json();
+
+    if (!statistics) {
+      localStorage.setItem('statistics', JSON.stringify(statisticsFromDB));
     }
 
-    return rawResponse.json();
+    return statisticsFromDB;
   }
 
   static async updateOptionalStatistics(updatedValues) {
@@ -294,7 +341,10 @@ class Repository {
       body: JSON.stringify(newStatistics),
     });
 
-    return rawResponse.json();
+    const statisticsSaved = await rawResponse.json();
+    localStorage.setItem('statistics', JSON.stringify(statisticsSaved));
+
+    return statisticsSaved;
   }
 
   static async incrementLearnedWords(result, isWordNew) {
@@ -388,8 +438,13 @@ class Repository {
       body: JSON.stringify(newStatistics),
     });
 
-    return rawResponse.json();
+    const statisticsSaved = await rawResponse.json();
+    localStorage.setItem('statistics', JSON.stringify(statisticsSaved));
+
+    return statisticsSaved;
   }
+
+  // SETTINGS
 
   static async getSettings() {
     const userId = localStorage.getItem('userId');
@@ -468,6 +523,8 @@ class Repository {
 
     return rawResponse.json();
   }
+
+  // SAVE RESULTS
 
   static async saveWordResult({ wordId, result = '1', isGame = false }) {
     let isWordNew = false;
