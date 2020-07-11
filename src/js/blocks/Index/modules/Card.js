@@ -397,11 +397,14 @@ class Card {
         });
         entryField.focus();
       }, 1000);
+      this.repeatWrongWord();
     } else {
       this.showRightAnswer();
-      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-      const difficultyLevel = '3';
-      this.setWordDifficulty(wordId, difficultyLevel);
+      if (!this.isMistake) {
+        const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+        const difficultyLevel = '3';
+        this.setWordDifficulty(wordId, difficultyLevel);
+      }
     }
   }
 
