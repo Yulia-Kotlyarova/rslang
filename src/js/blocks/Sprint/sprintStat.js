@@ -29,15 +29,13 @@ const addWordsToStatistic = (array, array1, array2) => {
   return list;
 };
 
-const openModal = async () => {
+const openModal = () => {
   simpleModel.classList.add('d-block');
   disableKey();
   errorCount.textContent = objForInCorrectWord.eng.length;
   correctCount.textContent = objForCorrectWord.eng.length;
   document.querySelector('.modal-content__body-correct').appendChild(addWordsToStatistic(objForCorrectWord.audio, objForCorrectWord.eng, objForCorrectWord.ru));
   document.querySelector('.modal-content__body-error').appendChild(addWordsToStatistic(objForInCorrectWord.audio, objForInCorrectWord.eng, objForInCorrectWord.ru));
-  await Repository.updateOptionalStatistics(objForCorrectWord.eng);
-  await Repository.incrementLearnedWords();
 };
 
 export { openModal as default };
@@ -46,6 +44,12 @@ const closeModal = () => {
   closeBtn.addEventListener('click', () => {
     simpleModel.style.display = 'none';
     simpleModel.classList.remove('d-block');
+    objForCorrectWord.id.forEach((val) => {
+      Repository.saveWordResult({ wordId: val, result: '2' });
+    });
+    objForInCorrectWord.id.forEach((val) => {
+      Repository.saveWordResult({ wordId: val, result: '1' });
+    });
   });
 };
 
