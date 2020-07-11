@@ -83,7 +83,7 @@ export default class ShortStatistics {
       const messageModal = new MessageModal();
       MessageModal.createModalHTML('user-short-statistic-error');
       messageModal.appendSelf('user-short-statistic-error');
-      MessageModal.showModal('Sorry, something went wrong', deleteErrorModal);
+      MessageModal.showModal('Sorry, something went wrong', deleteErrorModal, 'user-short-statistic-error');
     }
   }
 }
