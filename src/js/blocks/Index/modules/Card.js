@@ -1,4 +1,5 @@
 import Repository from '../../../modules/Repository';
+import MessageModal from '../../../modules/MessageModal';
 import ShortStatistics from '../../Statistics/ShortStatistics';
 
 class Card {
@@ -90,8 +91,12 @@ class Card {
           || Number(this.todayStudiedNewWords) > Number(this.numberOfNewWordsToStudy)
           || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
-      const shortStatistics = new ShortStatistics();
-      await shortStatistics.showModal();
+      try {
+        const shortStatistics = new ShortStatistics();
+        await shortStatistics.showModal();
+      } catch (error) {
+        return;
+      }
       if (!this.studyFinishAt) {
         this.studyFinishAt = Date.now();
         localStorage.setItem('studyFinishAt', this.studyFinishAt);
@@ -136,32 +141,42 @@ class Card {
   }
 
   async getWord() {
-    switch (true) {
-      case window.location.hash === '#hardWords':
-        { const data = await Repository.getHardWords(undefined, 3600);
+    try {
+      switch (true) {
+        case window.location.hash === '#hardWords':
+          { const data = await Repository.getHardWords(undefined, 3600);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        case this.wordsToStudy === 'new':
+          { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        case this.wordsToStudy === 'mixed':
+          { const data = await Repository.getMixedWordsWithMandatoryNew(
+            this.numberOfNewWordsToStudy, undefined, this.numberOfCardsByDay,
+          );
           this.actualWordsData = data;
           this.wordsHandler(); }
-        break;
-      case this.wordsToStudy === 'new':
-        { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
+          break;
+        case this.wordsToStudy === 'repeat':
+          { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        default:
+        { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
           this.actualWordsData = data;
           this.wordsHandler(); }
-        break;
-      case this.wordsToStudy === 'mixed':
-        { const data = await Repository.getMixedWordsWithMandatoryNew(this.numberOfNewWordsToStudy,
-          undefined, this.numberOfCardsByDay);
-        this.actualWordsData = data;
-        this.wordsHandler(); }
-        break;
-      case this.wordsToStudy === 'repeat':
-        { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
-          this.actualWordsData = data;
-          this.wordsHandler(); }
-        break;
-      default:
-      { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
-        this.actualWordsData = data;
-        this.wordsHandler(); }
+      }
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
     }
   }
 
@@ -169,26 +184,44 @@ class Card {
     if (this.isMistake) {
       return;
     }
-    this.isMistake = true;
-    const difficultyLevel = '0';
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await this.setWordDifficulty(wordId, difficultyLevel);
-    const updatedWord = await Repository.getOneUserWord(wordId);
-    const nextRepeatUpdatedWord = updatedWord.userWord.optional.playNextDate;
+    try {
+      this.isMistake = true;
+      const difficultyLevel = '0';
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      await this.setWordDifficulty(wordId, difficultyLevel);
+      const updatedWord = await Repository.getOneUserWord(wordId);
+      const nextRepeatUpdatedWord = updatedWord.userWord.optional.playNextDate;
 
-    const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
-    if ((newPosition !== -1)
-        && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
-      this.actualWordsData.splice(newPosition, 0, updatedWord);
-    } else {
-      this.actualWordsData.splice(this.wordPositionInResponse
-        + this.defaultWordInterval, 0, updatedWord);
+      const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
+      if ((newPosition !== -1)
+          && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
+        this.actualWordsData.splice(newPosition, 0, updatedWord);
+      } else {
+        this.actualWordsData.splice(this.wordPositionInResponse
+          + this.defaultWordInterval, 0, updatedWord);
+      }
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
     }
   }
 
   async removeWord() {
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await Repository.markWordAsDeleted(wordId);
+    try {
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      await Repository.markWordAsDeleted(wordId);
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   showWarningWindow() {
@@ -224,6 +257,8 @@ class Card {
   }
 
   showWordInput(wordData) {
+    const overlay = document.querySelector('.overlay-window');
+    overlay.classList.add('hide-window');
     this.word = wordData.word;
     const wordLength = wordData.word.length;
     this.wordInput.setAttribute('maxlength', wordLength);
@@ -393,7 +428,16 @@ class Card {
   }
 
   async setWordDifficulty(wordId, difficultyLevel) { // eslint-disable-line class-methods-use-this
-    await Repository.saveWordResult({ wordId, result: difficultyLevel });
+    try {
+      await Repository.saveWordResult({ wordId, result: difficultyLevel });
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   getWordDifficulty(event) {
@@ -406,8 +450,17 @@ class Card {
   }
 
   async markDifficultWord() {
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await Repository.markWordAsDeleted(wordId);
+    try {
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      await Repository.markWordAsDeleted(wordId);
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   setEventListener() {
