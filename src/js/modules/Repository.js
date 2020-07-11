@@ -15,12 +15,12 @@ class Repository {
 
     let filter;
     if (type === 'new') {
-      filter = '{"$and":[{"userWord":null, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+      filter = '{"userWord":null}';
     } else if (type === 'currentSession') {
       const currentSessionEnd = Date.now() + intervals.defaultCurrentSessionFromNow;
-      filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
+      filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
     } else if (type === 'repeat') {
-      filter = '{"$and":[{"userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+      filter = '{"$and":[{"userWord":{"$ne": null}, "userWord.optional.isDeleted":{"$ne":true}}]}';
     } else if (type === 'deleted') {
       filter = '{"userWord.optional.isDeleted":true}';
     } else if (type === 'hard') {
