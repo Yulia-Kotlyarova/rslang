@@ -469,15 +469,20 @@ class Repository {
     return rawResponse.json();
   }
 
-  static async saveWordResult({ wordId, result = '1' }) {
-    let word;
+  static async saveWordResult({ wordId, result = '1', isGame = false }) {
     let isWordNew = false;
-    word = await Repository.getOneUserWord(wordId);
+    const word = await Repository.getOneUserWord(wordId);
 
-    if (!word || !word.userWord) {
+    let toCreate = false;
+    if (!word.userWord) {
+      toCreate = true;
+      word.userWord = {};
+      word.userWord.optional = {};
+    }
+
+    if (!isGame && !word.userWord.optional.wordLearned) {
+      word.userWord.optional.wordLearned = true;
       isWordNew = true;
-      await Repository.createUserWord(wordId);
-      word = await Repository.getOneUserWord(wordId);
     }
 
     let interval;
@@ -503,8 +508,16 @@ class Repository {
       word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
     }
 
-    const wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
-    await Repository.incrementLearnedWords(result, isWordNew);
+    let wordSaved;
+    if (toCreate) {
+      wordSaved = await Repository.createUserWord(wordId, 'default', word.userWord.optional);
+    } else {
+      wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
+    }
+
+    if (!isGame) {
+      await Repository.incrementLearnedWords(result, isWordNew);
+    }
 
     return wordSaved;
   }
