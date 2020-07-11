@@ -10,13 +10,13 @@
     <body class="savannah__body hidden-for-header-render">
         <div class="start-page">
             <div class="start-page__container">
-                <div class="start__title">SAVANNAH</div>
+                <div class="start__title" data-ru="САВАННА" data-ут="SAVANNAH">SAVANNAH</div>
                 <div class="start__instruction">
-                    <span>Savannah training expands your vocabulary.</span>
-                    <span>The more words you know, the more thoughts you can express.</span>
-                    <span>Have fun!</span>
+                    <span data-en="Savannah training expands your vocabulary." data-ru="Тренировка Саванна увеличивает словарный запас.">Savannah training expands your vocabulary.</span>
+                    <span data-en="You can either train words you know or learn new ones." data-ru="Можно тренировать изученные слова или узнавать новые.">You can either train words you know or learn new ones.</span>
+                    <span data-en="Have fun!" data-ru="Играйте с удовольствием!">Have fun!</span>
                 </div>
-                <button type="button" class="btn btn-secondary button__start">Start</button>
+                <button type="button" class="btn btn-secondary button__start" data-en="Start" data-ru="Старт">Start</button>
             </div>
         </div>
         <div class="savanna__game-area">
@@ -31,10 +31,11 @@
                 <div class="control-panel__container">
                     <div class="control__sound"></div>
                     <div class="control__lifes"></div>
-                    <div class="control__close"><i class="fas fa-times"></i></div>
                 </div>
             </div>
             <div class="savannah__game savannah-wrapper">
+                <div class="savannah__game__start-countdown"></div>
+                <div class="savannah__game__words-counter"></div>
                 <div class="game__active-word"></i></div>
                 <div class="game__answers">
                     <div class="game__answer" id="answer_1" correct="false"></div>
@@ -49,18 +50,18 @@
                 <div class="scrollbar scrollbar-primary">
                     <div class="results__knowledge">
                         <div class="results__mistakes">
-                            <div class="mistakes__count"><span>Mistakes</span><span class="mistakes__number"></span></div>
+                            <div class="mistakes__count"><span data-en="Mistakes" data-ru="Неверно">Mistakes</span><span class="mistakes__number"></span></div>
                             <div class="mistakes__words"></div>
                         </div>
                         <div class="results__correct">
-                            <div class="correct__count"><span>Correct</span><span class="correct__number"></span></div>
+                            <div class="correct__count"><span data-en="Correct" data-ru="Верно">Correct</span><span class="correct__number"></span></div>
                             <div class="correct__words"></div>
                         </div>
                     </div>
                 </div>
                 <div class="results__buttons">
-                    <button type="button" class="btn btn-secondary results__button button__play-again">play again</button>
-                    <button type="button" class="btn btn-secondary results__button button__play-next-game">play next game</button>
+                    <button type="button" class="btn btn-secondary results__button button__play-again" data-en="Play again" data-ru="Играть снова">Play again</button>
+                    <button type="button" class="btn btn-secondary results__button button__play-next-game" data-en="Continue" data-ru="Далее">Continue</button>
                 </div>
             </div>
         </div>

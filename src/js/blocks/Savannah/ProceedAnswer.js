@@ -12,6 +12,7 @@ export default class ProceedAnswer {
     this.answersArea = document.querySelector('.game__answers');
     this.activeWordContainer = document.querySelector('.game__active-word');
     this.heartContainer = document.querySelector('.control__lifes');
+    this.wordsCounterContainer = document.querySelector('.savannah__game__words-counter');
     this.heartFill = heartFill;
     this.heartStroke = heartStroke;
   }
@@ -52,8 +53,9 @@ export default class ProceedAnswer {
 
   catchCorrectAnswer(answer) {
     answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
-
-    const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id;
+    const alternativeId = '_id';
+    const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id
+    || this.savannahState.wordsCollection[this.savannahState.activeWordID][alternativeId];
     Repository.saveWordResult({ wordId: currentWordId, result: '2' });
     ProceedAnswer.updateStatistics(1, 0, this.savannahState); // no await - it slows down
 
@@ -68,18 +70,22 @@ export default class ProceedAnswer {
   }
 
   catchWrongAnswer(selectedAnswer) {
-    const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id;
+    const alternativeId = '_id';
+    const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id
+    || this.savannahState.wordsCollection[this.savannahState.activeWordID][alternativeId];
     Repository.saveWordResult({ wordId: currentWordId, result: '0' });
     ProceedAnswer.updateStatistics(0, 1, this.savannahState); // no await - it slows down
     if (this.savannahState.answeredWrong.length < 6) {
       const answers = this.answersArea.querySelectorAll('.game__answer');
-      answers.forEach((answer) => {
-        if (answer.id === '0') {
-          answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
-        }
-      });
       if (selectedAnswer) {
         selectedAnswer.querySelector('.answer__overlay-wrong').classList.remove('hidden');
+        answers.forEach((answer) => {
+          if (answer.id === '0') {
+            answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
+          }
+        });
+      } else {
+        answers.forEach((answer) => answer.querySelector('.answer__overlay-wrong').classList.remove('hidden'));
       }
       if (savannahSettings.soundOn) {
         const sound = 'error.wav';
@@ -113,6 +119,7 @@ export default class ProceedAnswer {
     } else {
       this.countLifes();
       this.clearWordsContainers();
+      this.wordsCounterContainer.innerText = '';
       setTimeout(() => {
         const results = new Results(this.startNewGame, this.savannahState);
         results.showResults();
@@ -144,7 +151,6 @@ export default class ProceedAnswer {
         savannahStatistic[`level_${savannahState.userWordsLevel}`] = [correct, wrong, getTodayShort()];
       }
       localStorage.setItem('savannahStatistic', JSON.stringify(savannahStatistic));
-      Repository.saveGameResult('savannah', null, null, savannahStatistic);
     } else {
       if (savannahStatistic[`${savannahState.currentLevel}.${savannahState.currentRound}`] && savannahState.activeWord !== 0) {
         let [correctAnswers, wrongAnswers, date] = savannahStatistic[`${savannahState.currentLevel}.${savannahState.currentRound}`];
@@ -156,7 +162,7 @@ export default class ProceedAnswer {
         savannahStatistic[`${savannahState.currentLevel}.${savannahState.currentRound}`] = [correct, wrong, getTodayShort()];
       }
       localStorage.setItem('savannahStatistic', JSON.stringify(savannahStatistic));
-      Repository.saveGameResult('savannah', null, null, savannahStatistic);
     }
+    Repository.saveGameResult('savannah', null, null, savannahStatistic);
   }
 }

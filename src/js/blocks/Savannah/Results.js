@@ -10,20 +10,6 @@ export default class Results {
     this.mistakesWords = document.querySelector('.mistakes__words');
     this.correctWords = document.querySelector('.correct__words');
     this.resultsKnowledge = document.querySelector('.results__knowledge');
-    this.buttonPlayAgain = document.querySelector('.button__play-again');
-    this.buttonPlayNextGame = document.querySelector('.button__play-next-game');
-  }
-
-  setEventListeners() {
-    this.buttonPlayAgain.addEventListener('click', () => {
-      this.resultsContainer.classList.add('hidden');
-      this.startNewGame.startGame();
-    });
-    this.buttonPlayNextGame.addEventListener('click', () => {
-      this.resultsContainer.classList.add('hidden');
-      this.defineNextlevelAndPage();
-      this.startNewGame.startGame();
-    });
   }
 
   defineNextlevelAndPage() {

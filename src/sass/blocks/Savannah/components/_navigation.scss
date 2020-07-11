@@ -1,11 +1,13 @@
 .savannah-html {
   .control-panel__navigation {
     display: flex;
-    font-size: 2rem;
+    flex-direction: column;
   }
 
   .navigation__position {
       display: flex;
+      color: $color-text-dark;
+      font-size: $font-size-basic * 2;
 
       & > div {
           margin-right: 10px;
@@ -17,13 +19,18 @@
   }
 
 .button__statistics-navigation {
-    font-size: 1.5rem;
+  font-size: $font-size-basic * 1.4;
+  border: 1px solid $color-background-main-light;
+  background-color: $color-background-main-light;
+  box-shadow: 0 0 10px #67697d66;
+  border-radius: $button-border-radius;
+  color: $color-text-dark;
 }
 
   @media (max-width: 411px) {
     .control-panel__navigation {
       flex-direction: column;
-      font-size: 1.5rem;
+      font-size: $font-size-basic * 1.2;
     }
   }
 }

@@ -25,8 +25,7 @@
       width: 70px;
       padding: 3px;
       margin: 0 2px;
-      font-size: 1.2rem;
-      color: $color-user-wrods-level-text;
+      font-size: $font-size-basic * 1.2;
       text-align: center;
       border: 1px solid $color-navigation-table-borders;
       opacity: 0.7;
@@ -50,6 +49,7 @@
   .cell-with-data {
     width: 70px;
     padding: 3px;
+    font-size: $font-size-basic * 1.2;
     text-align: center;
     border: 1px solid $color-navigation-table-borders;
   }
@@ -88,7 +88,22 @@
   .navigation-table-grey:hover {
     opacity:1;
   }
+
+  @media (max-width: 767px) {
+    width: 95%;
+    .navigation__user-words {
+      .user-words__level {
+        width: 45px;
+        padding: 2px;
+        margin: 0 2px;
+        font-size: $font-size-basic * 0.9;
+      }
+    }
+
+    .cell-with-data {
+      width: 45px;
+      padding: 2px;
+      font-size: $font-size-basic * 0.9;
+    }
+  }
 }
-
-
-

@@ -13,56 +13,60 @@ import ControlPanel from './ControlPanel';
 import Results from './Results';
 
 window.onload = async function onload() {
+  const navigationModal = new NavigationModal();
   const startNewRound = new StartNewRound(savannahState);
   const startNewGame = new StartNewGame(savannahState, startNewRound);
   const proceedAnswer = new ProceedAnswer(savannahState, startNewRound, startNewGame);
   const controlPanel = new ControlPanel(savannahState, startNewRound);
-  const results = new Results(startNewGame, savannahState);
+  const results = new Results(startNewGame, savannahState, navigationModal);
   const header = new Header();
-  function openNavigationTable() {
-    function backToAuthorizationPage() {
-      window.location.href = 'authorization.html';
-    }
-    if (localStorage.getItem('settings')) {
-      const navigationModal = new NavigationModal();
+  async function openNavigationTable() {
+    let userStatistics;
+    let savannahStatistic = { init: 0 };
+    try {
+      userStatistics = await Repository.getStatistics();
+      const path = userStatistics.optional;
+      if (path.games && path.games.savannah) {
+        savannahStatistic = userStatistics.optional.games.savannah.summary;
+      } else {
+        Repository.saveGameResult('savannah', false, [], savannahStatistic);
+      }
+      localStorage.setItem('savannahStatistic', JSON.stringify(savannahStatistic));
       navigationModal.appendSelf();
       NavigationModal.showModal(NavigationModal.delete);
-    } else {
+    } catch (error) {
       const fetchErrorMessage = document.querySelector('.fetchErrorMessageOnLoad');
       if (!fetchErrorMessage) {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchErrorMessageOnLoad');
       }
-      MessageModal.showModal('Sorry, something went wrong. Did you sign in?', backToAuthorizationPage);
+      MessageModal.showModal('Sorry, something went wrong. Did you log in?');
     }
   }
 
-  async function getStatisticsFromBackend() {
-    let userStatistics;
-    let savannahStatistic = { init: 0 };
-    try {
-      userStatistics = await Repository.getStatistics();
-    } catch (error) {
-      userStatistics = {};
-    } finally {
-      const path = userStatistics.optional.games;
-      if (path && path.savannah) {
-        savannahStatistic = userStatistics.optional.games.savannah.summary;
-      } else {
-        Repository.saveGameResult('savannah', false, [], savannahStatistic);
-      }
-    }
-    localStorage.setItem('savannahStatistic', JSON.stringify(savannahStatistic));
-  }
-
-  await getStatisticsFromBackend();
   header.run();
-  results.setEventListeners();
   proceedAnswer.setEventListeners();
   controlPanel.setEventListeners();
   controlPanel.setSoundModeOnLoad();
   const buttonStart = document.querySelector('.button__start');
   const buttonStatisticAndNavigation = document.querySelector('.button__statistics-navigation');
+  const buttonPlayAgain = document.querySelector('.button__play-again');
+  const buttonPlayNextGame = document.querySelector('.button__play-next-game');
   buttonStatisticAndNavigation.addEventListener('click', () => openNavigationTable());
   buttonStart.addEventListener('click', () => openNavigationTable());
+  buttonPlayAgain.addEventListener('click', () => {
+    results.resultsContainer.classList.add('hidden');
+    const isPlayAgain = true;
+    startNewGame.startGame(isPlayAgain);
+  });
+  buttonPlayNextGame.addEventListener('click', () => {
+    results.resultsContainer.classList.add('hidden');
+    if (savannahState.userWords) {
+      navigationModal.appendSelf();
+      NavigationModal.showModal(NavigationModal.delete);
+    } else {
+      results.defineNextlevelAndPage();
+      startNewGame.startGame();
+    }
+  });
 };

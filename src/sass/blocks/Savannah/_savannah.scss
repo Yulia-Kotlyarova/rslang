@@ -6,13 +6,7 @@
 @import './components/navigation-modal';
 
 .savannah-html {
-    font-size: 10px;
     font-family: 'Lato', sans-serif;
-
-    .savannah__body {
-        background-color: $color-background-main;
-        background-image: url("data:image/svg+xml,%3Csvg width='44' height='12' viewBox='0 0 44 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 12v-2L0 0v10l4 2h16zm18 0l4-2V0L22 10v2h16zM20 0v8L4 0h16zm18 0L22 8V0h16z' fill='%234da9ca' fill-opacity='0.33' fill-rule='evenodd'/%3E%3C/svg%3E");
-    }
 
     .savannah-wrapper {
         max-width: 1200px;
@@ -23,12 +17,11 @@
         margin-top: 30px;
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: start;
+        color: $color-text-main;
     }
 
     .control-panel__container {
-        // width: 100%;
-        // height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -36,13 +29,13 @@
 
     .control__sound {
         margin-right: 10px;
-        font-size: 2.5rem;
+        font-size: $font-size-basic * 2.5;
         cursor: pointer;
     }
 
     .control__lifes {
         margin-right: 10px;
-        font-size: 2.5rem;
+        font-size: $font-size-basic * 2.5;
     }
 
     .control__lifes > svg {
@@ -50,16 +43,44 @@
     }
 
     .control__close {
-        font-size: 3rem;
+        font-size: $font-size-basic * 3;
         cursor: pointer;
     }
 
     .savannah__game {
+        position: relative;
         height: 50vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
+
+        .savannah__game__words-counter {
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: $font-size-basic * 20;
+            font-weight: 900;
+            color: $color-text-main;
+            opacity: 0.2;
+        }
+
+        .savannah__game__start-countdown {
+            position: absolute;
+            top: 0;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: $font-size-basic * 5;
+            font-weight: 600;
+            color: $color-text-dark;
+            background-color: $color-background-main-light;
+            border-radius: 30px;
+        }
     }
 
     .game__active-word {
@@ -70,8 +91,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 3.5rem;
+        font-size: $font-size-basic * 3.5;
         font-weight: 600;
+        color: $color-text-main;
+        text-shadow: 2px 2px 2px $color-background-main;
+        z-index: 5;
     }
 
     .game__answers {
@@ -89,35 +113,42 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        background-color: $color-background-main-light;
+        border-radius: 5px;
         cursor: pointer;
     }
 
     .game__answer-number {
-        margin-right: 5px;
-        font-size: 1.5rem;
+        font-size: $font-size-basic * 1.5;
         font-weight: 500;
-        color: $color-text-additional;
+        color: $color-text-dark;
     }
 
     .game__answer-word {
-        font-size: 3rem;
-        font-weight: 300;
+        font-size: $font-size-basic * 3;
+        font-weight: 400;
     }
 
     .answer__overlay-wrong {
         position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
         background-color: $color-wrong;
-        opacity: 0.2;
+        border-radius: 5px;
+        opacity: 0.4;
     }
 
     .answer__overlay-correct {
         position: absolute;
+        left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
         background-color: $color-correct;
-        opacity: 0.2;
+        border-radius: 5px;
+        opacity: 0.4;
     }
 
     .attribution {
@@ -147,7 +178,6 @@
         .control-panel__container {
             flex-direction: column-reverse;
             align-items: center;
-            // justify-content: center;
         }
         .control__lifes {
             margin-right: 0;
@@ -162,6 +192,4 @@
             align-items: center;
         }
     }
-
 }
-

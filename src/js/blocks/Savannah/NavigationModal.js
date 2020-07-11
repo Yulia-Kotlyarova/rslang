@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import $ from 'jquery';
 import 'bootstrap/js/dist/modal';
 import { savannahState } from './appState';
@@ -57,10 +56,10 @@ export default class NavigationModal {
     </table>`;
     let userWordsTableCells = '';
     for (let i = 0; i < 6; i += 1) {
-      if (savannahStatistic[`level_${i + 1}`]) {
-        const [correct, wrong, date] = savannahStatistic[`level_${i + 1}`];
+      if (savannahStatistic[`level_${i}`]) {
+        const [correct, wrong, date] = savannahStatistic[`level_${i}`];
         let className = '';
-        if (correct === 10) {
+        if (correct === 20) {
           className = 'navigation-table-green';
         } else if (correct > 0) {
           className = 'navigation-table-yellow';
@@ -155,6 +154,7 @@ export default class NavigationModal {
     const notEnoughWordsMessage = document.querySelector('.not-enough-words');
     notEnoughWordsMessage.classList.remove('not-enough-words_show');
     if (event.target.classList.contains('cell-navigate')) {
+      savannahState.userWords = false;
       const eventTargetIdData = event.target.id.split('.');
       const [level, round] = eventTargetIdData;
       savannahState.currentLevel = Number(level);
@@ -169,22 +169,22 @@ export default class NavigationModal {
       const startNewGame = new StartNewGame(savannahState, startNewRound);
       startNewGame.startGame();
     } else if (event.target.classList.contains('user-words__level')) {
-      const level = Number(event.target.getAttribute('level'));
-      const userWords = await Repository.getAllUserWords(level - 1, 20);
-      const filteredUserWords = userWords.filter((word) => word.textExample.split(' ').length < 11);
-      if (filteredUserWords.length < 10) {
+      const level = Number(event.target.getAttribute('level')) - 1;
+      savannahState.wordsCollection = await Repository.getAllUserWords(level, 20);
+      if (savannahState.wordsCollection.length < 20) {
         notEnoughWordsMessage.classList.add('not-enough-words_show');
       } else {
-        filteredUserWords.length = 10;
-        const modal = document.querySelector('.puzzle-navigation-modal');
+        savannahState.userWords = true;
+        savannahState.userWordsLevel = level;
+        const modal = document.querySelector('.savannah-navigation-modal');
         const modalOverlay = document.querySelector('.modal-backdrop');
         document.body.removeChild(modal);
         document.body.removeChild(modalOverlay);
-        const startPage = document.querySelector('.start__page');
-        const gameBody = document.querySelector('body');
-        startPage.classList.add('display-none');
-        gameBody.classList.remove('scroll-not');
-        StartNewGame.startGameWithUserWords(level, filteredUserWords);
+        const startPage = document.querySelector('.start-page');
+        startPage.classList.add('hidden');
+        const startNewRound = new StartNewRound(savannahState);
+        const startNewGame = new StartNewGame(savannahState, startNewRound);
+        startNewGame.startGame();
       }
     }
   }
