@@ -48,7 +48,7 @@ const closeModal = () => {
       Repository.saveWordResult({ wordId: val, result: '2' });
     });
     objForInCorrectWord.id.forEach((val) => {
-      Repository.saveWordResult({ wordId: val, result: '1' });
+      Repository.saveWordResult({ wordId: val, result: '0' });
     });
   });
 };
