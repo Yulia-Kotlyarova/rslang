@@ -59,11 +59,14 @@ class App {
         this.level = level;
         this.wordsData = await this.getWords(level);
       }
+      this.mainPage.show();
       this.mainPage.render(this.wordsData);
       this.startScreen.hide();
+      this.result.hide();
     } else if (page === 'result') {
-      this.result.render();
       this.startScreen.hide();
+      this.mainPage.hide();
+      this.result.render();
     }
   }
 
