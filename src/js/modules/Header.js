@@ -1,5 +1,7 @@
 import Authorization from './Authorization';
 
+import { renderNewLanguageInElement } from '../helpers';
+
 export default class Header {
   constructor() {
     this.isSingedUp = false;
@@ -85,11 +87,7 @@ export default class Header {
     const languageButton = document.querySelector('.button_language');
     languageButton.innerText = language.toUpperCase();
 
-    const elementsToChange = document.querySelectorAll(`[data-${language}]`);
-    elementsToChange.forEach((elementToChange) => {
-      const element = elementToChange;
-      element.innerText = element.dataset[language];
-    });
+    renderNewLanguageInElement(document, language);
   }
 
   renderHeader() {
