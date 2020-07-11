@@ -1,4 +1,3 @@
-import { scrambleMsg } from '../../constants/defaultSettings';
 import { arrayWord, arrayWordTranslate } from './scrCode2backend';
 import addHintsToBoxes from './scrCode3hint';
 import { counterArray, updateScore } from './scrCode5Counter';
@@ -9,6 +8,7 @@ const scrHint = document.querySelector('.sectionStart__hintArea');
 const pressForHint = document.querySelector('.sectionStart__pressForHint');
 const scrSentence = document.querySelector('.sectionStart__sentence');
 const counterContainer = document.querySelector('.counter');
+const scrambleMsg = document.querySelector('.sectionStart__msg');
 
 let sPlay = false;
 let newWords = '';
