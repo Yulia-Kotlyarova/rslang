@@ -20,7 +20,8 @@
         padding: 20px;
         width: 50%;
         height: 70%;
-        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 7px 20px 0 rgba(0, 0, 0, 0.17);
+        box-shadow: 0 5px 8px 0 $shadow-color, 7px 20px 0 $shadow-color;
+        border-radius: 15px;
         position: relative;
         animation-name: modalopen;
         animation-duration: 2s;
@@ -69,12 +70,18 @@
             }
             li{
                 font-size: 1.4rem;
+                list-style: none;
+                button {
+                    border: none;
+                    color: $main_font_color;
+                }
             }
         }
 
         .modalScr__header {
             text-align: center;
-            background-color: #4FA677;
+            background-color: $pale_font_color;
+            border-radius: 15px;
 
             h4 {
                 margin: 10px;
@@ -89,7 +96,7 @@
 
                 &:hover,
                 &:focus {
-                    color: #000;
+                    color: $main_font_color;
                     text-decoration: none;
                     cursor: pointer;
                 }
