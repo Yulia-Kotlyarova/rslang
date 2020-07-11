@@ -33,7 +33,17 @@ export default class Header {
     this.checkUserAuthorization();
     this.renderHeader();
     Header.setEventListeners();
-    localStorage.setItem('app-language', 'en');
+
+    let language = localStorage.getItem('app-language');
+    if (!language) {
+      language = 'en';
+      localStorage.setItem('app-language', 'en');
+    }
+
+    if (language !== 'en') {
+      Header.renderLanguage(language);
+    }
+
     document.body.classList.remove('hidden-for-header-render');
   }
 
@@ -58,7 +68,6 @@ export default class Header {
 
   static changeLanguage() {
     const currentLanguage = localStorage.getItem('app-language');
-    const languageButton = document.querySelector('.button_language');
 
     let newLanguage;
     if (currentLanguage === 'en') {
@@ -68,12 +77,18 @@ export default class Header {
     }
 
     localStorage.setItem('app-language', newLanguage);
-    languageButton.innerText = newLanguage.toUpperCase();
 
-    const elementsToChange = document.querySelectorAll(`[data-${newLanguage}]`);
+    Header.renderLanguage(newLanguage);
+  }
+
+  static renderLanguage(language) {
+    const languageButton = document.querySelector('.button_language');
+    languageButton.innerText = language.toUpperCase();
+
+    const elementsToChange = document.querySelectorAll(`[data-${language}]`);
     elementsToChange.forEach((elementToChange) => {
       const element = elementToChange;
-      element.innerText = element.dataset[newLanguage];
+      element.innerText = element.dataset[language];
     });
   }
 
