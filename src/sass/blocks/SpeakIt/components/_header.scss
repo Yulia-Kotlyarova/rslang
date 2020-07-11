@@ -25,6 +25,10 @@
   padding: $levels-padding;
   list-style: none;
 
+  &__hidden {
+    display: none;
+  }
+
   &__level {
     position: relative;
     width: $level-width;
@@ -62,4 +66,26 @@
   display: flex;
   justify-content: flex-end;
   height: $score-height;
+}
+
+.select-words {
+  margin-top: -10px;
+  background-color: $level-line-background;
+  border-radius: 50%;
+
+  &__turned-off {
+    color: #B6B6B6;
+    background-color: #FFFFFF;
+  }
+}
+
+.user-words-page {
+  width: 60px;
+  margin-top: -10px;
+  border: $level-line-background 2px solid;
+  outline: none;
+
+  &__hidden {
+    display: none;
+  }
 }

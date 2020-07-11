@@ -1,0 +1,102 @@
+.modalScr{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#scrModal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+   
+    .modalScr__content {
+        background-color: #f4f4f4;
+        margin: 8% auto;
+        padding: 20px;
+        width: 50%;
+        height: 70%;
+        box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 7px 20px 0 rgba(0, 0, 0, 0.17);
+        position: relative;
+        animation-name: modalopen;
+        animation-duration: 2s;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        
+        @media screen and (min-width: 1px) and (max-width: 480px) {
+            width: 90%;
+            margin: 20% auto;
+        }
+        @media screen and (min-width: 481px) and (max-width: 960px) {
+                width: 70%;
+                margin: 13% auto;
+          }
+          @media screen and (min-width: 992px) and (max-width: 1200px) {
+            margin: 15% auto;
+      }
+        @keyframes modalopen {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+        .modalScr__body{
+            margin: 10px 20px;
+            @media screen and (min-width: 1px) and (max-width: 480px) {
+                margin: 5px 0px;
+            }
+            .modalScr__correct li{
+                @media screen and (min-width: 1px) and (max-width: 480px) {
+                    font-size: 0.7rem;
+                }
+            }
+            
+            #modalScr__correct-count{
+                background: green;
+                color: #ffff;
+                border-radius: 3px;
+                width: 15px;
+                height: 15px;
+                padding: 0 6px;
+            }
+            li{
+                font-size: 1.4rem;
+            }
+        }
+
+        .modalScr__header {
+            text-align: center;
+            background-color: #4FA677;
+
+            h4 {
+                margin: 10px;
+                display: inline-block;
+                color: #ffff;
+            }
+
+            .modalScr__closeBtn {
+                color: #ccc;
+                float: right;
+                font-size: 30px;
+
+                &:hover,
+                &:focus {
+                    color: #000;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+.modalScr.modelHide{
+    display: none;
+}
