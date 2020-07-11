@@ -16,12 +16,12 @@ export default class ShortStatistics {
 
   async updateTodayStatisticsData() {
     const statistics = await Repository.getStatistics();
-    const statisticsToday = await statistics.optional.dates[getTodayShort()] || null;
+    const statisticsToday = statistics.optional.dates[getTodayShort()] || null;
     if (statisticsToday) {
-      this.cardsCompleted = statisticsToday.answersGivenToday;
-      this.newWords = statisticsToday.learnedToday;
-      this.correctAswers = `${Math.round((statisticsToday.correctToday / this.cardsCompleted) * 100, 0)}%`;
-      this.longestSession = statisticsToday.correctMaximumSeriesToday;
+      this.cardsCompleted = statisticsToday.answersGivenToday || 0;
+      this.newWords = statisticsToday.learnedToday || 0;
+      this.correctAswers = `${Math.round((statisticsToday.correctToday / statisticsToday.answersGivenToday) * 100, 0) || 0}%`;
+      this.longestSession = statisticsToday.correctMaximumSeriesToday || 0;
     }
   }
 
@@ -66,6 +66,10 @@ export default class ShortStatistics {
   }
 
   async showModal() {
+    function deleteErrorModal() {
+      const userShortStatisticError = document.querySelector('.user-short-statistic-error');
+      document.body.removeChild(userShortStatisticError);
+    }
     try {
       await this.updateTodayStatisticsData();
       this.modalHTML = this.createModalHTML();
@@ -77,9 +81,9 @@ export default class ShortStatistics {
       });
     } catch (error) {
       const messageModal = new MessageModal();
-      MessageModal.createModalHTML('userChartError');
-      messageModal.appendSelf('userChartError');
-      MessageModal.showModal('Please sign in to see your statistics');
+      MessageModal.createModalHTML('user-short-statistic-error');
+      messageModal.appendSelf('user-short-statistic-error');
+      MessageModal.showModal('Sorry, something went wrong', deleteErrorModal, 'user-short-statistic-error');
     }
   }
 }

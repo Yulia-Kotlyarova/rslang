@@ -1,0 +1,169 @@
+@import './hintArea.scss';
+@import './counter.scss';
+@import './test.scss';
+@import './scrGameLevel.scss';
+@import './modal.scss';
+@import './scramble-back';
+@import './scramble-const';
+
+.scramble {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.scramble-body{
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    color: $main_font_color;
+}
+
+.sectionStart{
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70vw;
+    position: absolute;
+    top: 14%;
+    @media screen and (min-width: 1px) and (max-width: 480px) {
+        width: 95vw;
+        height: 70vh;
+    }
+    @media screen and (min-width: 481px) and (max-width: 600px) {
+        width: 80vw;
+        height: 70vh;
+    }
+    @media screen and (min-width: 601px) and (max-width: 992px) {
+        width: 80vw;
+        height: 70vh;
+    }
+
+    &__closeBtn{
+        position: absolute;
+    top: 67px;
+    right: 4px;
+    font-weight: bold;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 9;
+    }
+
+    &__gameArea{
+        width: 100%;
+        height: 90%;
+        padding: 20px 20px;
+        margin: 50px 0 0 0;
+        background-color: $card-background-day;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        flex-direction: column;
+        box-shadow: 0 8px 6px -6px $shadow-color;
+        border-radius: 15px;
+
+        @media screen and (min-width: 1px) and (max-width: 480px) {
+            width: 100%;
+            padding: 0;
+        }
+        @media screen and (min-width: 481px) and (max-width: 600px) {
+            width: 100%;
+            padding: 5px 5px;
+        }
+        .sectionStart__sentence{
+            position: absolute;
+            margin: 0;
+            bottom: 8%;
+            transform: translate(0, -50%);
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+            width: 80%;
+            @media screen and (min-width: 1px) and (max-width: 460px) {
+                bottom: 0;
+                font-size: 1rem;
+              }
+        }
+
+        &__sentence.hidden{
+            display: none;
+        }
+
+        .sectionStart__pressForHint.hidden{
+            display: none;
+        }
+        .sectionStart__msg {
+            text-align: center;
+            font-size: calc(15px + (36 - 15) * ((100vw - 300px) / (1600 - 300)));
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+
+        .sectionStart__form{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+            @media screen and (min-width: 1px) and (max-width: 480px) {
+                width: 80%;
+            }
+            @media screen and (min-width: 481px) and (max-width: 600px) {
+                width: 60%;
+            }
+
+            #sectionStart__input{
+                width: 100%;
+                padding: 8px 0;
+                text-align: center;
+                border-radius: 25px;
+                box-shadow: 0 0 10px $shadow-color;
+                outline: none;
+                border: none;
+                background-color: $card-background-day;
+                color: $main_font_color;
+                margin: 2rem 0;
+                font-size: 2rem;
+                @media screen and (min-width: 1px) and (max-width: 900px) {
+                    margin: 0;
+                    font-size: 1rem;
+                }
+            }
+
+            .sectionStart__btn{
+                font-size: calc(10px + (17 - 10) * ((100vw - 300px) / (1600 - 300)));
+                cursor: pointer;
+                outline: none;
+                margin-top: 20px;
+                color: $main_font_color;
+                border: 1px solid $card-background-day;
+                background-color: $card-background-day;
+                border-radius: $btn-radius;
+                box-shadow: 0 0 10px $shadow-color;
+                font-weight: 600;
+                padding: 1rem 2rem;
+                text-transform: uppercase;
+                transition-duration: 0.5s;
+                transition-property: all;
+                transition-timing-function: cubic-bezier(0.65, -0.25, 0.25, 1.95);
+
+                &:hover,
+                &:focus,
+                &:active{
+                    letter-spacing: 0.125rem;
+                    word-spacing: 0.2rem;
+                }
+            }
+        }
+                    .hidden{
+                display: none;
+            }
+
+    }
+}
+
+.sectionStart.gameStart-hidden{
+    display: none;
+}

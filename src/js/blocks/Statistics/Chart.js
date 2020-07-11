@@ -6,7 +6,7 @@ export default class Chart {
   constructor() {
     this.chart = document.querySelector('.statistics__chart');
     this.chartRange = document.querySelector('.chart-range');
-    this.chartWordsNumber = document.querySelector('.chart__number-of-words');
+    this.chartWordsNumber = document.querySelector('.chart__number-of-words').lastChild;
     this.percentageOfWordsContainer = document.querySelector('.percentage-of-words').firstChild;
     this.chartCircle = document.querySelector('.chart__circle');
     this.totalWordsNumber = 0;
@@ -14,22 +14,27 @@ export default class Chart {
   }
 
   async renderUserChart() {
-    try {
-      this.totalWordsNumber = await Chart.updateTotalWordsNumber();
-    } catch (error) {
-      this.totalWordsNumber = 0;
-      this.percentageOfWords = 0;
-      const messageModal = new MessageModal();
-      MessageModal.createModalHTML('userChartError');
-      messageModal.appendSelf('userChartError');
-      MessageModal.showModal('Sorry, something went wrong. Did you sign in?');
-    } finally {
-      this.chartRange.value = this.calculateChartRangeValue();
-      this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
-      this.chartWordsNumber.innerText = `Your Words: ${this.totalWordsNumber}`;
-      this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% `;
-      this.drawChart();
+    function deleteErrorModal() {
+      const userStatisticError = document.querySelector('.user-statistic-error');
+      document.body.removeChild(userStatisticError);
     }
+    if (localStorage.getItem('token')) {
+      try {
+        this.totalWordsNumber = await Chart.updateTotalWordsNumber();
+      } catch (error) {
+        this.totalWordsNumber = 0;
+        this.percentageOfWords = 0;
+        const messageModal = new MessageModal();
+        MessageModal.createModalHTML('user-statistic-error');
+        messageModal.appendSelf('user-statistic-error');
+        MessageModal.showModal('Sorry, something went wrong', deleteErrorModal);
+      }
+    }
+    this.chartRange.value = this.calculateChartRangeValue();
+    this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
+    this.chartWordsNumber.innerText = `${this.totalWordsNumber}`;
+    this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% `;
+    this.drawChart();
   }
 
   static async updateTotalWordsNumber() {
@@ -122,7 +127,7 @@ export default class Chart {
     const chartRangeValue = this.chartRange.value;
     this.totalWordsNumber = chartDataKeys[chartRangeValue];
     this.percentageOfWords = chartData[chartDataKeys[chartRangeValue]];
-    this.chartWordsNumber.innerText = `Words: ${this.totalWordsNumber}`;
+    this.chartWordsNumber.innerText = `${this.totalWordsNumber}`;
     this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% `;
     this.drawChart();
   }

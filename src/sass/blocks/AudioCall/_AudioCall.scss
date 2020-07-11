@@ -2,6 +2,7 @@
 @import "ACResult";
 @import "ACButton";
 @import "AC-back";
+@import "../Header/header";
 
 .a-c-html {
     height: 100%;
@@ -10,9 +11,6 @@
   }
 
 .a-c-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     color: $main_font_color;
   }
@@ -21,12 +19,35 @@
     display: none;
   }
 
-  .Audio-Call-Wrapper {
+  .Audio-Call-Wrapper,
+  .a-c-hello-screen {
+    position: absolute;
+    margin: 35px 160px 0px;
     width: 70vw;
-    height: 75vh;
+    height: 320px;
     background-color:$card-background-day;
     box-shadow: 10px 10px 15px $shadow-color;
     border-radius: 15px;
+  }
+
+  .a-c-hello-screen {
+    z-index: 200;
+    padding: 50px 30px;
+    font-size: 1.8em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  .a-c-nav-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0 0;
+
+  }
+
+  .a-c-navigation-level {
+    margin: 0 10px 0 0;
   }
 
   .a-c-pic-wrapper {
@@ -36,7 +57,7 @@
     right: 0;
     width: 115px;
     height: 115px;
-    top: 90px;
+    top: 40px;
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 0 10px $shadow-color;
@@ -56,8 +77,10 @@
   }
 
   .audio-call-photo {
-    width: 110%;
+    position: absolute;
+    width: 160%;
     z-index: 999;
+    top: 0px;
   }
 
 
@@ -67,6 +90,27 @@
     width: 2em;
     top: 220px;
     left: 42vw;
+    max-width: 195%;
+    background-size: cover;
+    z-index: 999;
+    position: absolute;
+    top: -30px;
+  }
+
+  .a-c-little-volume {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    padding: 5px;
+    left: 28vw;
+    top: 167px;
+    cursor: pointer;
+  }
+
+  .a-c-little-volume > .fa-volume-up {
+    position: absolute;
+    height: 0.4em;
+    width: 0.4em;
   }
 
   .a-c-translate {
@@ -74,8 +118,8 @@
     letter-spacing: 1px;
     font-weight: 600;
     position: absolute;
-    left: 47vw;
-    top: 214px;
+    left: 32vw;
+    top: 170px;
   }
 
   .word-list {
@@ -85,7 +129,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     font-size: 1.8em;
     font-weight: 600;
     letter-spacing: 1px;
@@ -104,4 +148,136 @@
   display: none!important;
 }
 
-  
+.a-c-loader {
+  width: 95%;
+  height: 4px;
+  background-color: $pale_font_color;
+  border-radius: 2px;
+  margin: 220px 0 0 2.5%;
+}
+
+@media (max-width: 992px) {
+  .a-c-pic-wrapper {
+    top: 2px;
+  }
+
+  .Audio-Call-Wrapper {
+    width: 70vw;
+    height: 265px;
+  }
+
+  .word-list {
+    top: 180px;
+  }
+
+  .a-c-dont-know {
+    top: 90px;
+  }
+
+  .bi-arrow-right-circle {
+    top: 90px;
+  }
+
+  .a-c-translate {
+    top: 140px; 
+}
+
+  .a-c-little-volume {
+    left: 27vw;
+    top: 138px;
+  }
+
+  .audio-call-photo {
+    top: -4px;
+  }
+
+  .a-c-result-wrapper {
+    top: 30px;
+    height: 140px;
+  }
+
+  .a-c-another-game-btn {
+    top: 80px;
+  }
+
+  .a-c-again-btn {
+    top: 120px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .a-c-pic-wrapper {
+    top: 100px;
+  }
+
+  .Audio-Call-Wrapper,
+  .a-c-hello-screen {
+    margin: 35px 0 0 115px
+  }
+
+  .a-c-translate {
+    top: 163px;  
+  }
+
+}
+
+@media (max-width: 320px) {
+  .word-list {
+    flex-direction: column;
+    top: 180px;
+    left: 12px;
+  }
+
+  .Audio-Call-Wrapper,
+  .a-c-hello-screen {
+    height: 390px;
+    margin: 30px 0 0 50px;
+  }
+
+  .a-c-pic-wrapper {
+    top: 25px;
+  }
+
+  .a-c-dont-know,
+  .bi-arrow-right-circle {
+    top: 90px;
+  }
+
+  .a-c-translate {
+    top: 211px;
+  }
+
+  .a-c-little-volume {
+    left: 8vw;
+    top: 146px;
+  }
+
+  .a-c-translate {
+    top: 148px;
+    left: 70px;
+  }
+
+  .audio-call-photo {
+    top: 0px;
+  }
+
+  .a-c-result-wrapper {
+    top: 17px;
+    left: 0px;
+    width: 84%;
+    height: 250px;
+}
+
+  .a-c-another-game-btn {
+    top: 190px;
+  }
+
+  .a-c-again-btn {
+    top: 229px;
+  }
+
+  .a-c-another-game-btn {
+    top: 180px;
+  }
+}

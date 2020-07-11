@@ -1,12 +1,13 @@
 /* eslint no-underscore-dangle: 0 */
 
 import createElementFromHTML from './elementCreater';
-import { formatDateTime } from '../../../helpers';
+import { formatDateTime, renderNewLanguageInElement } from '../../../helpers';
 
 const templates = {
   dictionaryTabStart: ({
-    wordCount, isUser, isHard, isDeleted,
-  }) => createElementFromHTML(`
+    wordCount, isUser, isHard, isDeleted, language,
+  }) => {
+    const element = createElementFromHTML(`
     <div>
         <h2 class="h2">
             ${isUser ? '<span data-en="Words in progress" data-ru="Изучаемые слова">Words in progress</span>' : ''}
@@ -16,7 +17,12 @@ const templates = {
         <p><span data-en="Word count: " data-ru="Количество слов: ">Word count: </span>${wordCount}.</p>
         ${isHard ? '<a class="btn btn-danger mt-4 mb-3" href="./#hardWords" data-en="Learn hard words" data-ru="Учить сложные слова">Learn hard words</a>' : ''}
     </div>
-  `),
+  `);
+    if (language !== 'en') {
+      renderNewLanguageInElement(element, language);
+    }
+    return element;
+  },
   word: (word, settings) => {
     const now = Date.now();
 
