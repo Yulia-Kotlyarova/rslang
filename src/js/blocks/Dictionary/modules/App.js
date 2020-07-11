@@ -5,6 +5,7 @@ import Repository from '../../../modules/Repository';
 import MessageModal from '../../../modules/MessageModal';
 
 import templates from '../templates/templates';
+import { renderNewLanguageInElement } from '../../../helpers';
 
 class App {
   constructor() {
@@ -47,8 +48,14 @@ class App {
     const wordsHardFragment = document.createDocumentFragment();
     const wordsDeletedFragment = document.createDocumentFragment();
 
+    const language = localStorage.getItem('app-language');
+
     this.words.forEach((word) => {
       const wordElement = templates.word(word, this.settings);
+
+      if (language !== 'en') {
+        renderNewLanguageInElement(wordElement, language);
+      }
 
       if (word.userWord && word.userWord.optional && word.userWord.optional.isHard) {
         wordElement.classList.add('dictionary__word_hard');
@@ -62,11 +69,13 @@ class App {
     });
 
     const dictionaryTabUserStart = templates
-      .dictionaryTabStart({ wordCount: wordsUserFragment.children.length, isUser: true });
+      .dictionaryTabStart({ wordCount: wordsUserFragment.children.length, isUser: true, language });
     const dictionaryTabHardStart = templates
-      .dictionaryTabStart({ wordCount: wordsHardFragment.children.length, isHard: true });
+      .dictionaryTabStart({ wordCount: wordsHardFragment.children.length, isHard: true, language });
     const dictionaryTabDeletedStart = templates
-      .dictionaryTabStart({ wordCount: wordsDeletedFragment.children.length, isDeleted: true });
+      .dictionaryTabStart(
+        { wordCount: wordsDeletedFragment.children.length, isDeleted: true, language },
+      );
 
     wordsUserFragment.prepend(dictionaryTabUserStart);
     wordsHardFragment.prepend(dictionaryTabHardStart);
