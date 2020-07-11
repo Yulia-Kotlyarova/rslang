@@ -53,9 +53,9 @@ class Game {
     [...this.app.mainPage.cardsElement.children].map(
       (wordElement) => {
         if (wordElement.classList.contains('card_active')) {
-          return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '2' });
+          return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '2', isGame: true });
         }
-        return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '0' });
+        return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '0', isGame: true });
       },
     );
 
