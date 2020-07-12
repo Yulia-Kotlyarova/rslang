@@ -222,12 +222,12 @@ class Card {
     }
   }
 
-  repeatWord() {
-    this.repeatWrongWord();
+  async repeatWord() {
+    await this.repeatWrongWord();
     this.nextCard();
   }
 
-  repeatWrongWord() {
+  async repeatWrongWord() {
     if (this.isMistake) {
       return;
     }
@@ -235,7 +235,7 @@ class Card {
       this.isMistake = true;
       const difficultyLevel = '0';
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-      this.setWordDifficulty(wordId, difficultyLevel);
+      await this.setWordDifficulty(wordId, difficultyLevel);
       const nextRepeatUpdatedWord = this.getPlayNextDate(difficultyLevel);
       const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
       if ((newPosition !== -1)
@@ -439,7 +439,7 @@ class Card {
     this.showAudio();
   }
 
-  checkWord() {
+  async checkWord() {
     const entryField = document.querySelector('.word-field');
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     if (this.word !== entryField.value) {
@@ -458,7 +458,7 @@ class Card {
         });
         entryField.focus();
       }, 1000);
-      this.repeatWrongWord();
+      await this.repeatWrongWord();
     } else {
       this.showRightAnswer();
       if (!this.isMistake) {
@@ -479,14 +479,14 @@ class Card {
     this.wordTextExampleTranslate.classList.add('d-none');
   }
 
-  nextCard() {
+  async nextCard() {
     if (this.audio) {
       this.audio.pause();
     }
     if (!this.isMistake) {
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
       const difficultyLevel = this.wordLevel;
-      this.setWordDifficulty(wordId, difficultyLevel);
+      await this.setWordDifficulty(wordId, difficultyLevel);
     }
     this.isMarkedWordLevel = false;
     this.wordLevel = '2';
