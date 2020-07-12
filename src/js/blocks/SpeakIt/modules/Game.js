@@ -1,6 +1,7 @@
 import Repository from '../../../modules/Repository';
 
 import getTodayShort from '../../../helpers';
+import MessageModal from '../../../modules/MessageModal';
 
 class Game {
   constructor(app) {
@@ -50,19 +51,22 @@ class Game {
     games.push(gameSessionData);
     localStorage.setItem('speakit-games', JSON.stringify(games));
 
-    [...this.app.mainPage.cardsElement.children].map(
+    [...this.app.mainPage.cardsElement.children].forEach(
       (wordElement) => {
-        if (wordElement.classList.contains('card_active')) {
-          return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '2', isGame: true });
+        if (!wordElement.classList.contains('card_active')) {
+          Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '0', isGame: true });
         }
-        return Repository.saveWordResult({ wordId: wordElement.dataset.id, result: '0', isGame: true });
       },
     );
 
-    await Repository.saveGameResult('speakit', !!gameSessionData.errors, gameSessionData);
+    try {
+      await Repository.saveGameResult('speakit', !!gameSessionData.errors, gameSessionData);
+    } catch (e) {
+      MessageModal.showModal(`Cannot game's result. Error: '${e.message}'.`);
+    }
   }
 
-  compareWords(word) {
+  async compareWords(word) {
     const cardData = this.app.mainPage.cards[word.toLowerCase().trim()];
 
     if (cardData) {
@@ -80,6 +84,12 @@ class Game {
 
     if (this.game.guessed === 10) {
       this.app.result.render();
+    }
+
+    try {
+      await Repository.saveWordResult({ wordId: cardData.cardElement.dataset.id, result: '2', isGame: true });
+    } catch (e) {
+      MessageModal.showModal(`Cannot save words' training result. Error: '${e.message}'.`);
     }
   }
 }
