@@ -126,6 +126,7 @@ export default class Header {
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
     const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
     const languageButton = '<button class="header__button button_language">EN</button>';
+    const cardsSettingsButton = '<button type="button" class="settings__button header__button d-none" data-toggle="modal" data-target="#settings__modal"><i class="fas fa-cog fa-2x"></i></button>';
     const logOutButtonMain = '<button class="header__button button_authorization" data-en="LOG OUT" data-ru="ВЫЙТИ">LOG OUT</button>';
     const logInButtonMain = '<button class="header__button button_authorization" data-en="LOG IN" data-ru="ВОЙТИ">LOG IN</button>';
     const userLoginName = `<div class="header__username"><span>${this.userLoginName}</span></div>`;
@@ -144,6 +145,7 @@ export default class Header {
         ${statisticsButton}
         ${teamButton}
         ${languageButton}
+        ${cardsSettingsButton}
         </div>`;
 
     const headerContainer = `<nav class="navbar navbar-expand-lg navbar-light bg-light app-header__container">
