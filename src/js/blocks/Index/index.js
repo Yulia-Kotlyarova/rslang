@@ -16,11 +16,11 @@ window.onload = async () => {
   const settingsModal = new SettingsModal();
   await settingsModal.initiate();
 
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
+
   const card = new Card();
   await card.getWord();
   card.showCard();
   card.setEventListener();
-
-  const statistics = await Repository.getStatistics();
-  localStorage.setItem('statistics', JSON.stringify(statistics));
 };
