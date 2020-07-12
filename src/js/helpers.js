@@ -26,4 +26,12 @@ export const formatDateTime = (date) => {
   return `${hours}:${minutes} ${dateDay}.${month}.${year}`;
 };
 
+export const renderNewLanguageInElement = (element, language) => {
+  const elementsToChange = element.querySelectorAll(`[data-${language}]`);
+  elementsToChange.forEach((elementToChange) => {
+    const elementTemp = elementToChange;
+    elementTemp.innerText = elementTemp.dataset[language];
+  });
+};
+
 export default getTodayShort;

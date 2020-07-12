@@ -29,8 +29,8 @@ class MessageModal {
     `;
   }
 
-  static showModal(message, closeCallback) {
-    const modal = document.querySelector('.modal');
+  static showModal(message, closeCallback, className = 'modal') {
+    const modal = document.querySelector(`.${className}`);
     const messageContainer = document.querySelector('.message-modal__message');
 
     messageContainer.innerText = message;

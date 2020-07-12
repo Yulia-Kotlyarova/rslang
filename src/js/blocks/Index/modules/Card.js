@@ -1,4 +1,7 @@
 import Repository from '../../../modules/Repository';
+import MessageModal from '../../../modules/MessageModal';
+import ShortStatistics from '../../Statistics/ShortStatistics';
+import { coefficients, intervals } from '../../../constants/intervalRepetition';
 
 class Card {
   constructor() {
@@ -6,12 +9,15 @@ class Card {
     this.card = null;
     this.word = null;
     this.wordData = null;
+    this.audio = null;
+
     this.nextStudyInterval = 12 * 60 * 60 * 1000;
     this.oneHourInMiliseconds = 60 * 60 * 1000;
     this.oneMinuteInMiliseconds = 60 * 1000;
     this.oneSecondInMiliseconds = 1000;
     this.studyFinishAt = localStorage.getItem('studyFinishAt') ? localStorage.getItem('studyFinishAt') : 0;
     this.defaultWordInterval = 5;
+    this.wordLevel = '2';
 
     this.token = localStorage.getItem('token');
     this.userId = localStorage.getItem('userId');
@@ -32,6 +38,8 @@ class Card {
     this.timeoutStudy = document.querySelector('.timeout');
     this.wordSettings = document.querySelector('.word-settings');
     this.wordDifficultyLevel = document.querySelector('.word-difficulty-level');
+    this.markedHardWord = document.querySelector('.marked-hard-word');
+    this.unmarkedHardWord = document.querySelector('.unmarked-hard-word');
 
     this.wordPositionInResponse = 0;
     this.todayStudiedNewWords = localStorage.getItem('todayStudiedNewWords') ? localStorage.getItem('todayStudiedNewWords') : 0;
@@ -55,6 +63,8 @@ class Card {
 
     this.isChecked = false;
     this.isMistake = false;
+    this.isMarkedWordLevel = false;
+    this.isMarkedHardWord = false;
 
     this.card = document.querySelector('.word-card');
     this.wordInput = this.card.querySelector('.word-field-spellcheck');
@@ -74,7 +84,7 @@ class Card {
 
   wordsHandler() {
     this.checkStudyProgress();
-    if (this.wordPositionInResponse >= this.actualWordsData.length) {
+    if (this.wordPositionInResponse >= this.actualWordsData.length - 1) {
       this.getWord();
       this.wordPositionInResponse = 0;
     } else {
@@ -84,11 +94,17 @@ class Card {
     }
   }
 
-  checkStudyProgress() {
-    if (Number(this.todayStudiedWords) > Number(this.numberOfCardsByDay)
-          || Number(this.todayStudiedNewWords) > Number(this.numberOfNewWordsToStudy)
+  async checkStudyProgress() {
+    if (Number(this.todayStudiedWords) >= Number(this.numberOfCardsByDay)
+          || Number(this.todayStudiedNewWords) >= Number(this.numberOfNewWordsToStudy)
           || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
+      try {
+        const shortStatistics = new ShortStatistics();
+        await shortStatistics.showModal();
+      } catch (error) {
+        return;
+      }
       if (!this.studyFinishAt) {
         this.studyFinishAt = Date.now();
         localStorage.setItem('studyFinishAt', this.studyFinishAt);
@@ -110,8 +126,6 @@ class Card {
       this.hideWarningWindow();
     }
     if (Number(this.studyFinishAt) > 0 && (timeNow > nextStudyTime)) {
-      this.studyFinishAt = 0;
-      localStorage.setItem('studyFinishAt', this.studyFinishAt);
       this.todayStudiedNewWords = 0;
       this.todayStudiedWords = 0;
     }
@@ -135,54 +149,125 @@ class Card {
   }
 
   async getWord() {
-    switch (true) {
-      case this.wordsToStudy === 'new':
-        { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
+    try {
+      switch (true) {
+        case window.location.hash === '#hardWords':
+          { const data = await Repository.getHardWords(undefined, 3600);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        case this.wordsToStudy === 'new':
+          { const data = await Repository.getNewWords(undefined, this.numberOfCardsByDay);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        case this.wordsToStudy === 'mixed':
+          { const data = await Repository.getMixedWordsWithMandatoryNew(
+            this.numberOfNewWordsToStudy, undefined, this.numberOfCardsByDay,
+          );
           this.actualWordsData = data;
           this.wordsHandler(); }
-        break;
-      case this.wordsToStudy === 'mixed':
-        { const data = await Repository.getMixedWordsWithMandatoryNew(this.numberOfNewWordsToStudy,
-          undefined, this.numberOfCardsByDay);
-        this.actualWordsData = data;
-        this.wordsHandler(); }
-        break;
-      case this.wordsToStudy === 'repeat':
-        { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
+          break;
+        case this.wordsToStudy === 'repeat':
+          { const data = await Repository.getAllUserWords(undefined, this.numberOfCardsByDay);
+            this.actualWordsData = data;
+            this.wordsHandler(); }
+          break;
+        default:
+        { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
           this.actualWordsData = data;
           this.wordsHandler(); }
-        break;
-      default:
-      { const data = await Repository.getMixedWords(undefined, this.numberOfCardsByDay);
-        this.actualWordsData = data;
-        this.wordsHandler(); }
+      }
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
     }
   }
 
-  async repeatWrongWord() {
+  getPlayNextDate(result) { // eslint-disable-line consistent-return
+    let interval;
+
+    if (!this.wordData.userWord) {
+      this.wordData.userWord = {};
+    }
+    if (!this.wordData.userWord.optional) {
+      this.wordData.userWord.optional = {};
+    }
+
+    if (result === '0') {
+      interval = intervals.defaultAgainInterval;
+      this.wordData.userWord.optional.lastPlayedDate = Date.now();
+      this.wordData.userWord.optional.playNextDate = Date.now() + interval;
+    } else {
+      const { lastPlayedDate } = this.wordData.userWord.optional;
+
+      if (lastPlayedDate) {
+        interval = Date.now() - lastPlayedDate;
+      } else {
+        interval = intervals.defaultInterval;
+      }
+
+      if (interval < intervals.defaultInterval) {
+        interval = intervals.defaultInterval;
+      }
+
+      this.wordData.userWord.optional.lastPlayedDate = Date.now();
+      this.wordData.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
+
+      return this.wordData.userWord.optional.playNextDate;
+    }
+  }
+
+  repeatWord() {
+    this.repeatWrongWord();
+    this.nextCard();
+  }
+
+  repeatWrongWord() {
     if (this.isMistake) {
       return;
     }
-    this.isMistake = true;
-    const difficultyLevel = '0';
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await this.setWordDifficulty(wordId, difficultyLevel);
-    const updatedWord = await Repository.getOneUserWord(wordId);
-    const nextRepeatUpdatedWord = updatedWord.userWord.optional.playNextDate;
-
-    const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
-    if ((newPosition !== -1)
-        && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
-      this.actualWordsData.splice(newPosition, 0, updatedWord);
-    } else {
-      this.actualWordsData.splice(this.wordPositionInResponse
-        + this.defaultWordInterval, 0, updatedWord);
+    try {
+      this.isMistake = true;
+      const difficultyLevel = '0';
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      this.setWordDifficulty(wordId, difficultyLevel);
+      const nextRepeatUpdatedWord = this.getPlayNextDate(difficultyLevel);
+      const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
+      if ((newPosition !== -1)
+          && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
+        this.actualWordsData.splice(newPosition, 0, this.wordData);
+      } else {
+        this.actualWordsData.splice(this.wordPositionInResponse
+          + this.defaultWordInterval, 0, this.wordData);
+      }
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
     }
   }
 
   async removeWord() {
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await Repository.markWordAsDeleted(wordId);
+    try {
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      await Repository.markWordAsDeleted(wordId);
+      this.nextCard();
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   showWarningWindow() {
@@ -218,8 +303,11 @@ class Card {
   }
 
   showWordInput(wordData) {
+    const overlay = document.querySelector('.overlay-window');
+    overlay.classList.add('hide-window');
     this.word = wordData.word;
     const wordLength = wordData.word.length;
+    this.wordInput.setAttribute('maxlength', wordLength);
 
     for (let i = 0; i < wordLength; i += 1) {
       this.wordField.innerHTML += `<span class="index-hidden" index="${i}">${this.word[i]}</span>`;
@@ -242,6 +330,14 @@ class Card {
     }
     if (this.isTextExample) {
       this.showWordInfo(wordData.textExample);
+    }
+    if (this.wordData.hasOwnProperty('userWord.optional.isHard') // eslint-disable-line no-prototype-builtins
+      && this.wordData.userWord.optional.isHard) {
+      this.isMarkedHardWord = true;
+      this.showHardButton();
+    } else {
+      this.isMarkedHardWord = false;
+      this.showHardButton();
     }
 
     this.wordInput.focus();
@@ -281,6 +377,7 @@ class Card {
       const nextAudiofileIndex = audiofileIndex + 1;
       this.playWordAudio(nextAudiofileIndex);
     }, { once: true });
+    this.audio = wordAudioData[audiofileIndex];
     wordAudioData[audiofileIndex].play();
   }
 
@@ -310,6 +407,13 @@ class Card {
     }
     this.isChecked = true;
     this.wordInput.value = this.word;
+    this.wordInput.classList.add('right-letter');
+    if (this.isWordMeaning || this.isTextExample) {
+      const hiddenWords = document.querySelectorAll('.hidden-word');
+      hiddenWords.forEach((item) => {
+        item.classList.remove('hidden-word');
+      });
+    }
     this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
     localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
     if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
@@ -320,14 +424,12 @@ class Card {
       setTimeout(() => { this.nextCard(); }, 2000);
       return;
     }
-    this.nextCardButton.classList.remove('hidden');
-    this.wordSettings.classList.remove('hidden');
-    this.wordInput.classList.add('right-letter');
-    if (this.isWordMeaning || this.isTextExample) {
-      const hiddenWords = document.querySelectorAll('.hidden-word');
-      hiddenWords.forEach((item) => {
-        item.classList.remove('hidden-word');
-      });
+    if (!this.isDifficultButtonVisible || this.isMistake) {
+      this.nextCardButton.classList.remove('hidden');
+    }
+
+    if (this.isDifficultButtonVisible && !this.isMistake) {
+      this.wordSettings.classList.remove('hidden');
     }
 
     if (this.isTranslate) {
@@ -341,9 +443,10 @@ class Card {
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     if (this.word !== entryField.value) {
       for (let i = 0; i < hiddenRightWord.length; i += 1) {
-        hiddenRightWord[i].classList.add('wrong-letter');
+        if (this.word[i] === entryField.value[i]) {
+          hiddenRightWord[i].classList.add('right-letter');
+        } else { hiddenRightWord[i].classList.add('wrong-letter'); }
       }
-
       entryField.value = '';
       hiddenRightWord.forEach((item) => {
         item.classList.remove('index-hidden');
@@ -354,11 +457,12 @@ class Card {
         });
         entryField.focus();
       }, 1000);
+      this.repeatWrongWord();
     } else {
       this.showRightAnswer();
-      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-      const difficultyLevel = '3';
-      this.setWordDifficulty(wordId, difficultyLevel);
+      if (!this.isMistake) {
+        this.wordLevel = '3';
+      }
     }
   }
 
@@ -375,6 +479,16 @@ class Card {
   }
 
   nextCard() {
+    if (this.audio) {
+      this.audio.pause();
+    }
+    if (!this.isMistake) {
+      const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+      const difficultyLevel = this.wordLevel;
+      this.setWordDifficulty(wordId, difficultyLevel);
+    }
+    this.isMarkedWordLevel = false;
+    this.wordLevel = '2';
     this.isMistake = false;
     this.nextCardButton.classList.add('hidden');
     this.wordSettings.classList.add('hidden');
@@ -385,28 +499,65 @@ class Card {
   }
 
   async setWordDifficulty(wordId, difficultyLevel) { // eslint-disable-line class-methods-use-this
-    await Repository.saveWordResult({ wordId, result: difficultyLevel });
+    try {
+      await Repository.saveWordResult({ wordId, result: difficultyLevel });
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   getWordDifficulty(event) {
-    if (!event.target.classList.contains('difficulty-level')) {
+    if (!event.target.classList.contains('difficulty-level') || this.isMarkedWordLevel) {
       return;
     }
-    const difficultyLevel = event.target.value;
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    this.setWordDifficulty(wordId, difficultyLevel);
+    this.isMarkedWordLevel = true;
+    this.wordLevel = event.target.value;
+    this.nextCard();
+  }
+
+  showHardButton() {
+    if (this.isMarkedHardWord) {
+      this.markedHardWord.classList.add('hidden');
+      this.unmarkedHardWord.classList.remove('hidden');
+    } else {
+      this.markedHardWord.classList.remove('hidden');
+      this.unmarkedHardWord.classList.add('hidden');
+    }
   }
 
   async markDifficultWord() {
-    const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-    await Repository.markWordAsDeleted(wordId);
+    try {
+      if (this.isMarkedHardWord) {
+        const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+        await Repository.unmarkWordAsHard(wordId);
+        this.isMarkedHardWord = false;
+        this.showHardButton();
+      } else {
+        const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
+        await Repository.markWordAsHard(wordId);
+        this.isMarkedHardWord = true;
+        this.showHardButton();
+      }
+    } catch (error) {
+      const modalError = document.querySelector('.fetchWordsCollectionError');
+      if (!modalError) {
+        const messageModal = new MessageModal();
+        messageModal.appendSelf('fetchWordsCollectionError');
+      }
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+    }
   }
 
   setEventListener() {
     this.showAnswerButton.addEventListener('click', this.showRightAnswer.bind(this));
     this.checkWordButton.addEventListener('click', this.checkWord.bind(this));
     this.nextCardButton.addEventListener('click', this.nextCard.bind(this));
-    this.repeatWordButton.addEventListener('click', this.repeatWrongWord.bind(this));
+    this.repeatWordButton.addEventListener('click', this.repeatWord.bind(this));
     this.wordDifficultyLevel.addEventListener('click', this.getWordDifficulty.bind(this));
     this.removeWordButton.addEventListener('click', this.removeWord.bind(this));
     this.difficultWordButton.addEventListener('click', this.markDifficultWord.bind(this));

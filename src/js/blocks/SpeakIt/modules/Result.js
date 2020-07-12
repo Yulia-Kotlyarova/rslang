@@ -77,6 +77,7 @@ class Result {
   initiate() {
     this.returnButton.addEventListener('click', () => {
       this.hide();
+      this.app.mainPage.show();
     });
 
     this.newGameButton.addEventListener('click', async () => {

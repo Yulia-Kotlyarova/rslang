@@ -1,15 +1,25 @@
-$color-main-background: #975d97;
-$color-main-background-opacity: #975d97af;
+$color-background-main-light: #F1F1F1;
 $color-background-main: #67CCC0;
-$color-button-background: #FBC65F;
 $color-button-text: #886A30;
-$color-text-dark: #3F5D79;
+$color-text-dark: #274155;
 $color-container-background: #E5E5E5;
 $color-wrong: #FF0000;
 $color-correct: #008000;
 $color-text-main: #FFFFFF;
-$color-text-additional: #808080;
-$color-control-icons: #FFFFFF;
+$color-orange-dark: #FBC65F;
 
-$button-border-radius: 0.25rem;
-$button-font-size-big: 2.4rem;
+$button-border-radius: 9px;
+$container-border-radius: 15px;
+$container-box-shadow: 10px 10px 15px #67697d66;
+
+$font-size-basic: 10px;
+
+$color-level-round-cells-text: #165c96;
+$color-navigation-table-wrong: #f75858;
+$color-navigation-table-correct: #7aeb7a;
+$color-navigation-table-middle: #ffff62;
+$color-navigation-table-neverplayed: #808080;
+$color-navigation-table-neverplayed-text: #bdbdbd;
+$color-navigation-table-borders: #ffffff;
+
+$color-user-wrods-level-bg: #808080;

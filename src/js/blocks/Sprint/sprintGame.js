@@ -1,4 +1,6 @@
-import { wordArrayWords, wordArrayTranslation, wordArrayAudios } from './SprintBackend';
+import {
+  wordArrayWords, wordArrayTranslation, wordArrayAudios, arrayWordId,
+} from './SprintBackend';
 
 const wordCardEn = document.getElementById('game__board-middle-en');
 const yesOrNoButton = document.querySelector('.game__board-bottom');
@@ -20,11 +22,13 @@ export const objForCorrectWord = {
   eng: [],
   ru: [],
   audio: [],
+  id: [],
 };
 export const objForInCorrectWord = {
   eng: [],
   ru: [],
   audio: [],
+  id: [],
 };
 
 let ii = 0;
@@ -147,6 +151,7 @@ const addWordToCardOnKeyPress = () => {
         objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForCorrectWord.id.push(arrayWordId[kk]);
       if (ii < 3) {
         fistTick[ii].classList.add('tick-green');
         ii += 1;
@@ -172,6 +177,7 @@ const addWordToCardOnKeyPress = () => {
         objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForInCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForInCorrectWord.id.push(arrayWordId[kk]);
       setTimeout(() => {
         scoreLogicInCorrect();
         addWordToCard();
@@ -190,6 +196,7 @@ const addWordToCardOnKeyPress = () => {
         objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForCorrectWord.id.push(arrayWordId[kk]);
       if (ii < 3) {
         fistTick[ii].classList.add('tick-green');
         ii += 1;
@@ -215,6 +222,7 @@ const addWordToCardOnKeyPress = () => {
         objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForInCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForInCorrectWord.id.push(arrayWordId[kk]);
       setTimeout(() => {
         scoreLogicInCorrect();
         addWordToCard();
@@ -238,6 +246,7 @@ const addWordToCardOnPress = () => {
         objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForCorrectWord.id.push(arrayWordId[kk]);
       if (ii < 3) {
         fistTick[ii].classList.add('tick-green');
         ii += 1;
@@ -262,6 +271,7 @@ const addWordToCardOnPress = () => {
         objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForInCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForInCorrectWord.id.push(arrayWordId[kk]);
       setTimeout(() => {
         scoreLogicInCorrect();
         addWordToCard();
@@ -280,6 +290,7 @@ const addWordToCardOnPress = () => {
         objForCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForCorrectWord.id.push(arrayWordId[kk]);
       if (ii < 3) {
         fistTick[ii].classList.add('tick-green');
         ii += 1;
@@ -304,6 +315,7 @@ const addWordToCardOnPress = () => {
         objForInCorrectWord.ru.push(wordArrayTranslation[kk]);
       }
       objForInCorrectWord.audio.push(wordArrayAudios[kk]);
+      objForInCorrectWord.id.push(arrayWordId[kk]);
       setTimeout(() => {
         scoreLogicInCorrect();
         addWordToCard();

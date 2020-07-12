@@ -1,3 +1,4 @@
+@import './scramble-const';
 .scrambleLevel{
   width: 30%;
   position: absolute;
@@ -34,7 +35,7 @@
     }
     &:focus,
     &:hover {
-        background: darken(#FC6E51,7%);
+        filter: brightness(115%);
     }
     &:active {
       &:after {
@@ -46,23 +47,23 @@
  select{
      display: flex;
      justify-content: center;
-     color: #162032;
+     margin: 10px 0 0 0;
      padding: 5%;
      width: 100%;
      border: none;
+     border-radius: $btn-radius;
      font-size: calc(12px + (20 - 12) * ((100vw - 300px) / (1600 - 300)));
-     box-shadow: 0 5px 25px rgba(0,0,0,.5);
      outline: none;
-     background:linear-gradient(184deg, #1838F5, #12a08da4);
+     background-color: $btn-color;
+     color: $main_font_color;
      font-weight: 700;
      text-align-last:center;
      cursor: pointer;
      
      option {
       margin: 40px;
-      background: #183949;
-      color: #fff;
-      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+      background-color: $btn-color;
+      filter: brightness(115%);
     }
  }
 }

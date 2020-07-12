@@ -1,6 +1,6 @@
 export const savannahState = {
-  currentLevel: '',
-  currentPage: '',
+  currentLevel: 0,
+  currentRound: 0,
   activeWord: 0,
   activeWordID: 0,
   wordsCollection: [],
@@ -10,6 +10,8 @@ export const savannahState = {
   answeredCorrect: [],
   answeredWrong: [],
   timerId: 0,
+  userWords: false,
+  userWordsLevel: 0,
 };
 
 export const savannahSettings = {

@@ -34,7 +34,7 @@ body.sprint__body {
         position: absolute;
         bottom: 0;
         display: none;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
 
         .game {
             margin-top: 2%;
@@ -167,6 +167,10 @@ body.sprint__body {
                         width: 25%;
                         margin: 0 10px;
                         font-size: calc(8px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+                        &:focus {
+                            outline: none;
+                            box-shadow: none;
+                          }
                     }
                 }
             }
@@ -292,24 +296,6 @@ body.sprint__body {
 
         }
 
-        .footer {
-            width: 100%;
-            height: 10%;
-            background-color: #2E2E2E;
-            position: absolute;
-            bottom: 0;
-
-            .footer__level {
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                p {
-                    color: #ffff;
-                }
-            }
-        }
     }
     
     .gameStart {

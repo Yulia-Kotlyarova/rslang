@@ -1,4 +1,6 @@
 .settings {
+  color: $main_font_color;
+
   &__number {
     padding-right: 0;
     height: 30px;
@@ -15,5 +17,24 @@
   &__number-row {
     align-items: center;
     margin-bottom: 5px;
+  }
+}
+
+.settings__button {
+  color: $main_font_color;
+  outline: none;
+}
+
+.card-controls {
+  button {
+    background-color: $btn-color;
+    border-radius: $btn-radius;
+    border: none;
+    color: $main_font_color;
+    padding: 5px 10px;
+    outline: none;
+  }
+  button:hover {
+    filter: brightness(115%);
   }
 }

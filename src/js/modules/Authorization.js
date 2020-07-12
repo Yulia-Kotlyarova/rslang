@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode';
 import MessageModal from './MessageModal';
 
 import defaultSettings from '../constants/defaultSettings';
+import backendOrigin from '../constants/app';
 
 class Authorization {
   constructor() {
@@ -58,7 +59,7 @@ class Authorization {
   }
 
   static async signupUser(user) {
-    const rawResponse = await fetch('https://afternoon-falls-25894.herokuapp.com/users', {
+    const rawResponse = await fetch(`${backendOrigin}/users`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -101,7 +102,7 @@ class Authorization {
     delete defaultSettings.wordsPerDay;
     settings.optional = defaultSettings;
 
-    await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`, {
+    await fetch(`${backendOrigin}/users/${userId}/settings`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -110,10 +111,25 @@ class Authorization {
       },
       body: JSON.stringify(settings),
     });
+
+    const defaultStatistics = {
+      learnedWords: 0,
+      optional: { default: 'default' },
+    };
+
+    await fetch(`${backendOrigin}/users/${userId}/statistics`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(defaultStatistics),
+    });
   }
 
   static async signinUser(user) {
-    const rawResponse = await fetch('https://afternoon-falls-25894.herokuapp.com/signin', {
+    const rawResponse = await fetch(`${backendOrigin}/signin`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -142,7 +158,7 @@ class Authorization {
     localStorage.setItem('password', user.password);
 
     if (!localStorage.getItem('settings')) {
-      const settingsRawResponse = await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${content.userId}/settings`, {
+      const settingsRawResponse = await fetch(`${backendOrigin}/users/${content.userId}/settings`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${content.token}`,
@@ -175,7 +191,7 @@ class Authorization {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
-    await fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}`, {
+    await fetch(`${backendOrigin}/users/${userId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
