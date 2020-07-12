@@ -12,11 +12,7 @@ class Card {
     this.wordData = null;
     this.audio = null;
 
-    this.nextStudyInterval = 12 * 60 * 60 * 1000;
-    this.oneHourInMiliseconds = 60 * 60 * 1000;
-    this.oneMinuteInMiliseconds = 60 * 1000;
-    this.oneSecondInMiliseconds = 1000;
-    this.studyFinishAt = localStorage.getItem('studyFinishAt') ? localStorage.getItem('studyFinishAt') : 0;
+    this.oneDayInMiliseconds = 24 * 60 * 60 * 1000;
     this.defaultWordInterval = 5;
     this.wordLevel = '2';
 
@@ -43,11 +39,6 @@ class Card {
     this.unmarkedHardWord = document.querySelector('.unmarked-hard-word');
 
     this.wordPositionInResponse = 0;
-
-    // this.todayStudiedNewWords = localStorage.getItem('todayStudiedNewWords')
-    // ? localStorage.getItem('todayStudiedNewWords') : 0;
-    // this.todayStudiedWords = localStorage.getItem('todayStudiedWords')
-    // ? localStorage.getItem('todayStudiedWords') : 0;
 
     this.settings = JSON.parse(localStorage.getItem('settings'));
     this.numberOfNewWordsToStudy = this.settings.wordsPerDay;
@@ -124,16 +115,14 @@ class Card {
           || Number(this.todayStudiedNewWords) >= Number(this.numberOfNewWordsToStudy)
           || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
+
       try {
         const shortStatistics = new ShortStatistics();
         await shortStatistics.showModal();
       } catch (error) {
         return;
       }
-      if (!this.studyFinishAt) {
-        this.studyFinishAt = Date.now();
-        localStorage.setItem('studyFinishAt', this.studyFinishAt);
-      }
+
       this.runTimer();
     } else {
       this.hideWarningWindow();
@@ -145,32 +134,12 @@ class Card {
   }
 
   nextStudyTimer() {
-    const nextStudyTime = Number(this.studyFinishAt) + Number(this.nextStudyInterval);
     const timeNow = Date.now();
-    if (timeNow > nextStudyTime) {
+    if (this.todayStudiedWords === 0) {
       this.hideWarningWindow();
     }
-    if (Number(this.studyFinishAt) > 0 && (timeNow > nextStudyTime)) {
-      this.todayStudiedNewWords = 0;
-      this.todayStudiedWords = 0;
-    }
-    let hours = Math.trunc((nextStudyTime - timeNow) / this.oneHourInMiliseconds);
-    let minutes = Math.trunc((nextStudyTime - timeNow - hours
-      * this.oneHourInMiliseconds)
-      / this.oneMinuteInMiliseconds);
-    let secondes = Math.trunc((nextStudyTime - timeNow - hours
-      * this.oneHourInMiliseconds - minutes * this.oneMinuteInMiliseconds)
-      / this.oneSecondInMiliseconds);
-    if (hours < 10) {
-      hours = `0${hours}`;
-    }
-    if (minutes < 10) {
-      minutes = `0${minutes}`;
-    }
-    if (secondes < 10) {
-      secondes = `0${secondes}`;
-    }
-    this.timeoutStudy.innerText = `${hours}:${minutes}:${secondes}`;
+    const tommorow = new Date(timeNow + this.oneDayInMiliseconds);
+    this.timeoutStudy.innerText = `${tommorow.toLocaleDateString()}`;
   }
 
   async getWord() {
@@ -286,6 +255,7 @@ class Card {
       await Repository.markWordAsDeleted(wordId);
       this.isMistake = true;
       this.nextCard();
+      this.isMistake = true;
     } catch (error) {
       const modalError = document.querySelector('.fetchWordsCollectionError');
       if (!modalError) {
@@ -440,16 +410,12 @@ class Card {
         item.classList.remove('hidden-word');
       });
     }
-    // this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
-    // localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
-    if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
-      // this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
-      // localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
-    }
+
     if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
       setTimeout(() => { this.nextCard(); }, 2000);
       return;
     }
+
     if (!this.isDifficultButtonVisible || this.isMistake) {
       this.nextCardButton.classList.remove('hidden');
     }
@@ -508,11 +474,13 @@ class Card {
     if (this.audio) {
       this.audio.pause();
     }
+
     if (!this.isMistake) {
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
       const difficultyLevel = this.wordLevel;
       await this.setWordDifficulty(wordId, difficultyLevel);
     }
+
     this.isMarkedWordLevel = false;
     this.wordLevel = '2';
     this.isMistake = false;
@@ -530,10 +498,12 @@ class Card {
       this.updateTodayWords();
     } catch (error) {
       const modalError = document.querySelector('.fetchWordsCollectionError');
+
       if (!modalError) {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
+
       MessageModal.showModal('Sorry, something went wrong. Try again, please.');
     }
   }
@@ -542,6 +512,7 @@ class Card {
     if (!event.target.classList.contains('difficulty-level') || this.isMarkedWordLevel) {
       return;
     }
+
     this.isMarkedWordLevel = true;
     this.wordLevel = event.target.value;
     this.nextCard();
