@@ -3,6 +3,7 @@ import '../../../sass/styles.scss';
 
 import '@fortawesome/fontawesome-free/js/all.min';
 import Header from '../../modules/Header';
+import Repository from '../../modules/Repository';
 import Card from './modules/Card';
 import SettingsModal from './modules/SettingsModal';
 
@@ -19,4 +20,7 @@ window.onload = async () => {
   await card.getWord();
   card.showCard();
   card.setEventListener();
+
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };

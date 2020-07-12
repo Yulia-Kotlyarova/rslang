@@ -7,13 +7,16 @@ export default class StartNewRound {
     this.savannahState = savannahState;
     this.answersArea = document.querySelector('.game__answers');
     this.activeWordContainer = document.querySelector('.game__active-word');
+    this.wordsCounterContainer = document.querySelector('.savannah__game__words-counter');
     this.isAnswered = false;
     this.timerId = 0;
-    this.wordLimit = this.answersArea.getBoundingClientRect().top;
+    this.wordLimit = 0;
   }
 
   startRound() {
-    clearInterval(this.timerId);
+    clearInterval(this.savannahState.timerId);
+    this.wordsCounterContainer.innerText = 20 - this.savannahState.activeWord;
+    this.wordLimit = this.answersArea.getBoundingClientRect().top;
     this.returnActiveWordPosition();
     this.distributeAnswers();
     this.displayActiveWord();
@@ -21,7 +24,7 @@ export default class StartNewRound {
   }
 
   returnActiveWordPosition() {
-    this.activeWordContainer.style.top = '-10px';
+    this.activeWordContainer.style.top = '-150px';
   }
 
   distributeAnswers() {
@@ -45,7 +48,7 @@ export default class StartNewRound {
 
   moveDownActiveWord() {
     const fromTop = this.activeWordContainer.offsetTop;
-    if (fromTop < this.wordLimit + 100 && !this.savannahState.isAnswered) {
+    if (fromTop < 200 && !this.savannahState.isAnswered) {
       this.activeWordContainer.style.top = `${fromTop + 1}px`;
     } else {
       this.savannahState.isAnswered = true;

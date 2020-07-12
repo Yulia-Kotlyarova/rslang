@@ -8,14 +8,11 @@
     </head>
     <body>
         <section class="settings">
-            <button type="button" class="btn settings__button" data-toggle="modal" data-target="#settings__modal">
-                <i class="fas fa-cog fa-2x"></i>
-            </button>
             <div class="modal fade settings__modal" id="settings__modal" tabindex="-1" role="dialog" aria-labelledby="settings__title" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title settings__title" id="settings__title">Settings</h5>
+                            <h5 class="modal-title settings__title" id="settings__title" data-en="Settings" data-ru="Настройки">Settings</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -30,8 +27,8 @@
                                                 Required input.
                                             </div>
                                         </div>
-                                        <label for="wordsPerDay" class="col-form-label settings__number-label">Words per day</label>
-                                
+                                        <label for="wordsPerDay" class="col-form-label settings__number-label" data-en="New words per day" data-ru="Количество новых слов в день">New words per day</label>
+                                    
                                     </div>
                                     <div class="form-group row settings__number-row">
                                         <div class="col settings__number-container">
@@ -40,106 +37,106 @@
                                                 Required input.
                                             </div>
                                         </div>
-                                        <label for="maxCardsPerDay" class="col-form-label settings__number-label">Maximum cards per day</label>
+                                        <label for="maxCardsPerDay" class="col-form-label settings__number-label" data-en="Maximum cards per day" data-ru="Максимальное количество карточек в день">Maximum cards per day</label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <h6>Info (check at least one)</h6>
+                                    <h6 data-en="Info (check at least one)" data-ru="Информация (отметьте, минимум, один пункт)">Info (check at least one)</h6>
                                     <div class="form-check">
                                         <input class="form-check-input setting__info-basic" type="checkbox" name="isTranslationVisible" id="isTranslationVisible" checked>
-                                        <label class="form-check-label" for="isTranslationVisible">
+                                        <label class="form-check-label" for="isTranslationVisible" data-en="Show translation" data-ru="Показывать перевод">
                                             Show translation
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input setting__info-basic" type="checkbox" name="isExplanationVisible" id="isExplanationVisible" checked>
-                                        <label class="form-check-label" for="isExplanationVisible">
+                                        <label class="form-check-label" for="isExplanationVisible" data-en="Show explanation" data-ru="Показывать объяснение">
                                             Show explanation
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input setting__info-basic" type="checkbox" name="isExampleVisible" id="isExampleVisible" checked>
-                                        <label class="form-check-label" for="isExampleVisible">
+                                        <label class="form-check-label" for="isExampleVisible" data-en="Show example" data-ru="Показывать пример">
                                             Show example
                                         </label>
                                     </div>
-                                    <div class="invalid-feedback settings__info-basic-invalid-feedback">
+                                    <div class="invalid-feedback settings__info-basic-invalid-feedback" data-en="Check at least one." data-ru="Отметьте хотя бы один пункт">
                                         Check at least one.
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <h6>Additional info</h6>
+                                    <h6 data-en="Additional info" data-ru="Дополнительная информация">Additional info</h6>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="isTranscriptionVisible" name="isTranscriptionVisible" checked>
-                                        <label class="form-check-label" for="isTranscriptionVisible">
+                                        <label class="form-check-label" for="isTranscriptionVisible" data-en="Show transcription" data-ru="Показывать транскрипцию">
                                             Show transcription
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="isPictureVisible" name="isPictureVisible" checked>
-                                        <label class="form-check-label" for="isPictureVisible">
+                                        <label class="form-check-label" for="isPictureVisible" data-en="Show picture" data-ru="Показывать изображение">
                                             Show picture
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="isSoundAutoPlay" name="isSoundAutoPlay" checked>
-                                        <label class="form-check-label" for="isSoundAutoPlay">
+                                        <label class="form-check-label" for="isSoundAutoPlay" data-en="Auto play word's pronunciation, explanation and example" data-ru="Автоматически воспроизводить произношение, объяснение и пример слова">
                                             Auto play word's pronunciation, explanation and example
                                         </label>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <h6>Controls</h6>
+                                    <h6 data-en="Controls" data-ru="Управление">Controls</h6>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="isShowAnswerButtonVisible" name="isShowAnswerButtonVisible" checked>
-                                        <label class="form-check-label" for="isShowAnswerButtonVisible">
+                                        <label class="form-check-label" for="isShowAnswerButtonVisible" data-en="Show 'Show Answer' button" data-ru="Показывать кнопку 'Показать ответ'">
                                             Show 'Show Answer' button
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="isRemoveButtonVisible" name="isRemoveButtonVisible" checked>
-                                        <label class="form-check-label" for="isRemoveButtonVisible">
+                                        <label class="form-check-label" for="isRemoveButtonVisible" data-en="Show 'Remove word' button" data-ru="Показывать кнопку 'Удалить слово'">
                                             Show 'Remove word' button
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="isDifficultButtonVisible" name="isDifficultButtonVisible" checked>
-                                        <label class="form-check-label" for="isDifficultButtonVisible">
+                                        <label class="form-check-label" for="isDifficultButtonVisible" data-en="Show 'Mark as difficult' button" data-ru="Показывать кнопку 'Пометить слово, как сложное'">
                                             Show 'Mark as difficult' button
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="areAdditionalButtonsVisible" name="areAdditionalButtonsVisible" checked>
-                                        <label class="form-check-label" for="areAdditionalButtonsVisible">
+                                        <label class="form-check-label" for="areAdditionalButtonsVisible" data-en="Show additional buttons" data-ru="Показывать дополнительне кнопки">
                                             Show additional buttons
                                         </label>
                                     </div>
                                 </div>
                                 <div>
-                                    <h6>What words to show</h6>
+                                    <h6 data-en="What words to show" data-ru="Какие слова показывать">What words to show</h6>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="wordsToStudy" id="mixed" value="mixed" checked>
-                                        <label class="form-check-label" for="mixed">
+                                        <label class="form-check-label" for="mixed" data-en="Mixed" data-ru="Смешанные">
                                             Mixed
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="wordsToStudy" id="new" value="new">
-                                        <label class="form-check-label" for="new">
+                                        <label class="form-check-label" for="new" data-en="Only new words" data-ru="Только новые слова">
                                             Only new words
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="wordsToStudy" id="repeat" value="repeat">
-                                        <label class="form-check-label" for="repeat">
+                                        <label class="form-check-label" for="repeat" data-en="Only words to repeat" data-ru="Только ранее изученные слова">
                                             Only words to repeat
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save settings</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-en="Close" data-ru="Закрыть">Close</button>
+                                <button type="submit" class="btn btn-primary" data-en="Save settings" data-ru="Сохранить настройки">Save settings</button>
                             </div>
                         </form>
                     </div>
@@ -167,8 +164,11 @@
             <div class="card-controls">
                 <button class="btn btn-info show-answer hidden" type="button" data-en="Show answer" data-ru="Показать ответ">Show answer</button>
                 <button class="btn btn-info check" type="button" data-en="Check" data-ru="Проверить">Check</button>
-                <button class="btn btn-info difficult-word hidden" type="button" data-en="Hard" data-ru="Сложно">Hard</button>
-                <button class="btn btn-info delete-word hidden" type="button" data-en="Delete" data-ru="Удалть">Delete</button>
+                <button class="btn btn-info difficult-word hidden" type="button">
+                    <span class="marked-hard-word" data-en="Hard" data-ru="Сложно">Hard</span>
+                    <span class="unmarked-hard-word" data-en="Marked as hard" data-ru="Отмечено сложным">Marked as hard</span>
+                </button>
+                <button class="btn btn-info delete-word hidden" type="button" data-en="Delete" data-ru="Удалить">Delete</button>
                 <button class="btn btn-info next-card-btn hidden" type="button" data-en="Next" data-ru="Следующее">Next</button>
             </div>
             <div class="today-progress">
@@ -185,7 +185,7 @@
                 </div>
             </div>
             <div class="warning-window hide-window">
-                <p class="message" data-en="You have studied all the planned words for today. The next training will be available through:" data-ru="Вы уже выучили все слова за сегодня. Следующее обучение начнется через:">You have studied all the planned words for today. The next training will be available through: <span class="timeout"></span> </p>
+                <p class="message" data-en="You have studied all the planned words for today. The next training will be available through:" data-ru="Вы уже выучили все слова за сегодня. Следующее обучение начнется через:">You have studied all the planned words for today. The next training will be available through:</p><span class="timeout"></span>
             </div>
             <div class="overlay-window"></div>
         </div>

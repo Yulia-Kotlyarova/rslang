@@ -1,4 +1,23 @@
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faBook, faChartLine, faDice, faSignOutAlt, faUsersCog,
+} from '@fortawesome/free-solid-svg-icons';
+import { faFileWord } from '@fortawesome/free-regular-svg-icons';
+
 import Authorization from './Authorization';
+
+import { renderNewLanguageInElement } from '../helpers';
+
+library.add(faBook);
+library.add(faFileWord);
+library.add(faChartLine);
+library.add(faDice);
+library.add(faSignOutAlt);
+library.add(faUsersCog);
+
+library.add(faFileWord);
+
+dom.watch();
 
 export default class Header {
   constructor() {
@@ -33,7 +52,17 @@ export default class Header {
     this.checkUserAuthorization();
     this.renderHeader();
     Header.setEventListeners();
-    localStorage.setItem('app-language', 'en');
+
+    let language = localStorage.getItem('app-language');
+    if (!language) {
+      language = 'en';
+      localStorage.setItem('app-language', 'en');
+    }
+
+    if (language !== 'en') {
+      Header.renderLanguage(language);
+    }
+
     document.body.classList.remove('hidden-for-header-render');
   }
 
@@ -58,7 +87,6 @@ export default class Header {
 
   static changeLanguage() {
     const currentLanguage = localStorage.getItem('app-language');
-    const languageButton = document.querySelector('.button_language');
 
     let newLanguage;
     if (currentLanguage === 'en') {
@@ -68,13 +96,15 @@ export default class Header {
     }
 
     localStorage.setItem('app-language', newLanguage);
-    languageButton.innerText = newLanguage.toUpperCase();
 
-    const elementsToChange = document.querySelectorAll(`[data-${newLanguage}]`);
-    elementsToChange.forEach((elementToChange) => {
-      const element = elementToChange;
-      element.innerText = element.dataset[newLanguage];
-    });
+    Header.renderLanguage(newLanguage);
+  }
+
+  static renderLanguage(language) {
+    const languageButton = document.querySelector('.button_language');
+    languageButton.innerText = language.toUpperCase();
+
+    renderNewLanguageInElement(document, language);
   }
 
   renderHeader() {
@@ -113,6 +143,7 @@ export default class Header {
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
     const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
     const languageButton = '<button class="header__button button_language">EN</button>';
+    const cardsSettingsButton = '<button type="button" class="settings__button header__button d-none" data-toggle="modal" data-target="#settings__modal"><i class="fas fa-cog fa-2x"></i></button>';
     const logOutButtonMain = '<button class="header__button button_authorization" data-en="LOG OUT" data-ru="ВЫЙТИ">LOG OUT</button>';
     const logInButtonMain = '<button class="header__button button_authorization" data-en="LOG IN" data-ru="ВОЙТИ">LOG IN</button>';
     const userLoginName = `<div class="header__username"><span>${this.userLoginName}</span></div>`;
@@ -131,6 +162,7 @@ export default class Header {
         ${statisticsButton}
         ${teamButton}
         ${languageButton}
+        ${cardsSettingsButton}
         </div>`;
 
     const headerContainer = `<nav class="navbar navbar-expand-lg navbar-light bg-light app-header__container">
