@@ -56,6 +56,10 @@
   justify-content: center;
   align-items: center;
   background-color: #eee;
+  p {
+    color: $main_font_color;
+    font-weight: 500;
+  }
 }
 
 .message {
@@ -85,4 +89,9 @@
 
 .hide-window {
   left: -10000px;
+}
+
+.word-card {
+  color: $main_font_color;
+  font-weight: 500;
 }

@@ -9,7 +9,7 @@
   margin: 0 10px;
   padding: 4px;
   border: 0 none;
-  background: rgb(136, 191, 255);
+  background: rgb(172, 195, 221);
   border-radius: 14px;
 
   &::-moz-progress-bar {
@@ -27,6 +27,6 @@
   }
   &::-webkit-progress-value {
     border-radius: 12px;
-    background: rgb(45, 55, 206);
+    background: $main_font_color;
   }
 }
