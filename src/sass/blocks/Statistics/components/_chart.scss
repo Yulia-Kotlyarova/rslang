@@ -73,6 +73,7 @@
     font-size: 2rem;
     background-color: none;
     color: $color-chart-stroke;
+    transition: all ease 0.5s;
   }
 
   .chart-range-refresh:focus {
@@ -80,8 +81,11 @@
   }
 
   .chart-range-refresh:hover {
-    transition: all ease 0.5s;
-    transform: rotate(360deg);
+    color: $color-text-shorstatistics-title;
+  }
+
+  .chart-range-refresh:active {
+    font-size: 2.3rem;
   }
 
   .chart__number-of-words {
