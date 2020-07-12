@@ -19,11 +19,27 @@ export default class StatisticCalendar {
   }
 
   createTable() {
+    const language = localStorage.getItem('app-language');
+    let theadDate = '';
+    let theadCards = '';
+    let theadWords = '';
+    if (language === 'ru') {
+      theadDate = 'Дата';
+      theadCards = 'Пройдено карточек';
+      theadWords = 'Новые слова';
+    } else {
+      theadDate = 'Date';
+      theadCards = 'Cards Played';
+      theadWords = 'New Words';
+    }
+
     let calendarTableHTML = `
     <table>
       <thead>
         <tr>
-          <td>Date</td><td>Cards Played</td><td>New Words</td>
+          <td data-en="Date" data-ru="Дата">${theadDate}</td>
+          <td data-en="Cards Played" data-ru="Пройдено карточек">${theadCards}</td>
+          <td data-en="New Words" data-ru="Новые слова">${theadWords}</td>
         </tr>
       </thead>
       <tbody>
