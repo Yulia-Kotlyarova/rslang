@@ -1,22 +1,27 @@
+$font-size-basic: 10px;
 $puzzlePadding: 15px;
 
+$color-background-main-light: #F1F1F1;
 $color-shadow-wrong: #dc3545;
 $color-shadow-correct: #13d152;
 $color-main-background: #6fddd8;
-$color-main-background-opacity: #ff9bb19a;
 $color-puzzles-background: #4a6168;
 $color-puzzle-background: #FFFFFF;
 $color-puzzle-text: #FFFFFF;
 $color-button-standart: #6c757d;
 $color-button-clicked: #dc3545;
 $color-text-shadow: #4a6168;
+$color-text-dark: #274155;
+$color-orange-dark: #FBC65F;
+
+$button-border-radius: 9px;
 $puzzle-match-part: 15px;
 $button-height: 35px;
 
 $puzzle-width: 700px;
 $puzzle-height: $puzzle-width / 16 * 9;
 $small-border-radius: 3px;
-
+$container-border-radius: 15px;
 $translation-area-color: #6c757d81;
 
 $text-shadow: 1px 1px 1px $color-text-shadow,

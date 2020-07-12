@@ -21,7 +21,16 @@
     }
 
     .button__statistics-navigation {
-        font-size: 1.5rem;
+        font-size: $font-size-basic * 1.4;
+        background-color: $color-background-main-light;
+        box-shadow: 0 0 10px #67697d66;
+        border-radius: $button-border-radius;
+        color: $color-text-dark;
+    }
+
+    .button__statistics-navigation:hover {
+        box-shadow: 0 0 20px $shadow-color;
+        border: 1px solid $color-background-main-light;
     }
 
 
@@ -50,11 +59,12 @@
     }
 
     .prompts__button:hover {
-        box-shadow: 0 0 2px 2px $color-button-standart;
+        filter: brightness(115%);
+        border: 1px solid $color-orange-dark;
     }
 
     .prompts__button.clicked {
-        background-color: $color-button-clicked;
+        background-color: $color-orange-dark;
     }
 
     .prompts__button:last-child {

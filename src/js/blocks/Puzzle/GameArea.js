@@ -108,29 +108,13 @@ export class GameArea {
 
   addPuzzlesEventListeners() {
     const testPuzzleLine = document.getElementById(`game_line_${gameData.activePhrase}`);
-    const mainPuzzleLine = document.getElementById(`line_${gameData.activePhrase}`);
+    const puzzlesToMove = testPuzzleLine.querySelectorAll('.puzzle__element');
     this.puzzlesEventListener = (event) => this.replacePuzzleElement(event);
-    testPuzzleLine.addEventListener('click', (event) => {
-      const puzzleToMove = event.target.closest('.puzzle__element');
-      if (!puzzleToMove) {
-        return;
-      }
-      this.puzzlesEventListener(event);
-    });
-    mainPuzzleLine.addEventListener('click', (event) => {
-      const puzzleToMove = event.target.closest('.puzzle__element');
-      if (!puzzleToMove) {
-        return;
-      }
-      this.puzzlesEventListener(event);
-    });
-    testPuzzleLine.addEventListener('mousedown', (event) => {
-      const puzzleToMove = event.target.closest('.puzzle__element');
-      if (!puzzleToMove) {
-        return;
-      }
-      puzzleToMove.style.zIndex = '3';
-    });
+    puzzlesToMove.forEach((puzzleToMove) => puzzleToMove.addEventListener('click', this.puzzlesEventListener));
+    puzzlesToMove.forEach((puzzleToMove) => puzzleToMove.addEventListener('mousedown', (event) => {
+      const temp = event.target;
+      temp.closest('.puzzle__element').style.zIndex = '3';
+    }));
   }
 
   replacePuzzleElement(event) {
@@ -180,7 +164,7 @@ export class GameArea {
     if (correctWords === puzzlesInMainLine.length + puzzleInTestLine.length) {
       gameData.gameResultsCorrect.push(gameData.activePhrase);
       const currentWordId = gameData.wordsCollection[gameData.activePhrase].id;
-      Repository.saveWordResult({ wordId: currentWordId, result: '2' });
+      Repository.saveWordResult({ wordId: currentWordId, result: '2', isGame: true });
       GameArea.updateStatistics(1, 0);
       GameArea.addShadowToLineNumber('correct');
       this.setControlButtons('continue');
@@ -282,7 +266,7 @@ export class GameArea {
     const alternativeId = '_id';
     const currentWordId = gameData.wordsCollection[gameData.activePhrase].id
     || gameData.wordsCollection[gameData.activePhrase][alternativeId];
-    Repository.saveWordResult({ wordId: currentWordId, result: '0' });
+    Repository.saveWordResult({ wordId: currentWordId, result: '0', isGame: true });
     GameArea.updateStatistics(0, 1);
     GameArea.addShadowToLineNumber('wrong');
     await this.continueGame();

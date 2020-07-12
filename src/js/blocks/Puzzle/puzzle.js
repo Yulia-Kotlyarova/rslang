@@ -62,4 +62,6 @@ window.onload = async function onload() {
   results.addEventListeners();
   const buttonStart = document.querySelector('.button__start');
   buttonStart.addEventListener('click', () => openNavigationTable());
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };
