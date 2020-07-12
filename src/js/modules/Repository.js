@@ -329,6 +329,8 @@ class Repository {
       optional: { ...statistics.optional, ...updatedValues },
     };
 
+    localStorage.setItem('statistics', JSON.stringify(newStatistics));
+
     const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
@@ -341,10 +343,7 @@ class Repository {
       body: JSON.stringify(newStatistics),
     });
 
-    const statisticsSaved = await rawResponse.json();
-    localStorage.setItem('statistics', JSON.stringify(statisticsSaved));
-
-    return statisticsSaved;
+    return rawResponse.json();
   }
 
   static async incrementLearnedWords(result, isWordNew) {
@@ -426,6 +425,8 @@ class Repository {
       optional: statistics.optional,
     };
 
+    localStorage.setItem('statistics', JSON.stringify(newStatistics));
+
     const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
@@ -438,10 +439,7 @@ class Repository {
       body: JSON.stringify(newStatistics),
     });
 
-    const statisticsSaved = await rawResponse.json();
-    localStorage.setItem('statistics', JSON.stringify(statisticsSaved));
-
-    return statisticsSaved;
+    return rawResponse.json();
   }
 
   // SETTINGS
