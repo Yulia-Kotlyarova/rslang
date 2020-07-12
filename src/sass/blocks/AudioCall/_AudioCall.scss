@@ -174,7 +174,8 @@
     top: 2px;
   }
 
-  .Audio-Call-Wrapper {
+  .Audio-Call-Wrapper,
+  .a-c-hello-screen {
     width: 70vw;
     height: 265px;
   }
@@ -226,7 +227,7 @@
 
   .Audio-Call-Wrapper,
   .a-c-hello-screen {
-    margin: 35px 0 0 115px
+    margin: 35px auto;
   }
 
   .a-c-translate {
@@ -235,7 +236,7 @@
 
 }
 
-@media (max-width: 320px) {
+@media (max-width: 540px) {
   .word-list {
     flex-direction: column;
     top: 180px;
@@ -245,7 +246,7 @@
   .Audio-Call-Wrapper,
   .a-c-hello-screen {
     height: 390px;
-    margin: 30px 0 0 50px;
+    margin: 30px auto;
   }
 
   .a-c-pic-wrapper {
