@@ -1,6 +1,23 @@
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faBook, faChartLine, faDice, faSignOutAlt, faUsersCog,
+} from '@fortawesome/free-solid-svg-icons';
+import { faFileWord } from '@fortawesome/free-regular-svg-icons';
+
 import Authorization from './Authorization';
 
 import { renderNewLanguageInElement } from '../helpers';
+
+library.add(faBook);
+library.add(faFileWord);
+library.add(faChartLine);
+library.add(faDice);
+library.add(faSignOutAlt);
+library.add(faUsersCog);
+
+library.add(faFileWord);
+
+dom.watch();
 
 export default class Header {
   constructor() {

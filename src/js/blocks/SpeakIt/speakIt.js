@@ -1,6 +1,10 @@
 import '../../../sass/styles.scss';
 
-import '@fortawesome/fontawesome-free/js/all.min';
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faUser, faVolumeDown,
+} from '@fortawesome/free-solid-svg-icons';
+
 import 'bootstrap/js/dist/collapse';
 
 import Repository from '../../modules/Repository';
@@ -17,6 +21,11 @@ import Result from './modules/Result';
 import MessageModal from '../../modules/MessageModal';
 
 window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+
+library.add(faUser);
+library.add(faVolumeDown);
+
+dom.watch();
 
 const app = new App();
 const game = new Game(app);
