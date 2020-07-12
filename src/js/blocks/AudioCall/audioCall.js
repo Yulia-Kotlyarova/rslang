@@ -7,15 +7,15 @@ import random from 'lodash/fp/random';
 import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
+import findSimilar from './similarWord';
 
-window.onload = () => {
+window.onload = async function audioCall() {
   const header = new Header();
   header.run();
 
   const goBtn = document.querySelector('.a-c-go');
   const dontKnowBtn = document.querySelector('.a-c-dont-know');
   const nextBtn = document.querySelector('.a-c-next');
-  const playAnother = document.querySelector('.a-c-another-game-btn');
   const playAgainBtn = document.querySelector('.a-c-again-btn');
 
   const translate = document.querySelector('.a-c-translate');
@@ -28,12 +28,13 @@ window.onload = () => {
   const startScreen = document.querySelector('.a-c-hello-screen');
   const loader = document.querySelector('.a-c-loader');
 
-  const word1 = document.querySelector('.word-list-1');
-  const word2 = document.querySelector('.word-list-2');
-  const word3 = document.querySelector('.word-list-3');
-  const word4 = document.querySelector('.word-list-4');
-  const word5 = document.querySelector('.word-list-5');
-  const wordList = document.querySelectorAll('.word-list > li');
+  const word1 = document.querySelector('.word-list-1 > span');
+  const word2 = document.querySelector('.word-list-2 > span');
+  const word3 = document.querySelector('.word-list-3 > span');
+  const word4 = document.querySelector('.word-list-4 > span');
+  const word5 = document.querySelector('.word-list-5 > span');
+  const wordList = document.querySelectorAll('.word-list > li > span');
+  const wordContainer = document.querySelector('.word-list');
 
   const volumeUp = document.querySelector('#big-volume-up');
   const littleVolumeUp = document.querySelector('.a-c-little-volume');
@@ -41,8 +42,8 @@ window.onload = () => {
   const audio = new Audio();
   const levelNumb = document.querySelector('.a-c-level').options.selectedIndex;
   const pageNumb = document.querySelector('.a-c-page').options.selectedIndex;
-  const userLevel = document.querySelector('.a-c-level').options[levelNumb].value;
-  const userPage = document.querySelector('.a-c-page').options[pageNumb].value;
+  const userLevel = document.querySelector('.a-c-level').options[levelNumb].value - 1;
+  const userPage = document.querySelector('.a-c-page').options[pageNumb].value - 1;
 
   let isVictory;
   localStorage.cardNumber = 1;
@@ -74,17 +75,16 @@ window.onload = () => {
   // array for each word
   async function getCard(taskWord) {
     try {
-      const resp = await Repository.getWordsFromGroupAndPage(userLevel, userPage);
+      const resp = await findSimilar(taskWord, 5);
       for (let i = 0; i < 5; i++) {
-        const rand = random(1, 19);
-        wordList[i].textContent = resp[rand].wordTranslate;
+        wordList[i].textContent = resp[i];
       }
 
       const right = (event) => {
         dontKnowBtn.classList.add('hidden');
-        if (event.target.textContent === translate.textContent) {
-          localStorage.right += `,${translate.textContent}`;
-        }
+        localStorage.right += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '2', isGame: true });
+
         const element = event.target;
         element.innerHTML += ' &#10004';
         photo.classList.remove('hidden');
@@ -96,6 +96,7 @@ window.onload = () => {
           el.removeEventListener('click', wrong);
           el.removeEventListener('click', right);
           el.classList.add('li-pale-color');
+          el.classList.remove('li-hover');
         });
         element.classList.remove('li-pale-color');
       };
@@ -104,6 +105,7 @@ window.onload = () => {
         dontKnowBtn.removeEventListener('click', wrong);
         dontKnowBtn.classList.add('hidden');
         localStorage.wrong += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '1', isGame: true });
 
         const element = event.target;
         if (element === dontKnowBtn) {
@@ -119,6 +121,7 @@ window.onload = () => {
           el.removeEventListener('click', wrong);
           el.removeEventListener('click', right);
           el.classList.add('li-pale-color');
+          el.classList.remove('li-hover');
         });
         element.classList.remove('li-pale-color');
       };
@@ -137,6 +140,7 @@ window.onload = () => {
         photo.classList.remove('hidden');
         dontKnowBtn.classList.add('hidden');
         localStorage.right += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '2', isGame: true });
         const element = word;
         element.innerHTML += ' &#10004';
         volumeUp.classList.add('hidden');
@@ -152,6 +156,7 @@ window.onload = () => {
         photo.classList.remove('hidden');
         dontKnowBtn.classList.add('hidden');
         localStorage.wrong += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '1', isGame: true });
 
         const element = word;
         if (word === dontKnowBtn) {
@@ -265,11 +270,11 @@ window.onload = () => {
 
   function gameResult() {
     loader.classList.add('hidden');
-    document.querySelector('.word-list').classList.add('hidden');
+    wordContainer.classList.add('hidden');
     document.querySelector('.a-c-pic-wrapper').classList.add('hidden');
     nextBtn.classList.add('hidden');
+    dontKnowBtn.classList.add('hidden');
     playAgainBtn.classList.remove('hidden');
-    playAnother.classList.remove('hidden');
     result.classList.remove('hidden');
 
     if (localStorage.wrong.length === 0) {
@@ -299,6 +304,7 @@ window.onload = () => {
     translateContainer.classList.add('hidden');
     wordList.forEach((el) => {
       el.classList.remove('li-pale-color');
+      el.classList.add('li-hover');
     });
     if (localStorage.cardNumber.length >= 20) {
       gameResult();
@@ -307,6 +313,7 @@ window.onload = () => {
       volumeUp.classList.remove('hidden');
       wordList.forEach((e) => {
         e.style.textDecoration = 'none';
+        e.classList.add('li-hover');
       });
       localStorage.cardNumber += 1;
       getWords(); // relaunch loop
@@ -316,15 +323,7 @@ window.onload = () => {
 
   nextBtn.addEventListener('click', nextCard);
 
-  function playAgain() {
-    goBtn.classList.add('hidden');
-    startScreen.classList.add('hidden');
-    localStorage.cardNumber = 1;
-  }
-
-  playAgainBtn.addEventListener('click', playAgain);
-
-  window.beforeunload = () => {
+  async function saveResult() {
     const sessionData = getTodayShort();
 
     if (localStorage.wrong.length > 0) {
@@ -332,6 +331,14 @@ window.onload = () => {
     } else {
       isVictory = true;
     }
-    Repository.saveGameResult('Audio Call', isVictory, sessionData);
-  };
+    await Repository.saveGameResult('Audio Call', isVictory, sessionData);
+  }
+  window.beforeunload = saveResult();
+
+  async function playAgain() {
+    document.location.reload();
+  }
+  playAgainBtn.addEventListener('click', playAgain);
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };
