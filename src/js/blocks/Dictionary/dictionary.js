@@ -3,6 +3,7 @@ import '../../../sass/styles.scss';
 import '@fortawesome/fontawesome-free/js/all.min';
 
 import 'bootstrap/js/dist/tab';
+import 'bootstrap/js/dist/collapse';
 
 import Header from '../../modules/Header';
 import MessageModal from '../../modules/MessageModal';
