@@ -80,16 +80,16 @@ class Game {
 
       if (!this.game.guessed) this.game.guessed = 0;
       this.game.guessed += 1;
+
+      try {
+        await Repository.saveWordResult({ wordId: cardData.cardElement.dataset.id, result: '2', isGame: true });
+      } catch (e) {
+        MessageModal.showModal(`Cannot save word's training result. Error: '${e.message}'.`);
+      }
     }
 
     if (this.game.guessed === 10) {
       this.app.result.render();
-    }
-
-    try {
-      await Repository.saveWordResult({ wordId: cardData.cardElement.dataset.id, result: '2', isGame: true });
-    } catch (e) {
-      MessageModal.showModal(`Cannot save words' training result. Error: '${e.message}'.`);
     }
   }
 }
