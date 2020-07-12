@@ -3,6 +3,8 @@ import '../../../sass/styles.scss';
 import '@fortawesome/fontawesome-free/js/all.min';
 import 'bootstrap/js/dist/collapse';
 
+import Repository from '../../modules/Repository';
+
 import Header from '../../modules/Header';
 
 import StartScreen from './modules/StartScreen';
@@ -53,4 +55,7 @@ window.onload = async () => {
   await app.initiate();
 
   startScreen.initiate();
+
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };
