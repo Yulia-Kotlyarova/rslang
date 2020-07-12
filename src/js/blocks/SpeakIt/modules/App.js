@@ -41,6 +41,29 @@ class App {
     try {
       if (this.userWords) {
         words = await Repository.getAllUserWords(undefined, 10);
+
+        if (words.length < 10) {
+          const language = localStorage.getItem('app-language');
+
+          let message;
+          if (language === 'en') {
+            message = `Not enough user's words. Showing words from group ${Number(this.level) + 1} and page ${this.selectedPage}.`;
+          } else if (language === 'ru') {
+            message = `Недостаточно слов пользователя. Показаны слова группы ${Number(this.level) + 1} страницы ${this.selectedPage}.`;
+          }
+
+          MessageModal.showModal(message);
+
+          this.selectWordsElement.classList.add('select-words__turned-off');
+          this.selectPageElement.classList.remove('user-words-page__hidden');
+          this.levelsElement.classList.remove('levels__hidden');
+
+          this.userWords = false;
+
+          words = await Repository
+            .getWordsFromGroupAndPage(this.mainPage.level, Number(this.selectedPage) - 1);
+        }
+
         return words;
       }
       words = await Repository
