@@ -1,0 +1,94 @@
+@import './team-back';
+
+$size-text-basic: 10px;
+$color-font-main: #3F5D79;
+
+.team__main {
+  width: 80vw;
+  margin: 20px auto;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+  grid-template-areas:
+  "title title title title sxurik sxurik sxurik"
+  "eduard eduard eduard eduard sxurik sxurik sxurik"
+  " anna anna anna yulia yulia yulia yulia"
+  "anna anna anna gitbex gitbex gitbex gitbex";
+  color: $color-font-main;
+
+  .team__member {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    border-radius: 20px;
+    box-shadow: 10px 10px 15px #67697d66;
+    background-color: #f8f9fa;
+
+    & > a {
+      width: 100%;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .anna234365 {
+    grid-area: anna;
+  }
+
+  .gitbex {
+    grid-area: gitbex;
+  }
+
+  .eduardbrukish {
+    grid-area: eduard;
+  }
+
+  .yulia-kotlyarova {
+    grid-area: yulia;
+  }
+
+  .sxurik {
+    grid-area: sxurik;
+
+    & > ul > li:first-child {
+      font-weight: 900;
+    }
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    grid-area: title;
+    font-size:  $size-text-basic * 3;
+    font-weight: 700;
+  }
+
+  ul {
+    font-size: $size-text-basic * 1.2;
+  }
+}
+
+@media (max-width: 767px) {
+  .team__main {
+    width: 70vw;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    grid-template-areas:
+    "title"
+    "sxurik"
+    "sxurik"
+    "eduard"
+    "eduard"
+    "yulia"
+    "yulia"
+    "gitbex"
+    "gitbex"
+    "anna"
+    "anna";
+  }
+}
