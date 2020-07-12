@@ -2,6 +2,7 @@ import Repository from '../../../modules/Repository';
 import MessageModal from '../../../modules/MessageModal';
 import ShortStatistics from '../../Statistics/ShortStatistics';
 import { coefficients, intervals } from '../../../constants/intervalRepetition';
+import getTodayShort from '../../../helpers';
 
 class Card {
   constructor() {
@@ -42,8 +43,11 @@ class Card {
     this.unmarkedHardWord = document.querySelector('.unmarked-hard-word');
 
     this.wordPositionInResponse = 0;
-    this.todayStudiedNewWords = localStorage.getItem('todayStudiedNewWords') ? localStorage.getItem('todayStudiedNewWords') : 0;
-    this.todayStudiedWords = localStorage.getItem('todayStudiedWords') ? localStorage.getItem('todayStudiedWords') : 0;
+
+    // this.todayStudiedNewWords = localStorage.getItem('todayStudiedNewWords')
+    // ? localStorage.getItem('todayStudiedNewWords') : 0;
+    // this.todayStudiedWords = localStorage.getItem('todayStudiedWords')
+    // ? localStorage.getItem('todayStudiedWords') : 0;
 
     this.settings = JSON.parse(localStorage.getItem('settings'));
     this.numberOfNewWordsToStudy = this.settings.wordsPerDay;
@@ -80,6 +84,27 @@ class Card {
     this.wordMeaningAudio = this.card.querySelector('.word-meaning-audio');
     this.wordAudio = this.card.querySelector('.word-audio');
     this.wordTextExampleAudio = this.card.querySelector('.word-text-example-audio');
+
+    this.updateTodayWords();
+  }
+
+  updateTodayWords() {
+    const statisticsJSON = localStorage.getItem('statistics');
+    const statistics = JSON.parse(statisticsJSON);
+
+    const todayShort = getTodayShort();
+
+    if (
+      !statistics.optional
+      || !statistics.optional.dates
+      || !statistics.optional.dates[todayShort]
+    ) {
+      this.todayStudiedNewWords = 0;
+      this.todayStudiedWords = 0;
+    } else {
+      this.todayStudiedNewWords = statistics.optional.dates[todayShort].learnedToday || 0;
+      this.todayStudiedWords = statistics.optional.dates[todayShort].answersGivenToday || 0;
+    }
   }
 
   wordsHandler() {
@@ -415,11 +440,11 @@ class Card {
         item.classList.remove('hidden-word');
       });
     }
-    this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
-    localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
+    // this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
+    // localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
     if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
-      this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
-      localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
+      // this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
+      // localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
     }
     if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
       setTimeout(() => { this.nextCard(); }, 2000);
@@ -502,6 +527,7 @@ class Card {
   async setWordDifficulty(wordId, difficultyLevel) { // eslint-disable-line class-methods-use-this
     try {
       await Repository.saveWordResult({ wordId, result: difficultyLevel });
+      this.updateTodayWords();
     } catch (error) {
       const modalError = document.querySelector('.fetchWordsCollectionError');
       if (!modalError) {
