@@ -9,7 +9,7 @@ import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
 import findSimilar from './similarWord';
 
-window.onload = () => {
+window.onload = async function audioCall() {
   const header = new Header();
   header.run();
 
@@ -77,15 +77,14 @@ window.onload = () => {
     try {
       const resp = await findSimilar(taskWord, 5);
       for (let i = 0; i < 5; i++) {
-        const rand = random(1, 19);
-        wordList[i].textContent = resp[rand].wordTranslate;
+        wordList[i].textContent = resp[i];
       }
 
       const right = (event) => {
         dontKnowBtn.classList.add('hidden');
-        if (event.target.textContent === translate.textContent) {
-          localStorage.right += `,${translate.textContent}`;
-        }
+        localStorage.right += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '2', isGame: true });
+
         const element = event.target;
         element.innerHTML += ' &#10004';
         photo.classList.remove('hidden');
@@ -106,6 +105,7 @@ window.onload = () => {
         dontKnowBtn.removeEventListener('click', wrong);
         dontKnowBtn.classList.add('hidden');
         localStorage.wrong += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '1', isGame: true });
 
         const element = event.target;
         if (element === dontKnowBtn) {
@@ -140,6 +140,7 @@ window.onload = () => {
         photo.classList.remove('hidden');
         dontKnowBtn.classList.add('hidden');
         localStorage.right += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '2', isGame: true });
         const element = word;
         element.innerHTML += ' &#10004';
         volumeUp.classList.add('hidden');
@@ -155,6 +156,7 @@ window.onload = () => {
         photo.classList.remove('hidden');
         dontKnowBtn.classList.add('hidden');
         localStorage.wrong += `,${translate.textContent}`;
+        Repository.saveWordResult({ wordId: taskWord.id, result: '1', isGame: true });
 
         const element = word;
         if (word === dontKnowBtn) {
@@ -337,4 +339,6 @@ window.onload = () => {
     document.location.reload();
   }
   playAgainBtn.addEventListener('click', playAgain);
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };

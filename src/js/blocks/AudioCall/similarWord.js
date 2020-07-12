@@ -2,7 +2,7 @@ import shuffle from 'lodash/shuffle';
 import partsOfSpeech from '../../constants/partsOfSpeech';
 import similarWordTranslate from '../../constants/similarWordTranslate';
 
-const findSimilar = (word, requiredNumberOfWords) => {
+function findSimilar(word, requiredNumberOfWords) {
   // eslint-disable-next-line no-underscore-dangle
   const wordId = word.id || word._id;
   const partOfSpeech = partsOfSpeech[wordId];
@@ -29,6 +29,6 @@ const findSimilar = (word, requiredNumberOfWords) => {
     [...sameEnd, ...sameStart, ...sameLength]
       .filter((wordTranslate) => wordTranslate !== word.wordTranslate),
   );
-};
+}
 
 export default findSimilar;
