@@ -95,8 +95,8 @@ class Card {
   }
 
   async checkStudyProgress() {
-    if (Number(this.todayStudiedWords) > Number(this.numberOfCardsByDay)
-          || Number(this.todayStudiedNewWords) > Number(this.numberOfNewWordsToStudy)
+    if (Number(this.todayStudiedWords) >= Number(this.numberOfCardsByDay)
+          || Number(this.todayStudiedNewWords) >= Number(this.numberOfNewWordsToStudy)
           || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
       try {
@@ -188,22 +188,22 @@ class Card {
     }
   }
 
-  getPlayNextDate(word, result) {
+  getPlayNextDate(result) { // eslint-disable-line consistent-return
     let interval;
 
-    if (!word.userWord) {
-      word.userWord = {};
+    if (!this.wordData.userWord) {
+      this.wordData.userWord = {};
     }
-    if (!word.userWord.optional) {
-      word.userWord.optional = {};
+    if (!this.wordData.userWord.optional) {
+      this.wordData.userWord.optional = {};
     }
 
     if (result === '0') {
       interval = intervals.defaultAgainInterval;
-      word.userWord.optional.lastPlayedDate = Date.now();
-      word.userWord.optional.playNextDate = Date.now() + interval;
+      this.wordData.userWord.optional.lastPlayedDate = Date.now();
+      this.wordData.userWord.optional.playNextDate = Date.now() + interval;
     } else {
-      const { lastPlayedDate } = word.userWord.optional;
+      const { lastPlayedDate } = this.wordData.userWord.optional;
 
       if (lastPlayedDate) {
         interval = Date.now() - lastPlayedDate;
@@ -215,10 +215,10 @@ class Card {
         interval = intervals.defaultInterval;
       }
 
-      word.userWord.optional.lastPlayedDate = Date.now();
-      word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
+      this.wordData.userWord.optional.lastPlayedDate = Date.now();
+      this.wordData.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
 
-      return word.userWord.optional.playNextDate;
+      return this.wordData.userWord.optional.playNextDate;
     }
   }
 
@@ -236,7 +236,7 @@ class Card {
       const difficultyLevel = '0';
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
       this.setWordDifficulty(wordId, difficultyLevel);
-      const nextRepeatUpdatedWord = this.getPlayNextDate(this.wordData, difficultyLevel);
+      const nextRepeatUpdatedWord = this.getPlayNextDate(difficultyLevel);
       const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
       if ((newPosition !== -1)
           && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
@@ -331,7 +331,7 @@ class Card {
     if (this.isTextExample) {
       this.showWordInfo(wordData.textExample);
     }
-    if (this.wordData.hasOwnProperty('userWord.optional.isHard')
+    if (this.wordData.hasOwnProperty('userWord.optional.isHard') // eslint-disable-line no-prototype-builtins
       && this.wordData.userWord.optional.isHard) {
       this.isMarkedHardWord = true;
       this.showHardButton();
