@@ -79,6 +79,15 @@ window.onload = async function onload() {
       startNewGame.startGame();
     }
   });
-  const statistics = await Repository.getStatistics();
-  localStorage.setItem('statistics', JSON.stringify(statistics));
+  try {
+    const statistics = await Repository.getStatistics();
+    localStorage.setItem('statistics', JSON.stringify(statistics));
+  } catch (error) {
+    const fetchErrorMessage = document.querySelector('.fetchErrorMessageOnLoad');
+    if (!fetchErrorMessage) {
+      const messageModal = new MessageModal();
+      messageModal.appendSelf('fetchErrorMessageOnLoad');
+    }
+    MessageModal.showModal('Sorry, something went wrong. Did you log in?');
+  }
 };
