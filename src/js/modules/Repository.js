@@ -198,11 +198,13 @@ class Repository {
     const updates = { difficulty };
     updates.optional = word.userWord && word.userWord.optional ? word.userWord.optional : { default: 'default' };
 
-    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
-
     if (!updates.difficulty) {
       updates.difficulty = 'default';
     }
+
+    Repository.updateWordInStorage(wordId, updates);
+
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -213,8 +215,6 @@ class Repository {
       },
       body: JSON.stringify(updates),
     });
-
-    Repository.updateWordInStorage(wordId, updates);
 
     return rawResponse.json();
   }
@@ -238,6 +238,8 @@ class Repository {
       updates.optional = updatedValues;
     }
 
+    Repository.updateWordInStorage(wordId, updates);
+
     const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
@@ -249,8 +251,6 @@ class Repository {
       },
       body: JSON.stringify(updates),
     });
-
-    Repository.updateWordInStorage(wordId, updates);
 
     return rawResponse.json();
   }
@@ -563,16 +563,19 @@ class Repository {
       word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
     }
 
-    let wordSaved;
+    const promises = [];
+
     if (toCreate) {
-      wordSaved = await Repository.createUserWord(wordId, 'default', word.userWord.optional);
+      promises.push(Repository.createUserWord(wordId, 'default', word.userWord.optional));
     } else {
-      wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
+      promises.push(Repository.updateUserWordOptional(wordId, word.userWord.optional));
     }
 
     if (!isGame) {
-      await Repository.incrementLearnedWords(result, isWordNew);
+      promises.push(Repository.incrementLearnedWords(result, isWordNew));
     }
+
+    const [wordSaved] = await Promise.all(promises);
 
     return wordSaved;
   }
