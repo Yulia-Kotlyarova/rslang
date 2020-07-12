@@ -12,13 +12,44 @@ export default class NavigationModal {
 
   static createModalHTML() {
     const puzzleStatistic = JSON.parse(localStorage.getItem('puzzleStatistic'));
+    const language = localStorage.getItem('app-language');
+    let titleCorrect = 'Correct: ';
+    let titleWrong = 'Wrong: ';
+    let titleLastPlayed = 'Last played: ';
+    let neverPlayed = 'never <br> played';
+    let modalTitle = 'Navigation & Statistics';
+    let playWithLearnedWords = 'PLAY WITH LEARNED WORDS';
+    let messageNorEnpughWords = 'Not enough learned words in this level yet. Please train cards or play with ALL words.';
+    let userWordsInstruction = 'Choose level - click to navigate';
+    let playWithAllWords = 'PLAY WITH ALL WORDS';
+    let playWithAllWordsInstruction = 'Choose level and round - click to navigate';
+    let closeButton = 'Close';
+    let titleLevel = 'Level ';
+    let titleRound = 'Round ';
+
+    if (language === 'ru') {
+      titleCorrect = 'Верно: ';
+      titleWrong = 'Ошибки: ';
+      titleLastPlayed = 'Последняя игра: ';
+      neverPlayed = 'не <br> играли';
+      modalTitle = 'Навигация и статистика';
+      playWithLearnedWords = 'ИГРАТЬ СО СЛОВАМИ НА ИЗУЧЕНИИ';
+      messageNorEnpughWords = 'Пока не достаточно изученных слов этого уровня. Продолжите тренировку с карточками либо играйте со всеми словами.';
+      userWordsInstruction = 'Выбирайте уровень - кликайте для перемещения';
+      playWithAllWords = 'ИГРАТЬ СО ВСЕМИ СЛОВАМИ';
+      playWithAllWordsInstruction = 'Выбирайте уровень и раунд - кликайте для перемещения';
+      closeButton = 'Закрыть';
+      titleLevel = 'Уровень ';
+      titleRound = 'Раунд ';
+    }
+
     let theadTds = '<td></td>';
     for (let i = 0; i < 6; i += 1) {
-      theadTds += `<td class="cell-with-data cell-level">level ${i + 1}</td>`;
+      theadTds += `<td class="cell-with-data cell-level">${titleLevel}${i + 1}</td>`;
     }
     let trows = '';
     for (let i = 0; i < 45; i += 1) {
-      const rowStart = `<tr><td class="cell-with-data cell-round">round ${i + 1}</td>`;
+      const rowStart = `<tr><td class="cell-with-data cell-round">${titleRound}${i + 1}</td>`;
       let rowMiddleCells = '';
       for (let x = 0; x < 6; x += 1) {
         if (levelsAndPages[x] >= i) {
@@ -35,10 +66,10 @@ export default class NavigationModal {
             rowMiddleCells += `<td class="${className} cell-with-data cell-navigate" id=${x}.${i}
             data-toggle="tooltip"
             data-placement="top"
-            title="Last played: ${date}">Correct: ${correct} <br> Wrong: ${wrong}
+            title="Last played: ${date}">${titleCorrect}${correct}<br>${titleWrong}${wrong}
             </td>`;
           } else {
-            rowMiddleCells += `<td class="navigation-table-grey cell-with-data cell-navigate" id=${x}.${i}>never<br>played</td>`;
+            rowMiddleCells += `<td class="navigation-table-grey cell-with-data cell-navigate" id=${x}.${i}>${neverPlayed}</td>`;
           }
         } else {
           rowMiddleCells += '<td></td>';
@@ -75,22 +106,18 @@ export default class NavigationModal {
         level=${i + 1}
         data-toggle="tooltip"
         data-placement="top"
-        title="Last played: ${date}">
-        Level ${i + 1}<br>
-        Correct: ${correct}<br>
-        Wrong: ${wrong}</td>
+        title="${titleLastPlayed}${date}">
+        ${titleLevel}${i + 1}<br>
+        ${titleCorrect}${correct}<br>
+        ${titleWrong}${wrong}</td>
         `;
       } else {
         userWordsTableCells += `
         <td class="user-words__level navigation-table-grey"
-        level=${i + 1}
-        data-toggle="tooltip"
-        data-placement="top"
-        title="Never played">
-        Level ${i + 1}<br>
-        Correct: -<br>
-        Wrong: -</td>
-        `;
+        level=${i + 1}>
+        ${titleLevel}${i + 1}<br>
+        ${neverPlayed}
+        </td>`;
       }
     }
     const userWordsTable = `
@@ -103,33 +130,33 @@ export default class NavigationModal {
     </table>`;
 
     return `
-      <div class="modal fade puzzle-navigation-modal" tabindex="-1" role="dialog" aria-labelledby="message-modal__title" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title message-modal__title" id="message-modal__title">Navigation & Statistics</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
+    <div class="modal fade puzzle-navigation-modal" tabindex="-1" role="dialog" aria-labelledby="message-modal__title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title message-modal__title" id="message-modal__title">${modalTitle}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+            <div class="modal-body">
+              <h4>${playWithLearnedWords}</h4>
+              <span>${userWordsInstruction}</span>
+              <div class="navigation__user-words">
+              ${userWordsTable}
               </div>
-                  <div class="modal-body">
-                    <h4>PLAY WITH YOUR WORDS</h4>
-                    <span>Choose level - click on it</span>
-                    <div class="navigation__user-words">
-                    ${userWordsTable}
-                    </div>
-                    <div class="not-enough-words">Not enough user words in this level yet. Please play with ALL words.</div>
-                    <h4>PLAY WITH ALL WORDS</h4>
-                    <span>Choose level and round. Click on cells to navigate</span>
-                    ${tableHTML}
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-    `;
+              <div class="not-enough-words">${messageNorEnpughWords}</div>
+              <h4>${playWithAllWords}</h4>
+              <span>${playWithAllWordsInstruction}</span>
+              ${tableHTML}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">${closeButton}</button>
+            </div>
+        </div>
+    </div>
+</div>
+`;
   }
 
   static showModal(closeCallback) {

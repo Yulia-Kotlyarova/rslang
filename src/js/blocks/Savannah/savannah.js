@@ -69,4 +69,6 @@ window.onload = async function onload() {
       startNewGame.startGame();
     }
   });
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };
