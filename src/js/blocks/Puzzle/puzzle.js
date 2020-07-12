@@ -16,6 +16,7 @@ const header = new Header();
 const navigationModal = new NavigationModal();
 
 async function openNavigationTable() {
+  const language = localStorage.getItem('app-language');
   let userStatistics;
   let puzzleStatistic = { init: 0 };
   try {
@@ -35,11 +36,16 @@ async function openNavigationTable() {
       const messageModal = new MessageModal();
       messageModal.appendSelf('fetchErrorMessageOnLoad');
     }
-    MessageModal.showModal('Sorry, something went wrong. Did you log in?');
+    if (language === 'ru') {
+      MessageModal.showModal('Что-то пошло не так. Вы зарегистрировались?', null, 'fetchErrorMessageOnLoad');
+    } else {
+      MessageModal.showModal('Sorry, something went wrong. Did you log in?', null, 'fetchErrorMessageOnLoad');
+    }
   }
 }
 
 window.onload = async function onload() {
+  const language = localStorage.getItem('app-language');
   header.run();
   navigation.addEventListeners();
   prompts.addEventListeners();
@@ -48,6 +54,7 @@ window.onload = async function onload() {
   gameArea.addEventListeners();
   results.addEventListeners();
   const buttonStart = document.querySelector('.button__start');
+
   buttonStart.addEventListener('click', async () => openNavigationTable());
   try {
     const statistics = await Repository.getStatistics();
@@ -58,6 +65,10 @@ window.onload = async function onload() {
       const messageModal = new MessageModal();
       messageModal.appendSelf('fetchErrorMessageOnLoad');
     }
-    MessageModal.showModal('Sorry, something went wrong. Did you log in?');
+    if (language === 'ru') {
+      MessageModal.showModal('Что-то пошло не так. Вы зарегистрировались?', null, 'fetchErrorMessageOnLoad');
+    } else {
+      MessageModal.showModal('Sorry, something went wrong. Did you log in?', null, 'fetchErrorMessageOnLoad');
+    }
   }
 };
