@@ -7,6 +7,7 @@ import random from 'lodash/fp/random';
 import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
+import findSimilar from './similarWord';
 
 window.onload = () => {
   const header = new Header();
@@ -15,7 +16,6 @@ window.onload = () => {
   const goBtn = document.querySelector('.a-c-go');
   const dontKnowBtn = document.querySelector('.a-c-dont-know');
   const nextBtn = document.querySelector('.a-c-next');
-  const playAnother = document.querySelector('.a-c-another-game-btn');
   const playAgainBtn = document.querySelector('.a-c-again-btn');
 
   const translate = document.querySelector('.a-c-translate');
@@ -28,12 +28,13 @@ window.onload = () => {
   const startScreen = document.querySelector('.a-c-hello-screen');
   const loader = document.querySelector('.a-c-loader');
 
-  const word1 = document.querySelector('.word-list-1');
-  const word2 = document.querySelector('.word-list-2');
-  const word3 = document.querySelector('.word-list-3');
-  const word4 = document.querySelector('.word-list-4');
-  const word5 = document.querySelector('.word-list-5');
+  const word1 = document.querySelector('.word-list-1 > span');
+  const word2 = document.querySelector('.word-list-2 > span');
+  const word3 = document.querySelector('.word-list-3 > span');
+  const word4 = document.querySelector('.word-list-4 > span');
+  const word5 = document.querySelector('.word-list-5 > span');
   const wordList = document.querySelectorAll('.word-list > li > span');
+  const wordContainer = document.querySelector('.word-list');
 
   const volumeUp = document.querySelector('#big-volume-up');
   const littleVolumeUp = document.querySelector('.a-c-little-volume');
@@ -74,7 +75,7 @@ window.onload = () => {
   // array for each word
   async function getCard(taskWord) {
     try {
-      const resp = await Repository.getWordsFromGroupAndPage(userLevel, userPage);
+      const resp = await findSimilar(taskWord, 5);
       for (let i = 0; i < 5; i++) {
         const rand = random(1, 19);
         wordList[i].textContent = resp[rand].wordTranslate;
@@ -267,11 +268,11 @@ window.onload = () => {
 
   function gameResult() {
     loader.classList.add('hidden');
-    document.querySelector('.word-list').classList.add('hidden');
+    wordContainer.classList.add('hidden');
     document.querySelector('.a-c-pic-wrapper').classList.add('hidden');
     nextBtn.classList.add('hidden');
+    dontKnowBtn.classList.add('hidden');
     playAgainBtn.classList.remove('hidden');
-    playAnother.classList.remove('hidden');
     result.classList.remove('hidden');
 
     if (localStorage.wrong.length === 0) {
@@ -320,15 +321,7 @@ window.onload = () => {
 
   nextBtn.addEventListener('click', nextCard);
 
-  function playAgain() {
-    goBtn.classList.add('hidden');
-    startScreen.classList.add('hidden');
-    localStorage.cardNumber = 1;
-  }
-
-  playAgainBtn.addEventListener('click', playAgain);
-
-  window.beforeunload = async function saveResult() {
+  async function saveResult() {
     const sessionData = getTodayShort();
 
     if (localStorage.wrong.length > 0) {
@@ -337,5 +330,11 @@ window.onload = () => {
       isVictory = true;
     }
     await Repository.saveGameResult('Audio Call', isVictory, sessionData);
-  };
+  }
+  window.beforeunload = saveResult();
+
+  async function playAgain() {
+    document.location.reload();
+  }
+  playAgainBtn.addEventListener('click', playAgain);
 };
