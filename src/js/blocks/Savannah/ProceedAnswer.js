@@ -32,9 +32,9 @@ export default class ProceedAnswer {
   }
 
   checkPressedButton(event) {
-    clearInterval(this.savannahState.timerId);
     const keyPressed = event.key;
     if (['1', '2', '3', '4'].includes(keyPressed)) {
+      clearInterval(this.savannahState.timerId);
       this.savannahState.isAnswered = true;
       const selectedAnswer = this.answersArea.querySelectorAll('.game__answer')[Number(keyPressed) - 1];
       const selectedAnswerID = selectedAnswer.getAttribute('id');
@@ -56,7 +56,7 @@ export default class ProceedAnswer {
     const alternativeId = '_id';
     const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id
     || this.savannahState.wordsCollection[this.savannahState.activeWordID][alternativeId];
-    Repository.saveWordResult({ wordId: currentWordId, result: '2' });
+    Repository.saveWordResult({ wordId: currentWordId, result: '2', isGame: true });
     ProceedAnswer.updateStatistics(1, 0, this.savannahState); // no await - it slows down
 
     if (savannahSettings.soundOn) {
@@ -73,7 +73,7 @@ export default class ProceedAnswer {
     const alternativeId = '_id';
     const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id
     || this.savannahState.wordsCollection[this.savannahState.activeWordID][alternativeId];
-    Repository.saveWordResult({ wordId: currentWordId, result: '0' });
+    Repository.saveWordResult({ wordId: currentWordId, result: '0', isGame: true });
     ProceedAnswer.updateStatistics(0, 1, this.savannahState); // no await - it slows down
     if (this.savannahState.answeredWrong.length < 6) {
       const answers = this.answersArea.querySelectorAll('.game__answer');

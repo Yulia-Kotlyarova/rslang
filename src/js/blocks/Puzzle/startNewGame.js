@@ -22,6 +22,7 @@ export default class StartNewGame {
   }
 
   static async startGame() {
+    const language = localStorage.getItem('app-language');
     try {
       Navigation.updateLines();
       StartNewGame.clearLines();
@@ -73,11 +74,16 @@ export default class StartNewGame {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchErrorMessage');
       }
-      MessageModal.showModal('Sorry, something went wrong. Please try again.');
+      if (language === 'ru') {
+        MessageModal.showModal('Что-то пошло не так. Попробуйте снова.', null, 'fetchErrorMessage');
+      } else {
+        MessageModal.showModal('Sorry, something went wrong. Please try again.', null, 'fetchErrorMessage');
+      }
     }
   }
 
   static async startGameWithUserWords(level, filteredUserWords) {
+    const language = localStorage.getItem('app-language');
     try {
       Navigation.updateLines();
       StartNewGame.clearLines();
@@ -121,7 +127,7 @@ export default class StartNewGame {
       const currentLevelContainer = document.querySelector('.navigation__position .current-level').lastChild;
       const currentRoundContainer = document.querySelector('.navigation__position .current-round').lastChild;
       currentLevelContainer.innerText = level;
-      currentRoundContainer.innerText = 'user words';
+      currentRoundContainer.innerText = '-';
       const startPage = document.querySelector('.start__page');
       const gameBody = document.querySelector('body');
       const results = document.querySelector('.results');
@@ -134,7 +140,11 @@ export default class StartNewGame {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchErrorMessage');
       }
-      MessageModal.showModal('Sorry, something went wrong. Please try again.');
+      if (language === 'ru') {
+        MessageModal.showModal('Что-то пошло не так. Попробуйте снова.', null, 'fetchErrorMessage');
+      } else {
+        MessageModal.showModal('Sorry, something went wrong. Please try again.', null, 'fetchErrorMessage');
+      }
     }
   }
 

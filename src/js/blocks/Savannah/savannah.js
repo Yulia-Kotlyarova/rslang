@@ -1,5 +1,9 @@
 import 'bootstrap/js/dist/collapse';
-import '@fortawesome/fontawesome-free/js/all.min';
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faHeart, faVolumeUp, faVolumeMute, faMusic,
+} from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartEmpty } from '@fortawesome/free-regular-svg-icons';
 import '../../../sass/styles.scss';
 import { savannahState } from './appState';
 import Header from '../../modules/Header';
@@ -13,6 +17,12 @@ import ControlPanel from './ControlPanel';
 import Results from './Results';
 
 window.onload = async function onload() {
+  library.add(faHeart);
+  library.add(faVolumeUp);
+  library.add(faVolumeMute);
+  library.add(faHeartEmpty);
+  library.add(faMusic);
+  dom.watch();
   const navigationModal = new NavigationModal();
   const startNewRound = new StartNewRound(savannahState);
   const startNewGame = new StartNewGame(savannahState, startNewRound);
@@ -69,4 +79,6 @@ window.onload = async function onload() {
       startNewGame.startGame();
     }
   });
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };

@@ -1,6 +1,5 @@
 import '../../../sass/styles.scss';
 import 'bootstrap/js/dist/collapse';
-import '@fortawesome/fontawesome-free/js/all.min';
 import Prompts from './Prompts';
 import { gameArea } from './GameArea';
 import Results from './Results';
@@ -62,4 +61,6 @@ window.onload = async function onload() {
   results.addEventListeners();
   const buttonStart = document.querySelector('.button__start');
   buttonStart.addEventListener('click', () => openNavigationTable());
+  const statistics = await Repository.getStatistics();
+  localStorage.setItem('statistics', JSON.stringify(statistics));
 };
