@@ -259,6 +259,7 @@ class Card {
     try {
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
       await Repository.markWordAsDeleted(wordId);
+      this.isMistake = true;
       this.nextCard();
     } catch (error) {
       const modalError = document.querySelector('.fetchWordsCollectionError');
