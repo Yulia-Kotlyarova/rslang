@@ -1,7 +1,7 @@
 .game-puzzle-main-class {
     .game-puzzle-header__navigation {
         display: flex;
-        font-size: 2rem;
+        font-size: $font-size-basic * 2;
     }
 
     .game-puzzle-header__navigation {
@@ -77,8 +77,8 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.8rem;
-        line-height: 0.8rem;
+        font-size: $font-size-basic * 0.8;
+        line-height: $font-size-basic * 0.8;
         font-weight: 500;
         background-image: url(./icons/puzzle/speak.svg);
         background-repeat: no-repeat;
@@ -130,8 +130,8 @@
         display: flex;
         align-items: center;
         overflow: hidden;
-        font-size: 1.4rem;
-        line-height: 1.5rem;
+        font-size: $font-size-basic * 1.4;
+        line-height: $font-size-basic * 1.5;
         font-weight: 600;
         background-color: $translation-area-color;
         border-radius: $small-border-radius;

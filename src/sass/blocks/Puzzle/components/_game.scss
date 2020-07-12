@@ -41,8 +41,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.4rem;
-            line-height: 1.5rem;
+            font-size: $font-size-basic * 1.4;
+            line-height: $font-size-basic * 1.5;
             background-color: $color-puzzle-background;
             z-index: 10;
         }
@@ -67,7 +67,7 @@
         }
 
         .puzzle__element__word {
-            font-size: 1.2rem;
+            font-size: $font-size-basic * 1.2;
             font-weight: 600;
             color: $color-puzzle-text;
             text-shadow: 1px 1px 2px #000000,
@@ -131,7 +131,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
+            font-size: $font-size-basic * 2;
             font-weight: 700;
             border-radius: 15px;
             background-color: #FFFFFF;
@@ -169,7 +169,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
+        font-size: $font-size-basic * 2;
         background-color: $color-background-main-light;
         box-shadow: 0 0 10px #67697d66;
         border-radius: $button-border-radius;

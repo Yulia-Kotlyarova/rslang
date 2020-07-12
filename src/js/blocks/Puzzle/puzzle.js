@@ -1,6 +1,5 @@
 import '../../../sass/styles.scss';
 import 'bootstrap/js/dist/collapse';
-import '@fortawesome/fontawesome-free/js/all.min';
 import Prompts from './Prompts';
 import { gameArea } from './GameArea';
 import Results from './Results';

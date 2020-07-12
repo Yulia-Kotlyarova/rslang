@@ -8,7 +8,7 @@
   .short-statictics__title {
     display: flex;
     justify-content: center;
-    font-size: 3rem;
+    font-size: $size-font-basic * 2;
     font-weight: 700;
     color: $color-text-shorstatistics-title;
   }
@@ -16,7 +16,7 @@
   .short-statictics__data {
     display: flex;
     justify-content: space-between;
-    font-size: 2rem;
+    font-size: $size-font-basic * 2;
   }
 
   .cards-completed {

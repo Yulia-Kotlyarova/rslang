@@ -119,14 +119,16 @@
     }
 
     .game__answer-number {
+        margin-right: 5px;
         font-size: $font-size-basic * 1.5;
         font-weight: 500;
-        color: $color-text-dark;
+        color: $color-text-dark-additional;
     }
 
     .game__answer-word {
         font-size: $font-size-basic * 3;
         font-weight: 400;
+        color: $color-text-dark;
     }
 
     .answer__overlay-wrong {

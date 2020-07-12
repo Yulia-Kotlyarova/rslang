@@ -107,7 +107,6 @@ export default class NavigationModal {
         data-toggle="tooltip"
         data-placement="top"
         title="${titleLastPlayed}${date}">
-        ${titleLevel}${i + 1}<br>
         ${titleCorrect}${correct}<br>
         ${titleWrong}${wrong}</td>
         `;
@@ -115,13 +114,22 @@ export default class NavigationModal {
         userWordsTableCells += `
         <td class="user-words__level navigation-table-grey"
         level=${i + 1}>
-        ${titleLevel}${i + 1}<br>
         ${neverPlayed}
         </td>`;
       }
     }
     const userWordsTable = `
     <table class="user-words-table">
+      <thead>
+        <tr>
+          <td class="cell-with-data cell-level">${titleLevel}1</td>
+          <td class="cell-with-data cell-level">${titleLevel}2</td>
+          <td class="cell-with-data cell-level">${titleLevel}3</td>
+          <td class="cell-with-data cell-level">${titleLevel}4</td>
+          <td class="cell-with-data cell-level">${titleLevel}5</td>
+          <td class="cell-with-data cell-level">${titleLevel}6</td>
+        </tr>
+      </thead>
       <tbody>
         <tr>
         ${userWordsTableCells}

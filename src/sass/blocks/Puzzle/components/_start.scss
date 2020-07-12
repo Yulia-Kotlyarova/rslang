@@ -27,7 +27,7 @@
     }
 
     .start__title {
-        font-size: 2rem;
+        font-size: $font-size-basic * 2;
         font-weight: 700;
     }
 
@@ -37,7 +37,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        font-size: 1.8rem;
+        font-size: $font-size-basic * 1.8;
         font-weight: 400;
     }
 

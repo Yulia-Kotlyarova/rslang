@@ -1,5 +1,14 @@
 .savannah-navigation-modal {
 
+  .modal-content {
+    border-radius: $container-border-radius;
+    border: none;
+  }
+
+  .modal-title {
+    color: $color-text-dark;
+  }
+
   .modal-body {
     display: flex;
     flex-direction: column;
@@ -7,12 +16,12 @@
 
     h4 {
       margin-top: 30px;
-      color: $color-level-round-cells-text;
+      color: $color-text-dark;
     }
 
     span {
       margin-bottom: 10px;
-      color: $color-level-round-cells-text;
+      color: $color-text-dark;
     }
 
   }
@@ -37,7 +46,7 @@
   }
 
   .not-enough-words {
-    color: $color-navigation-table-wrong;
+    color: $color-button-text;
     transform: rotateX(90deg);
   }
 
@@ -48,13 +57,13 @@
   .cell-with-data {
     width: 70px;
     padding: 3px;
-    font-size: $font-size-basic * 1.2;
+    font-size: $font-size-basic * 1.1;
     text-align: center;
     border: 1px solid $color-navigation-table-borders;
   }
 
   .cell-level, .cell-round {
-    color: $color-level-round-cells-text;
+    color: $color-text-dark;
     font-weight: 700;
   }
 

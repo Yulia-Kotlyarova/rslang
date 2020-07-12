@@ -41,7 +41,7 @@
 
         .results__painting__info {
             margin: 10px 0;
-            font-size: 1rem
+            font-size: $font-size-basic;
         }
     }
 
@@ -52,7 +52,7 @@
         .results__dont-know, .results__know {
             display: flex;
             flex-direction: column;
-            font-size: 1.5rem;
+            font-size: $font-size-basic * 1.5;
             font-weight: 700;
         }
 

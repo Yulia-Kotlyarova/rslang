@@ -18,14 +18,17 @@
       }
   }
 
-.button__statistics-navigation {
-  font-size: $font-size-basic * 1.4;
-  border: 1px solid $color-background-main-light;
-  background-color: $color-background-main-light;
-  box-shadow: 0 0 10px #67697d66;
-  border-radius: $button-border-radius;
-  color: $color-text-dark;
-}
+  .button__statistics-navigation {
+    font-size: $font-size-basic * 1.4;
+    background-color: $color-background-main-light;
+    box-shadow: 0 0 10px #67697d66;
+    border-radius: $button-border-radius;
+    color: $color-text-dark;
+  }
+
+  .button__statistics-navigation:hover {
+    border: 1px solid $color-background-main-light;
+  }
 
   @media (max-width: 411px) {
     .control-panel__navigation {
