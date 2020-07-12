@@ -8,9 +8,10 @@
   }
 
   .calendar__title {
-    font-size: 2rem;
+    margin-bottom: 15px;
+    font-size: $size-font-basic * 2;
     font-weight: 600;
-    color: $color-chart-stroke;
+    color: $color-text-dark;
   }
 
   .calendar__container {
@@ -22,7 +23,7 @@
       width: $calendar-width-height-desktop * 0.3;
       text-align: center;
       color: $color-text-dark;
-      font-size: 1.2rem;
+      font-size: $size-font-basic * 1.2;
       border-bottom: 1px solid $color-chart-grid;
 
     }
@@ -48,6 +49,7 @@
     overflow-y: scroll;
     background-color: $color-calendar-background;
     border-bottom: 10px solid $color-calendar-background;
+    border-radius: 15px;
   }
 
   .scrollbar-primary::-webkit-scrollbar {
@@ -65,7 +67,7 @@
 
   .statistics-today-button {
     margin-top: 20px;
-    font-size: 1.5rem;
+    font-size: $size-font-basic * 1.5;
   }
 
   @media (max-width: 1019px) {
@@ -76,9 +78,10 @@
 
   @media (max-width: 410px) {
     .calendar__container {
+
       td {
         width: $calendar-width-height-mobile * 0.3;
-        font-size: 1rem;
+        font-size: $size-font-basic;
       }
       thead {
         font-weight: 500;

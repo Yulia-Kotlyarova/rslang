@@ -35,7 +35,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    font-size: 1.4rem;
+    font-size: $size-font-basic * 1.4;
     color: $color-text-dark;
   }
 
@@ -50,7 +50,7 @@
     flex: 1 1 20%;
     display: flex;
     justify-content: center;
-    font-size: 1.4rem;
+    font-size: $size-font-basic * 1.4;
     color: $color-text-dark;
   }
 
@@ -70,9 +70,10 @@
     width: 40px;
     height: 40px;
     margin-left: 10px;
-    font-size: 2rem;
+    font-size: $size-font-basic * 2;
     background-color: none;
     color: $color-chart-stroke;
+    transition: all ease 0.5s;
   }
 
   .chart-range-refresh:focus {
@@ -80,15 +81,18 @@
   }
 
   .chart-range-refresh:hover {
-    transition: all ease 0.5s;
-    transform: rotate(360deg);
+    color: $color-text-shorstatistics-title;
+  }
+
+  .chart-range-refresh:active {
+    font-size: $size-font-basic * 2.3;
   }
 
   .chart__number-of-words {
     position: absolute;
     top: $chart-width-height-desktop / 2 - 15px;
     left: $chart-width-height-desktop / 2 - 80px;
-    font-size: 2rem;
+    font-size: $size-font-basic * 2;
     color: $color-chart-stroke;
   }
 
@@ -104,7 +108,7 @@
 
   .percentage-of-words {
     color: $color-text-dark;
-    font-size: 1.5rem;
+    font-size: $size-font-basic * 1.5;
   }
 
   @media (max-width: 500px) {
@@ -125,7 +129,7 @@
 
     .legend-percentage {
       height: $chart-width-height-mobile / 5;
-      font-size: 1.2rem;
+      font-size: $size-font-basic * 1.2;
     }
 
     .legend-words__container {
@@ -133,7 +137,7 @@
     }
 
     .legend-words {
-      font-size: 1.2rem;
+      font-size: $size-font-basic * 1.2;
     }
 
     .chart-range__container {
@@ -144,13 +148,13 @@
       width: 30px;
       height: 30px;
       margin-left: 5px;
-      font-size: 1.5rem;
+      font-size: $size-font-basic * 1.5;
     }
 
     .chart__number-of-words {
       top: $chart-width-height-mobile / 2 - 15px;
       left: $chart-width-height-mobile / 2 - 80px;
-      font-size: 1.5rem;
+      font-size: $size-font-basic * 1.5;
     }
   }
 }

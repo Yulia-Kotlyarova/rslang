@@ -17,6 +17,7 @@ export default class StartNewGame {
 
   async startGame(isPlayAgain) {
     clearInterval(this.savannahState.timerId);
+    const language = localStorage.getItem('app-language');
     this.wordsCounterContainer.innerText = '';
     this.startNewRound.returnActiveWordPosition();
     this.startNewRound.answersArea.innerHTML = '';
@@ -61,7 +62,11 @@ export default class StartNewGame {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try once again, please.');
+      if (language === 'ru') {
+        MessageModal.showModal('Что-то пошло не так. Попробуйте снова.', null, 'fetchWordsCollectionError');
+      } else {
+        MessageModal.showModal('Sorry, something went wrong. Please try again.', null, 'fetchWordsCollectionError');
+      }
     }
   }
 
