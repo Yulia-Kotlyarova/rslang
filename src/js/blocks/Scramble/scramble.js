@@ -1,4 +1,5 @@
-import '@fortawesome/fontawesome-free/js/all.min';
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import { faVolumeUp, faWindowClose, faVolumeDown } from '@fortawesome/free-solid-svg-icons';
 import '../../../sass/styles.scss';
 import { hintShow, scrambleGameFirst } from './scrCode1';
 import './scrCode4ChangeSize';
@@ -11,6 +12,12 @@ import startTest from './test/scrCode8App';
 import { finishGame } from './scrCode9Stat';
 import 'bootstrap/js/dist/collapse';
 import Header from '../../modules/Header';
+
+library.add(faVolumeUp);
+library.add(faWindowClose);
+library.add(faVolumeDown);
+
+dom.watch();
 
 const playGame = () => {
   const playButton = document.querySelector('.gameStartButton');
