@@ -38,7 +38,7 @@ export default class Header {
     this.dictionaryURL = './dictionary.html';
     this.teamURL = './team.html';
 
-    this.allGamesURL = './games.html'; // TODO: добавим страницу, если время останется
+    this.allGamesURL = './games.html';
     this.gameSavannaURL = './savannah.html';
     this.gameAudioCallURL = './audioCall.html';
     this.gameSprintURL = './sprint.html';
@@ -121,7 +121,7 @@ export default class Header {
 
     const cardsButton = `<a href=${this.mainURL}><button class="header__button button_cards">${this.iconCards}</button></a>`;
     const gamesButton = `<div class="header__dropdown">
-    <a href="#games"><button class="header__button button_games">${this.iconGames}</button></a>
+    <a href=${this.allGamesURL}><button class="header__button button_games">${this.iconGames}</button></a>
     <div class="dropdown-content">
       <a href=${this.gameSpeakItURL}>Speak It</a>
       <a href=${this.gamePuzzleURL}>English Puzzle</a>
@@ -135,7 +135,7 @@ export default class Header {
     const dictionaryButton = `<div class="header__dropdown">
     <a href=${this.dictionaryURL}><button class="header__button button_dictionary">${this.iconDictionary}</button></a>
     <div class="dropdown-content">
-        <a href="dictionary.html#words-user" data-en="Words in progress" data-ru="Изучаемые слова">Words in progress</a> 
+        <a href="dictionary.html#words-user" data-en="Words in progress" data-ru="Изучаемые слова">Words in progress</a>
         <a href="dictionary.html#words-hard" data-en="Hard words" data-ru="Трудные слова">Hard words</a>
         <a href="dictionary.html#words-deleted" data-en="Deleted words" data-ru="Удаленные слова">Deleted words</a>
     </div>
