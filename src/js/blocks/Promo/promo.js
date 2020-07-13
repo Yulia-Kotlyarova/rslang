@@ -1,4 +1,6 @@
 import '../../../sass/styles.scss';
+import 'bootstrap/js/dist/collapse';
+import Header from '../../modules/Header';
 
 const cursorSpan = document.querySelector('.cursor');
 
@@ -54,4 +56,6 @@ function init() {
 
 window.onload = () => {
   init();
+  const header = new Header();
+  header.run();
 };

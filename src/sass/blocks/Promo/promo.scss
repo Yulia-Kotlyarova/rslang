@@ -70,7 +70,7 @@
         float: left;
         
         .txt-type > .txt {
-          color: #FF4500;
+          color: #8B0000;
           font-weight: 600;
         }
         .cursor{
@@ -117,7 +117,7 @@
   .video {
 
     margin: 0 auto;
-    width: 80%;
+    width: 70%;
     height: 100vh;
 
     
@@ -132,14 +132,14 @@
       position: absolute;
       height: 100%;
       width: 100%;
-      top: 4%;
+      top: 19%;
     }
   }
+  }
+}
   
-}
-}
 
-
+  
 @keyframes Background {
   0% {
     background-position: 0% 50%
@@ -160,12 +160,3 @@
   100% { background-color: #ccc;}
 }
 
-  
-
-  
-.a{
-  border: 1px solid red;
-}
-.b{
-  border: 1px solid blue;
-}
