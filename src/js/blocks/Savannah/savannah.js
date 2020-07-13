@@ -17,6 +17,7 @@ import ControlPanel from './ControlPanel';
 import Results from './Results';
 
 window.onload = async function onload() {
+  const language = localStorage.getItem('app-language');
   library.add(faHeart);
   library.add(faVolumeUp);
   library.add(faVolumeMute);
@@ -50,7 +51,11 @@ window.onload = async function onload() {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchErrorMessageOnLoad');
       }
-      MessageModal.showModal('Sorry, something went wrong. Did you log in?');
+      if (language === 'ru') {
+        MessageModal.showModal('Что-то пошло не так. Вы зарегистрировались?', null, 'fetchErrorMessageOnLoad');
+      } else {
+        MessageModal.showModal('Sorry, something went wrong. Did you log in?', null, 'fetchErrorMessageOnLoad');
+      }
     }
   }
 
@@ -79,6 +84,19 @@ window.onload = async function onload() {
       startNewGame.startGame();
     }
   });
-  const statistics = await Repository.getStatistics();
-  localStorage.setItem('statistics', JSON.stringify(statistics));
+  try {
+    const statistics = await Repository.getStatistics();
+    localStorage.setItem('statistics', JSON.stringify(statistics));
+  } catch (error) {
+    const fetchErrorMessage = document.querySelector('.fetchErrorMessageOnLoad');
+    if (!fetchErrorMessage) {
+      const messageModal = new MessageModal();
+      messageModal.appendSelf('fetchErrorMessageOnLoad');
+    }
+    if (language === 'ru') {
+      MessageModal.showModal('Что-то пошло не так. Вы зарегистрировались?', null, 'fetchErrorMessageOnLoad');
+    } else {
+      MessageModal.showModal('Sorry, something went wrong. Did you log in?', null, 'fetchErrorMessageOnLoad');
+    }
+  }
 };
