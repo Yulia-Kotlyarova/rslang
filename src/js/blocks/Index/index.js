@@ -9,9 +9,9 @@ import SettingsModal from './modules/SettingsModal';
 import 'bootstrap/js/dist/modal';
 
 window.onload = async () => {
-  if (!localStorage.getItem('id')) {
-    document.location.href = 'authorization.html';
-  }
+  // if (!localStorage.getItem('id')) {
+  //   document.location.href = 'authorization.html';
+  // }
 
   const header = new Header();
   header.run();

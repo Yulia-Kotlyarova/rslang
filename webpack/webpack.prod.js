@@ -1,9 +1,13 @@
+const path = require('path');
+const glob = require('glob-all');
+
 const merge = require('webpack-merge');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
 
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -59,6 +63,13 @@ module.exports = merge(common, {
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'styles.[contenthash].css',
+    }),
+    new PurgecssPlugin({
+      paths: glob.sync([
+        path.join(__dirname, '../src/**/*.html'),
+        path.join(__dirname, '../src/**/*.js'),
+      ]),
+      safelist: [],
     }),
   ],
 });
