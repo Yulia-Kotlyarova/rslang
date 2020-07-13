@@ -1,7 +1,6 @@
 import 'bootstrap/js/dist/collapse';
 import '../../../sass/styles.scss';
 
-import '@fortawesome/fontawesome-free/js/all.min';
 import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import Card from './modules/Card';
@@ -10,6 +9,10 @@ import SettingsModal from './modules/SettingsModal';
 import 'bootstrap/js/dist/modal';
 
 window.onload = async () => {
+  if (!localStorage.getItem('id')) {
+    document.location.href = 'authorization.html';
+  }
+
   const header = new Header();
   header.run();
 
