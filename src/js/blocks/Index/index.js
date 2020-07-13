@@ -10,7 +10,7 @@ import 'bootstrap/js/dist/modal';
 
 window.onload = async () => {
   if (!localStorage.getItem('id')) {
-    document.location.href = '../../../authorization.html';
+    document.location.href = 'authorization.html';
   }
 
   const header = new Header();
