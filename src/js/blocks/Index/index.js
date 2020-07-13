@@ -9,7 +9,7 @@ import SettingsModal from './modules/SettingsModal';
 import 'bootstrap/js/dist/modal';
 
 window.onload = async () => {
-  if (!localStorage.getItem('id')) {
+  if (!localStorage.getItem('token')) {
     document.location.href = 'authorization.html';
   }
 

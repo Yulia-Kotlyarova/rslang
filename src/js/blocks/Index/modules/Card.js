@@ -178,7 +178,7 @@ class Card {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -245,7 +245,7 @@ class Card {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -262,7 +262,7 @@ class Card {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -504,7 +504,7 @@ class Card {
         messageModal.appendSelf('fetchWordsCollectionError');
       }
 
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -547,7 +547,7 @@ class Card {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
