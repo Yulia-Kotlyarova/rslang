@@ -1,7 +1,9 @@
+@import './promo-modal.scss';
 .promo_html{
   * {
     margin: 0px;
-    padding: 0px; 
+    // padding: 0px; 
+    box-sizing: border-box;
   }
   scroll-behavior: smooth;
 .promo-page {
@@ -27,6 +29,7 @@
     justify-content: center;
     text-align: center;
     margin: auto;
+    padding-bottom: 5%;
     
     .promo-page_p{
       color: #fff;
@@ -117,7 +120,7 @@
   .video {
 
     margin: 0 auto;
-    width: 70%;
+    width: 72%;
     height: 100vh;
 
     
@@ -132,7 +135,7 @@
       position: absolute;
       height: 100%;
       width: 100%;
-      top: 19%;
+      top: 17%;
     }
   }
   }
