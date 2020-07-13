@@ -231,7 +231,10 @@ class Card {
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
       await this.setWordDifficulty(wordId, difficultyLevel);
       const nextRepeatUpdatedWord = this.getPlayNextDate(difficultyLevel);
-      const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
+      const newPosition = this.actualWordsData.findIndex((item) => item.userWord
+          && item.userWord.optional
+          && item.userWord.optional.playNextDate
+          && item.userWord.optional.playNextDate > nextRepeatUpdatedWord);
       if ((newPosition !== -1)
           && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
         this.actualWordsData.splice(newPosition, 0, this.wordData);
