@@ -1,12 +1,20 @@
 import 'bootstrap/js/dist/collapse';
 import '../../../sass/styles.scss';
 
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import { faCogs, faSync } from '@fortawesome/free-solid-svg-icons';
+
 import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import Card from './modules/Card';
 import SettingsModal from './modules/SettingsModal';
 
 import 'bootstrap/js/dist/modal';
+
+library.add(faCogs);
+library.add(faSync);
+
+dom.watch();
 
 window.onload = async () => {
   if (!localStorage.getItem('token')) {

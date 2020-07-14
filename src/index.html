@@ -143,7 +143,8 @@
                 </div>
             </div>
         </section>
-        <div class="card card-wrapper">
+        <div class="card card-wrapper mt-5">
+            <button class="btn word-card__settings" data-toggle="modal" data-target="#settings__modal"><i class="fas fa-cogs settings__button fa-2x"></i></button>
             <div class="word-card">
                 <span class="word-wrapper main-word">
                     <span class="word-field-top">
@@ -187,7 +188,12 @@
             <div class="warning-window hide-window">
                 <p class="message" data-en="You have studied all the planned words for today. The next training will be available:" data-ru="Вы уже выучили все слова за сегодня. Следующее обучение начнется:">You have studied all the planned words for today. The next training will be available:</p><span class="timeout"></span>
             </div>
-            <div class="overlay-window"></div>
+            <div class="overlay-window d-flex align-items-center justify-content-center">
+                <div class="word-card__spinner">
+                    <div class="mb-3"><i class="fas fa-sync fa-spin fa-2x"></i></div>
+                    <p class="lead" data-en="Getting words..." data-ru="Получаем слова...">Getting words...</p>
+                </div>
+            </div>
         </div>
     </body>
 </html>
