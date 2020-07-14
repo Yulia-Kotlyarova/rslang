@@ -24,12 +24,6 @@ const COLOR_CODES2 = {
 
 };
 
-library.add(faCheckCircle);
-library.add(faArrowLeft);
-library.add(faArrowRight);
-
-dom.watch();
-
 const remainingPathColor2 = COLOR_CODES2.info.color;
 
 const TIME_LIMIT = 5;
