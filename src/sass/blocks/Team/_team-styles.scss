@@ -27,11 +27,18 @@ $color-font-main: #3F5D79;
     box-shadow: 10px 10px 15px #67697d66;
     background-color: #f8f9fa;
 
+    & > ul {
+      font-size: 15px;
+    }
+
     & > a {
       width: 100%;
       margin-bottom: 5px;
       display: flex;
       justify-content: center;
+      font-size: 20px;
+      font-weight: 500;
+      text-decoration: none;
     }
   }
 
