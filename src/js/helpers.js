@@ -31,7 +31,9 @@ export const renderNewLanguageInElement = (element, language) => {
   elementsToChange.forEach((elementToChange) => {
     const elementTemp = elementToChange;
     if (elementTemp.innerText) {
-      elementTemp.innerText = elementTemp.dataset[language];
+      if (elementTemp.dataset.changeText !== 'false') {
+        elementTemp.innerText = elementTemp.dataset[language];
+      }
     }
     if (elementTemp.placeholder) {
       elementTemp.placeholder = elementTemp.dataset[language];
