@@ -30,7 +30,15 @@ export const renderNewLanguageInElement = (element, language) => {
   const elementsToChange = element.querySelectorAll(`[data-${language}]`);
   elementsToChange.forEach((elementToChange) => {
     const elementTemp = elementToChange;
-    elementTemp.innerText = elementTemp.dataset[language];
+    if (elementTemp.innerText) {
+      elementTemp.innerText = elementTemp.dataset[language];
+    }
+    if (elementTemp.placeholder) {
+      elementTemp.placeholder = elementTemp.dataset[language];
+    }
+    if (elementTemp.title) {
+      elementTemp.title = elementTemp.dataset[language];
+    }
   });
 };
 

@@ -1,6 +1,6 @@
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 import {
-  faBook, faChartLine, faDice, faSignOutAlt, faUsersCog,
+  faBook, faChartLine, faDice, faSignOutAlt, faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFileWord } from '@fortawesome/free-regular-svg-icons';
 
@@ -13,7 +13,7 @@ library.add(faFileWord);
 library.add(faChartLine);
 library.add(faDice);
 library.add(faSignOutAlt);
-library.add(faUsersCog);
+library.add(faUsers);
 
 library.add(faFileWord);
 
@@ -28,7 +28,7 @@ export default class Header {
     this.iconStatistics = '<i class="fas fa-chart-line fa-2x"></i>';
     this.iconGames = '<i class="fas fa-dice fa-2x"></i>';
     this.iconLogOut = '<i class="fas fa-sign-out-alt fa-2x"></i>';
-    this.iconTeam = '<i class="fas fa-users-cog fa-2x"></i>';
+    this.iconTeam = '<i class="fas fa-users fa-2x"></i>';
 
     this.userLoginName = '';
 
@@ -115,8 +115,8 @@ export default class Header {
     const headerBurger = `<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span></button>`;
 
-    const promoButton = `<div class="header__promo">
-     <a href=${this.promoURL}><div class="header__logo"><div>RS LANG</div></div></a>
+    const logo = `<div class="header__promo">
+     <div class="header__logo"><div>RS LANG</div></div>
      </div>`;
 
     const cardsButton = `<a href=${this.mainURL}><button class="header__button button_cards">${this.iconCards}</button></a>`;
@@ -142,6 +142,7 @@ export default class Header {
     </div>`;
     const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
     const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
+    const promoButton = `<a href=${this.promoURL}><button class="header__button button_promo">P</button></a>`;
     const languageButton = '<button class="header__button button_language">EN</button>';
     const cardsSettingsButton = '<button type="button" class="settings__button header__button d-none" data-toggle="modal" data-target="#settings__modal"><i class="fas fa-cog fa-2x"></i></button>';
     const logOutButtonMain = '<button class="header__button button_authorization" data-en="LOG OUT" data-ru="ВЫЙТИ">LOG OUT</button>';
@@ -161,13 +162,14 @@ export default class Header {
         ${dictionaryButton}
         ${statisticsButton}
         ${teamButton}
+        ${promoButton}
         ${languageButton}
         ${cardsSettingsButton}
         </div>`;
 
     const headerContainer = `<nav class="navbar navbar-expand-lg navbar-light bg-light app-header__container">
         ${headerBurger}
-        ${promoButton}
+        ${logo}
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav" id="navbar-nav-margin">
             ${buttonsGroup}
