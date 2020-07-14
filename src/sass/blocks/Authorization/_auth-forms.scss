@@ -8,9 +8,25 @@
     justify-content: center;
     align-items: center;
   }
+
+  &__language-button {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-weight: 900;
+    cursor: pointer;
+    outline: none;
+
+    &:focus, &:active {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
   .nav-tabs .nav-link {
     color: #274155;
   }
+
   input::placeholder {
     background-color: #67697d15!important;
     color: #274155!important;

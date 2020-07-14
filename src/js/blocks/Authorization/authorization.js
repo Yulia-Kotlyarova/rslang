@@ -7,11 +7,18 @@ import MessageModal from '../../modules/MessageModal';
 
 window.onload = () => {
   if (Authorization.isSignedUp() && !Authorization.isTokenExpired()) {
-    window.location.href = 'index.html';
+    const hasBeenHereBefore = localStorage.getItem('hasBeenHereBefore');
+    if (hasBeenHereBefore) {
+      window.location.href = 'index.html';
+    } else {
+      localStorage.setItem('hasBeenHereBefore', 'true');
+      window.location.href = 'promo.html';
+    }
     return;
   }
 
   localStorage.clear();
+  localStorage.setItem('app-language', 'en');
 
   const authorization = new Authorization();
   authorization.setEventListeners();
