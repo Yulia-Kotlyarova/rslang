@@ -1,45 +1,39 @@
 .savannah-html {
   .control-panel__navigation {
     display: flex;
-    font-size: 2rem;
+    flex-direction: column;
   }
 
-  .navigation__level, .navigation__page {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .navigation__position {
+      display: flex;
+      color: $color-text-dark;
+      font-size: $font-size-basic * 2;
+
+      & > div {
+          margin-right: 10px;
+      }
+
+      & > div > span:last-child {
+          font-weight: 700;
+      }
   }
 
-  .level__title, .page__title {
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-  }
-
-  .level__select, .page__select {
-    width: 60px;
-    height: 30px;
-    text-align-last: center;
-    font-size: 2rem;
-    color: $color-text-additional;
+  .button__statistics-navigation {
+    font-size: $font-size-basic * 1.4;
+    background-color: $color-background-main-light;
+    box-shadow: 0 0 10px #67697d66;
     border-radius: $button-border-radius;
-    cursor: pointer;
+    color: $color-text-dark;
   }
 
-  .level__select:hover, .page__select:hover {
-    box-shadow: 0 0 2px 2px black;
-  }
-
-  option {
-    text-align: center;
-    background-color: #FFFFFF;
-    cursor: pointer;
+  .button__statistics-navigation:hover {
+    border: 1px solid $color-background-main-light;
   }
 
   @media (max-width: 411px) {
     .control-panel__navigation {
       flex-direction: column;
-      font-size: 1.5rem;
+      font-size: $font-size-basic * 1.2;
     }
   }
 }

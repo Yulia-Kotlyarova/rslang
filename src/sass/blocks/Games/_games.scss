@@ -1,0 +1,87 @@
+$size-text-basic: 10px;
+$color-font-main: #3F5D79;
+
+.games__main {
+  width: 60vw;
+  height: 75vh;
+  margin: 20px auto;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+  grid-template-areas:
+  "speakit speakit speakit speakit savannah savannah savannah"
+  "sprint sprint sprint sprint savannah savannah savannah"
+  "scramble scramble scramble audiocall audiocall audiocall audiocall "
+  "scramble scramble scramble puzzle puzzle puzzle puzzle";
+  color: $color-font-main;
+
+  .game {
+
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 10px 10px 15px #67697d66;
+    color: #f8f9fa;
+    text-decoration: none;
+    cursor: pointer;
+
+    & > span {
+      font-weight: 700;
+    }
+
+    & > p {
+      text-align: center;
+    }
+  }
+
+  .savannah {
+    grid-area: savannah;
+    background-color: #67CCC0;
+  }
+
+  .sprint {
+    grid-area: sprint;
+    background-color: #FFBD3E;
+  }
+
+  .audiocall {
+    grid-area: audiocall;
+    background-color: #F2DD1D;
+  }
+
+  .speakit {
+    grid-area: speakit;
+    background-color: #AEE23F;
+  }
+
+  .scramble {
+    grid-area: scramble;
+    background-color: #806BD2;
+  }
+
+  .puzzle {
+    grid-area: puzzle;
+    background-color: #2267CE;
+  }
+}
+
+@media (max-width: 767px) {
+  .games__main {
+    width: 70vw;
+    height: 90vh;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    grid-template-areas:
+    "savannah"
+    "scramble"
+    "audiocall"
+    "speakit"
+    "puzzle"
+    "sprint";
+  }
+}

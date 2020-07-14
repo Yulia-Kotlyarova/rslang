@@ -11,11 +11,20 @@ export default class StartNewGame {
     this.page = 0;
     this.heartFill = heartFill;
     this.heartContainer = document.querySelector('.control__lifes');
+    this.startCountdownContainer = document.querySelector('.savannah__game__start-countdown');
+    this.wordsCounterContainer = document.querySelector('.savannah__game__words-counter');
   }
 
-  async startGame() {
+  async startGame(isPlayAgain) {
+    clearInterval(this.savannahState.timerId);
+    const language = localStorage.getItem('app-language');
+    this.wordsCounterContainer.innerText = '';
+    this.startNewRound.returnActiveWordPosition();
+    this.startNewRound.answersArea.innerHTML = '';
     try {
-      this.savannahState.wordsCollection = await this.getWordsCollection();
+      if (!this.savannahState.userWords && !isPlayAgain) {
+        this.savannahState.wordsCollection = await this.getWordsCollection();
+      }
       this.savannahState.wordsOrder = StartNewGame.setWordsOrder();
       this.savannahState.activeWord = 0;
       this.savannahState.wordAndAnswers.length = 0;
@@ -23,21 +32,48 @@ export default class StartNewGame {
       this.savannahState.answeredWrong.length = 0;
       this.savannahState.wordAndAnswers = this.combineWordsAndAnswers();
       this.heartContainer.innerHTML = heartFill.repeat(5);
-      this.startNewRound.startRound();
+      const currentLevelContainer = document.querySelector('.navigation__position .current-level').lastChild;
+      const currentRoundContainer = document.querySelector('.navigation__position .current-round').lastChild;
+      if (this.savannahState.userWords) {
+        currentLevelContainer.innerText = this.savannahState.userWordsLevel + 1;
+        currentRoundContainer.innerText = 'user words';
+      } else {
+        currentLevelContainer.innerText = this.savannahState.currentLevel + 1;
+        currentRoundContainer.innerText = this.savannahState.currentRound + 1;
+      }
+      this.startCountdownContainer.classList.remove('hidden');
+      setTimeout(() => {
+        this.startCountdownContainer.innerText = '3';
+      }, 100);
+      setTimeout(() => {
+        this.startCountdownContainer.innerText = '2';
+      }, 1100);
+      setTimeout(() => {
+        this.startCountdownContainer.innerText = '1';
+      }, 2100);
+      setTimeout(() => {
+        this.startCountdownContainer.innerText = '';
+        this.startCountdownContainer.classList.add('hidden');
+        this.startNewRound.startRound();
+      }, 3100);
     } catch (error) {
       const modalError = document.querySelector('.fetchWordsCollectionError');
       if (!modalError) {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try once again, please.');
+      if (language === 'ru') {
+        MessageModal.showModal('Что-то пошло не так. Попробуйте снова.', null, 'fetchWordsCollectionError');
+      } else {
+        MessageModal.showModal('Sorry, something went wrong. Please try again.', null, 'fetchWordsCollectionError');
+      }
     }
   }
 
   async getWordsCollection() {
     const level = this.savannahState.currentLevel;
-    const page = this.savannahState.currentPage;
-    const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${level}&page=${page}`;
+    const round = this.savannahState.currentRound;
+    const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${level}&page=${round}`;
     const response = await fetch(url);
     const result = await response.json();
     return result;

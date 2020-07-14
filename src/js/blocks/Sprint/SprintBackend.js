@@ -3,7 +3,10 @@ import Repository from '../../modules/Repository';
 const wordArrayWords = [];
 const wordArrayTranslation = [];
 const wordArrayAudios = [];
-export { wordArrayWords, wordArrayTranslation, wordArrayAudios };
+const arrayWordId = [];
+export {
+  wordArrayWords, wordArrayTranslation, wordArrayAudios, arrayWordId,
+};
 
 const fetchWords = (api) => {
   fetch(api)
@@ -13,6 +16,7 @@ const fetchWords = (api) => {
         wordArrayWords.push(val.word);
         wordArrayTranslation.push(val.wordTranslate);
         wordArrayAudios.push(val.audio);
+        arrayWordId.push(val.id);
       });
     })
     .catch(() => {
@@ -25,6 +29,8 @@ const fetchMixedWords = (j) => {
       wordArrayWords.push(val.word);
       wordArrayTranslation.push(val.wordTranslate);
       wordArrayAudios.push(val.audio);
+      // eslint-disable-next-line no-underscore-dangle
+      arrayWordId.push(val._id);
     });
   });
 };

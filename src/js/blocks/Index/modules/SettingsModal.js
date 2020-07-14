@@ -14,6 +14,8 @@ class SettingsModal {
     this.inputsCheckboxes = this.settingsForm.querySelectorAll('input[type=checkbox]');
     this.inputsRadios = this.settingsForm.querySelectorAll('input[type=radio]');
     this.inputsNumbers = this.settingsForm.querySelectorAll('input[type=number]');
+
+    this.settingsButton = document.querySelector('.settings__button');
   }
 
   markInputsRequiredInvalid() {
@@ -85,6 +87,8 @@ class SettingsModal {
   }
 
   async initiate() {
+    this.settingsButton.classList.remove('d-none');
+
     const settings = await this.prefillForm();
     localStorage.setItem('settings', JSON.stringify(settings));
 
@@ -112,6 +116,7 @@ class SettingsModal {
 
         await Repository.updateWordsPerDay(wordsPerDay);
         await Repository.updateOptionalSettings(newSettings);
+        document.location.reload();
       }
     });
   }

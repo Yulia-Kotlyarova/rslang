@@ -4,11 +4,9 @@ import { savannahSettings } from './appState';
 export default class ControlPanel {
   constructor() {
     this.controlSoundContainer = document.querySelector('.control__sound');
-    this.closeButton = document.querySelector('.control__close');
   }
 
   setEventListeners() {
-    this.closeButton.addEventListener('click', () => this.closeGame());
     this.controlSoundContainer.addEventListener('click', () => this.switchSoundMode());
   }
 

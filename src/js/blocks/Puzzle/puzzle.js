@@ -1,6 +1,5 @@
 import '../../../sass/styles.scss';
 import 'bootstrap/js/dist/collapse';
-import '@fortawesome/fontawesome-free/js/all.min';
 import Prompts from './Prompts';
 import { gameArea } from './GameArea';
 import Results from './Results';
@@ -14,45 +13,39 @@ const results = new Results();
 const navigation = new Navigation();
 const prompts = new Prompts();
 const header = new Header();
+const navigationModal = new NavigationModal();
 
-function openNavigationTable() {
-  function backToAuthorizationPage() {
-    window.location.href = 'authorization.html';
-  }
-  if (localStorage.getItem('settings')) {
-    const navigationModal = new NavigationModal();
+async function openNavigationTable() {
+  const language = localStorage.getItem('app-language');
+  let userStatistics;
+  let puzzleStatistic = { init: 0 };
+  try {
+    userStatistics = await Repository.getStatistics();
+    const path = userStatistics.optional;
+    if (path.games && path.games.puzzle) {
+      puzzleStatistic = userStatistics.optional.games.puzzle.summary;
+    } else {
+      Repository.saveGameResult('savannah', false, [], puzzleStatistic);
+    }
+    localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
     navigationModal.appendSelf();
     NavigationModal.showModal(NavigationModal.delete);
-  } else {
+  } catch (error) {
     const fetchErrorMessage = document.querySelector('.fetchErrorMessageOnLoad');
     if (!fetchErrorMessage) {
       const messageModal = new MessageModal();
       messageModal.appendSelf('fetchErrorMessageOnLoad');
     }
-    MessageModal.showModal('Sorry, something went wrong. Did you sign in?', backToAuthorizationPage);
-  }
-}
-
-async function getStatisticsFromBackend() {
-  let userStatistics;
-  let puzzleStatistic = { init: 0 };
-  try {
-    userStatistics = await Repository.getStatistics();
-  } catch (error) {
-    userStatistics = {};
-  } finally {
-    const path = userStatistics.optional.games;
-    if (path && path.puzzle) {
-      puzzleStatistic = userStatistics.optional.games.puzzle.summary;
+    if (language === 'ru') {
+      MessageModal.showModal('Что-то пошло не так. Вы зарегистрировались?', null, 'fetchErrorMessageOnLoad');
     } else {
-      Repository.saveGameResult('puzzle', false, [], puzzleStatistic);
+      MessageModal.showModal('Sorry, something went wrong. Did you log in?', null, 'fetchErrorMessageOnLoad');
     }
   }
-  localStorage.setItem('puzzleStatistic', JSON.stringify(puzzleStatistic));
 }
 
 window.onload = async function onload() {
-  await getStatisticsFromBackend();
+  const language = localStorage.getItem('app-language');
   header.run();
   navigation.addEventListeners();
   prompts.addEventListeners();
@@ -61,5 +54,21 @@ window.onload = async function onload() {
   gameArea.addEventListeners();
   results.addEventListeners();
   const buttonStart = document.querySelector('.button__start');
-  buttonStart.addEventListener('click', () => openNavigationTable());
+
+  buttonStart.addEventListener('click', async () => openNavigationTable());
+  try {
+    const statistics = await Repository.getStatistics();
+    localStorage.setItem('statistics', JSON.stringify(statistics));
+  } catch (error) {
+    const fetchErrorMessage = document.querySelector('.fetchErrorMessageOnLoad');
+    if (!fetchErrorMessage) {
+      const messageModal = new MessageModal();
+      messageModal.appendSelf('fetchErrorMessageOnLoad');
+    }
+    if (language === 'ru') {
+      MessageModal.showModal('Что-то пошло не так. Вы зарегистрировались?', null, 'fetchErrorMessageOnLoad');
+    } else {
+      MessageModal.showModal('Sorry, something went wrong. Did you log in?', null, 'fetchErrorMessageOnLoad');
+    }
+  }
 };

@@ -1,4 +1,5 @@
 import sortBy from 'lodash/sortBy';
+import keyBy from 'lodash/keyBy';
 
 import Authorization from './Authorization';
 
@@ -15,12 +16,12 @@ class Repository {
 
     let filter;
     if (type === 'new') {
-      filter = '{"$and":[{"userWord":null, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+      filter = '{"userWord":null}';
     } else if (type === 'currentSession') {
       const currentSessionEnd = Date.now() + intervals.defaultCurrentSessionFromNow;
-      filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
+      filter = `{"$and":[{"userWord.optional.playNextDate":{"$lt": ${currentSessionEnd}}, "userWord.optional.isDeleted":{"$ne":true}}]}`;
     } else if (type === 'repeat') {
-      filter = '{"$and":[{"userWord":{"$ne": null}, "userWord.optional.isHard":{"$ne":true}, "userWord.optional.isDeleted":{"$ne":true}}]}';
+      filter = '{"$and":[{"userWord":{"$ne": null}, "userWord.optional.isDeleted":{"$ne":true}}]}';
     } else if (type === 'deleted') {
       filter = '{"userWord.optional.isDeleted":true}';
     } else if (type === 'hard') {
@@ -53,11 +54,14 @@ class Repository {
     if (words.length > wordsPerPage) {
       words.length = wordsPerPage;
     }
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
     return words;
   }
 
   static async getAllUserWordsIncludingHardDeleted(wordsPerPage) {
-    return Repository.getWords('allUser', undefined, wordsPerPage);
+    const words = await Repository.getWords('allUser', undefined, wordsPerPage);
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getCurrentSessionUserWords(group, wordsPerPage = 20) {
@@ -66,31 +70,42 @@ class Repository {
     if (words.length > wordsPerPage) {
       words.length = wordsPerPage;
     }
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
     return words;
   }
 
   static async getNewWords(group, wordsPerPage) {
-    return Repository.getWords('new', group, wordsPerPage);
+    const words = await Repository.getWords('new', group, wordsPerPage);
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getMixedWords(group, wordsPerPage = 20) {
+    let words;
     const userWords = await Repository.getCurrentSessionUserWords(group, wordsPerPage);
     if (userWords.length === Number(wordsPerPage)) {
-      return userWords;
+      words = userWords;
+    } else {
+      const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
+      words = [...userWords, ...wordsNew];
     }
-    const wordsNew = await Repository.getNewWords(group, (wordsPerPage - userWords.length));
-    return [...userWords, ...wordsNew];
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getMixedWordsWithMandatoryNew(newWordsNumber = 10, group, wordsPerPage = 20) {
+    let words;
     const wordsNew = await Repository.getNewWords(group, newWordsNumber);
     if (wordsNew.length >= Number(wordsPerPage)) {
       wordsNew.length = wordsPerPage;
-      return wordsNew;
+      words = wordsNew;
+    } else {
+      const userWords = await Repository
+        .getCurrentSessionUserWords(group, (wordsPerPage - wordsNew.length));
+      words = [...userWords, ...wordsNew];
     }
-    const userWords = await Repository
-      .getCurrentSessionUserWords(group, (wordsPerPage - wordsNew.length));
-    return [...userWords, ...wordsNew];
+    localStorage.setItem('words', JSON.stringify(keyBy(words, '_id')));
+    return words;
   }
 
   static async getHardWords(group, wordsPerPage) {
@@ -116,6 +131,14 @@ class Repository {
   }
 
   static async getOneUserWord(wordId) {
+    const wordsLocalJSON = localStorage.getItem('words');
+    if (wordsLocalJSON) {
+      const wordsLocal = JSON.parse(wordsLocalJSON);
+      if (wordsLocal && wordsLocal[wordId]) {
+        return wordsLocal[wordId];
+      }
+    }
+
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
@@ -139,6 +162,10 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
+    const updates = { difficulty, optional: { ...optional, default: 'default' } };
+
+    Repository.updateWordInStorage(wordId, updates);
+
     const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
@@ -148,10 +175,23 @@ class Repository {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ difficulty, optional: { ...optional, default: 'default' } }),
+      body: JSON.stringify(updates),
     });
 
     return rawResponse.json();
+  }
+
+  static updateWordInStorage(wordId, newUserWord) {
+    const wordsLocalJSON = localStorage.getItem('words');
+    if (!wordsLocalJSON) {
+      return;
+    }
+    const wordsLocal = JSON.parse(wordsLocalJSON);
+    if (!wordsLocal[wordId]) {
+      return;
+    }
+    wordsLocal[wordId].userWord = newUserWord;
+    localStorage.setItem('words', JSON.stringify(wordsLocal));
   }
 
   static async updateUserWordDifficulty(wordId, difficulty) {
@@ -162,11 +202,13 @@ class Repository {
     const updates = { difficulty };
     updates.optional = word.userWord && word.userWord.optional ? word.userWord.optional : { default: 'default' };
 
-    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
-
     if (!updates.difficulty) {
       updates.difficulty = 'default';
     }
+
+    Repository.updateWordInStorage(wordId, updates);
+
+    const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
       method: 'PUT',
@@ -199,6 +241,8 @@ class Repository {
     } else {
       updates.optional = updatedValues;
     }
+
+    Repository.updateWordInStorage(wordId, updates);
 
     const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
@@ -247,7 +291,15 @@ class Repository {
     });
   }
 
+  // STATISTICS
+
   static async getStatistics() {
+    const statistics = localStorage.getItem('statistics');
+
+    if (statistics) {
+      return JSON.parse(statistics);
+    }
+
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
@@ -262,14 +314,13 @@ class Repository {
       },
     });
 
-    if (rawResponse.status.toString() === '404') {
-      return {
-        learnedWords: 0,
-        optional: {},
-      };
+    const statisticsFromDB = await rawResponse.json();
+
+    if (!statistics) {
+      localStorage.setItem('statistics', JSON.stringify(statisticsFromDB));
     }
 
-    return rawResponse.json();
+    return statisticsFromDB;
   }
 
   static async updateOptionalStatistics(updatedValues) {
@@ -281,6 +332,8 @@ class Repository {
       learnedWords: statistics.learnedWords,
       optional: { ...statistics.optional, ...updatedValues },
     };
+
+    localStorage.setItem('statistics', JSON.stringify(newStatistics));
 
     const url = `${backendOrigin}/users/${userId}/statistics`;
 
@@ -376,6 +429,8 @@ class Repository {
       optional: statistics.optional,
     };
 
+    localStorage.setItem('statistics', JSON.stringify(newStatistics));
+
     const url = `${backendOrigin}/users/${userId}/statistics`;
 
     const rawResponse = await fetch(url, {
@@ -390,6 +445,8 @@ class Repository {
 
     return rawResponse.json();
   }
+
+  // SETTINGS
 
   static async getSettings() {
     const userId = localStorage.getItem('userId');
@@ -469,15 +526,22 @@ class Repository {
     return rawResponse.json();
   }
 
-  static async saveWordResult({ wordId, result = '1' }) {
-    let word;
-    let isWordNew = false;
-    word = await Repository.getOneUserWord(wordId);
+  // SAVE RESULTS
 
-    if (!word || !word.userWord) {
+  static async saveWordResult({ wordId, result = '1', isGame = false }) {
+    let isWordNew = false;
+    const word = await Repository.getOneUserWord(wordId);
+
+    let toCreate = false;
+    if (!word.userWord) {
+      toCreate = true;
+      word.userWord = {};
+      word.userWord.optional = {};
+    }
+
+    if (!isGame && !word.userWord.optional.wordLearned) {
+      word.userWord.optional.wordLearned = true;
       isWordNew = true;
-      await Repository.createUserWord(wordId);
-      word = await Repository.getOneUserWord(wordId);
     }
 
     let interval;
@@ -503,8 +567,19 @@ class Repository {
       word.userWord.optional.playNextDate = Date.now() + (interval * coefficients[result]);
     }
 
-    const wordSaved = await Repository.updateUserWordOptional(wordId, word.userWord.optional);
-    await Repository.incrementLearnedWords(result, isWordNew);
+    const promises = [];
+
+    if (toCreate) {
+      promises.push(Repository.createUserWord(wordId, 'default', word.userWord.optional));
+    } else {
+      promises.push(Repository.updateUserWordOptional(wordId, word.userWord.optional));
+    }
+
+    if (!isGame) {
+      promises.push(Repository.incrementLearnedWords(result, isWordNew));
+    }
+
+    const [wordSaved] = await Promise.all(promises);
 
     return wordSaved;
   }

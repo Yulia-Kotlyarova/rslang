@@ -1,10 +1,20 @@
 import 'bootstrap/js/dist/collapse';
-import '@fortawesome/fontawesome-free/js/all.min';
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faCheckCircle, faArrowLeft, faArrowRight, faVolumeDown,
+} from '@fortawesome/free-solid-svg-icons';
 import Header from '../../modules/Header';
 import '../../../sass/styles.scss';
 import startTimer from './sprintStart';
 import { init } from './sprintGame';
 import { getWordsFromBackend } from './SprintBackend';
+
+library.add(faCheckCircle);
+library.add(faArrowLeft);
+library.add(faArrowRight);
+library.add(faVolumeDown);
+
+dom.watch();
 
 const FULL_DASH_ARRAY2 = 283;
 const COLOR_CODES2 = {
@@ -13,6 +23,12 @@ const COLOR_CODES2 = {
   },
 
 };
+
+library.add(faCheckCircle);
+library.add(faArrowLeft);
+library.add(faArrowRight);
+
+dom.watch();
 
 const remainingPathColor2 = COLOR_CODES2.info.color;
 

@@ -42,6 +42,10 @@
   text-align: left;
   background-color: $field-background-color;
 
+  @media (max-width: 800px) {
+    padding: 20px 10px;
+  }
+
   &_top {
     margin-top: 140px;
   }

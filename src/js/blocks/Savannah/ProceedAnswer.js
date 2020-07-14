@@ -1,8 +1,8 @@
 import Results from './Results';
 import Repository from '../../modules/Repository';
-
 import { heartFill, heartStroke } from './consts';
 import { savannahSettings } from './appState';
+import getTodayShort from '../../helpers';
 
 export default class ProceedAnswer {
   constructor(savannahState, startNewRound, startNewGame) {
@@ -12,6 +12,7 @@ export default class ProceedAnswer {
     this.answersArea = document.querySelector('.game__answers');
     this.activeWordContainer = document.querySelector('.game__active-word');
     this.heartContainer = document.querySelector('.control__lifes');
+    this.wordsCounterContainer = document.querySelector('.savannah__game__words-counter');
     this.heartFill = heartFill;
     this.heartStroke = heartStroke;
   }
@@ -33,6 +34,7 @@ export default class ProceedAnswer {
   checkPressedButton(event) {
     const keyPressed = event.key;
     if (['1', '2', '3', '4'].includes(keyPressed)) {
+      clearInterval(this.savannahState.timerId);
       this.savannahState.isAnswered = true;
       const selectedAnswer = this.answersArea.querySelectorAll('.game__answer')[Number(keyPressed) - 1];
       const selectedAnswerID = selectedAnswer.getAttribute('id');
@@ -51,12 +53,14 @@ export default class ProceedAnswer {
 
   catchCorrectAnswer(answer) {
     answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
-
-    const wordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id;
-    Repository.saveWordResult({ wordId, result: '1' }); // без await: тут не нужно ждать записи, игра должна продолжаться
+    const alternativeId = '_id';
+    const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id
+    || this.savannahState.wordsCollection[this.savannahState.activeWordID][alternativeId];
+    Repository.saveWordResult({ wordId: currentWordId, result: '2', isGame: true });
+    ProceedAnswer.updateStatistics(1, 0, this.savannahState); // no await - it slows down
 
     if (savannahSettings.soundOn) {
-      const sound = '/src/audio/blocks/Savannah/answer-correct.mp3';
+      const sound = 'Right-answer-ding-ding-sound-effect.mp3';
       ProceedAnswer.audioPlay(sound);
     }
     this.savannahState.answeredCorrect.push(this.savannahState.activeWordID);
@@ -66,18 +70,25 @@ export default class ProceedAnswer {
   }
 
   catchWrongAnswer(selectedAnswer) {
+    const alternativeId = '_id';
+    const currentWordId = this.savannahState.wordsCollection[this.savannahState.activeWordID].id
+    || this.savannahState.wordsCollection[this.savannahState.activeWordID][alternativeId];
+    Repository.saveWordResult({ wordId: currentWordId, result: '0', isGame: true });
+    ProceedAnswer.updateStatistics(0, 1, this.savannahState); // no await - it slows down
     if (this.savannahState.answeredWrong.length < 6) {
       const answers = this.answersArea.querySelectorAll('.game__answer');
-      answers.forEach((answer) => {
-        if (answer.id === '0') {
-          answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
-        }
-      });
       if (selectedAnswer) {
         selectedAnswer.querySelector('.answer__overlay-wrong').classList.remove('hidden');
+        answers.forEach((answer) => {
+          if (answer.id === '0') {
+            answer.querySelector('.answer__overlay-correct').classList.remove('hidden');
+          }
+        });
+      } else {
+        answers.forEach((answer) => answer.querySelector('.answer__overlay-wrong').classList.remove('hidden'));
       }
       if (savannahSettings.soundOn) {
-        const sound = '/src/audio/blocks/Savannah/answer-wrong.mp3';
+        const sound = 'error.wav';
         ProceedAnswer.audioPlay(sound);
       }
       this.savannahState.answeredWrong.push(this.savannahState.activeWordID);
@@ -108,6 +119,7 @@ export default class ProceedAnswer {
     } else {
       this.countLifes();
       this.clearWordsContainers();
+      this.wordsCounterContainer.innerText = '';
       setTimeout(() => {
         const results = new Results(this.startNewGame, this.savannahState);
         results.showResults();
@@ -124,5 +136,33 @@ export default class ProceedAnswer {
   clearWordsContainers() {
     this.answersArea.innerHTML = '';
     this.activeWordContainer.innerText = '';
+  }
+
+  static async updateStatistics(correct, wrong, savannahState) {
+    const savannahStatistic = JSON.parse(localStorage.getItem('savannahStatistic'));
+    if (savannahState.userWords) {
+      if (savannahStatistic[`level_${savannahState.userWordsLevel}`] && savannahState.activeWord !== 0) {
+        let [correctAnswers, wrongAnswers, date] = savannahStatistic[`level_${savannahState.userWordsLevel}`];
+        correctAnswers += correct;
+        wrongAnswers += wrong;
+        date = getTodayShort();
+        savannahStatistic[`level_${savannahState.userWordsLevel}`] = [correctAnswers, wrongAnswers, date];
+      } else {
+        savannahStatistic[`level_${savannahState.userWordsLevel}`] = [correct, wrong, getTodayShort()];
+      }
+      localStorage.setItem('savannahStatistic', JSON.stringify(savannahStatistic));
+    } else {
+      if (savannahStatistic[`${savannahState.currentLevel}.${savannahState.currentRound}`] && savannahState.activeWord !== 0) {
+        let [correctAnswers, wrongAnswers, date] = savannahStatistic[`${savannahState.currentLevel}.${savannahState.currentRound}`];
+        correctAnswers += correct;
+        wrongAnswers += wrong;
+        date = getTodayShort();
+        savannahStatistic[`${savannahState.currentLevel}.${savannahState.currentRound}`] = [correctAnswers, wrongAnswers, date];
+      } else {
+        savannahStatistic[`${savannahState.currentLevel}.${savannahState.currentRound}`] = [correct, wrong, getTodayShort()];
+      }
+      localStorage.setItem('savannahStatistic', JSON.stringify(savannahStatistic));
+    }
+    Repository.saveGameResult('savannah', null, null, savannahStatistic);
   }
 }
