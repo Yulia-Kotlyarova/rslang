@@ -223,7 +223,13 @@ class Authorization {
       }
 
       if (!window.location.href.endsWith('index.html')) {
-        window.location.href = 'index.html';
+        const hasBeenHereBefore = localStorage.getItem('hasBeenHereBefore');
+        if (hasBeenHereBefore) {
+          window.location.href = 'index.html';
+        } else {
+          localStorage.setItem('hasBeenHereBefore', 'true');
+          window.location.href = 'promo.html';
+        }
       }
     });
 
@@ -246,7 +252,13 @@ class Authorization {
       }
 
       if (!window.location.href.endsWith('index.html')) {
-        window.location.href = 'index.html';
+        const hasBeenHereBefore = localStorage.getItem('hasBeenHereBefore');
+        if (hasBeenHereBefore) {
+          window.location.href = 'index.html';
+        } else {
+          localStorage.setItem('hasBeenHereBefore', 'true');
+          window.location.href = 'promo.html';
+        }
       }
     });
   }
