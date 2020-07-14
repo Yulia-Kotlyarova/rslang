@@ -2,6 +2,7 @@ import Repository from '../../../modules/Repository';
 import MessageModal from '../../../modules/MessageModal';
 import ShortStatistics from '../../Statistics/ShortStatistics';
 import { coefficients, intervals } from '../../../constants/intervalRepetition';
+import getTodayShort from '../../../helpers';
 
 class Card {
   constructor() {
@@ -11,11 +12,7 @@ class Card {
     this.wordData = null;
     this.audio = null;
 
-    this.nextStudyInterval = 12 * 60 * 60 * 1000;
-    this.oneHourInMiliseconds = 60 * 60 * 1000;
-    this.oneMinuteInMiliseconds = 60 * 1000;
-    this.oneSecondInMiliseconds = 1000;
-    this.studyFinishAt = localStorage.getItem('studyFinishAt') ? localStorage.getItem('studyFinishAt') : 0;
+    this.oneDayInMiliseconds = 24 * 60 * 60 * 1000;
     this.defaultWordInterval = 5;
     this.wordLevel = '2';
 
@@ -42,8 +39,6 @@ class Card {
     this.unmarkedHardWord = document.querySelector('.unmarked-hard-word');
 
     this.wordPositionInResponse = 0;
-    this.todayStudiedNewWords = localStorage.getItem('todayStudiedNewWords') ? localStorage.getItem('todayStudiedNewWords') : 0;
-    this.todayStudiedWords = localStorage.getItem('todayStudiedWords') ? localStorage.getItem('todayStudiedWords') : 0;
 
     this.settings = JSON.parse(localStorage.getItem('settings'));
     this.numberOfNewWordsToStudy = this.settings.wordsPerDay;
@@ -80,6 +75,27 @@ class Card {
     this.wordMeaningAudio = this.card.querySelector('.word-meaning-audio');
     this.wordAudio = this.card.querySelector('.word-audio');
     this.wordTextExampleAudio = this.card.querySelector('.word-text-example-audio');
+
+    this.updateTodayWords();
+  }
+
+  updateTodayWords() {
+    const statisticsJSON = localStorage.getItem('statistics');
+    const statistics = JSON.parse(statisticsJSON);
+
+    const todayShort = getTodayShort();
+
+    if (
+      !statistics.optional
+      || !statistics.optional.dates
+      || !statistics.optional.dates[todayShort]
+    ) {
+      this.todayStudiedNewWords = 0;
+      this.todayStudiedWords = 0;
+    } else {
+      this.todayStudiedNewWords = statistics.optional.dates[todayShort].learnedToday || 0;
+      this.todayStudiedWords = statistics.optional.dates[todayShort].answersGivenToday || 0;
+    }
   }
 
   wordsHandler() {
@@ -99,16 +115,14 @@ class Card {
           || Number(this.todayStudiedNewWords) >= Number(this.numberOfNewWordsToStudy)
           || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
       this.showWarningWindow();
+
       try {
         const shortStatistics = new ShortStatistics();
         await shortStatistics.showModal();
       } catch (error) {
         return;
       }
-      if (!this.studyFinishAt) {
-        this.studyFinishAt = Date.now();
-        localStorage.setItem('studyFinishAt', this.studyFinishAt);
-      }
+
       this.runTimer();
     } else {
       this.hideWarningWindow();
@@ -120,32 +134,12 @@ class Card {
   }
 
   nextStudyTimer() {
-    const nextStudyTime = Number(this.studyFinishAt) + Number(this.nextStudyInterval);
     const timeNow = Date.now();
-    if (timeNow > nextStudyTime) {
+    if (this.todayStudiedWords === 0) {
       this.hideWarningWindow();
     }
-    if (Number(this.studyFinishAt) > 0 && (timeNow > nextStudyTime)) {
-      this.todayStudiedNewWords = 0;
-      this.todayStudiedWords = 0;
-    }
-    let hours = Math.trunc((nextStudyTime - timeNow) / this.oneHourInMiliseconds);
-    let minutes = Math.trunc((nextStudyTime - timeNow - hours
-      * this.oneHourInMiliseconds)
-      / this.oneMinuteInMiliseconds);
-    let secondes = Math.trunc((nextStudyTime - timeNow - hours
-      * this.oneHourInMiliseconds - minutes * this.oneMinuteInMiliseconds)
-      / this.oneSecondInMiliseconds);
-    if (hours < 10) {
-      hours = `0${hours}`;
-    }
-    if (minutes < 10) {
-      minutes = `0${minutes}`;
-    }
-    if (secondes < 10) {
-      secondes = `0${secondes}`;
-    }
-    this.timeoutStudy.innerText = `${hours}:${minutes}:${secondes}`;
+    const tommorow = new Date(timeNow + this.oneDayInMiliseconds);
+    this.timeoutStudy.innerText = `${tommorow.toLocaleDateString()}`;
   }
 
   async getWord() {
@@ -184,7 +178,7 @@ class Card {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -222,12 +216,12 @@ class Card {
     }
   }
 
-  repeatWord() {
-    this.repeatWrongWord();
+  async repeatWord() {
+    await this.repeatWrongWord();
     this.nextCard();
   }
 
-  repeatWrongWord() {
+  async repeatWrongWord() {
     if (this.isMistake) {
       return;
     }
@@ -235,9 +229,12 @@ class Card {
       this.isMistake = true;
       const difficultyLevel = '0';
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
-      this.setWordDifficulty(wordId, difficultyLevel);
+      await this.setWordDifficulty(wordId, difficultyLevel);
       const nextRepeatUpdatedWord = this.getPlayNextDate(difficultyLevel);
-      const newPosition = this.actualWordsData.findIndex((item) => item.hasOwnProperty('userWord') && item.userWord.optional.playNextDate > nextRepeatUpdatedWord); // eslint-disable-line no-prototype-builtins
+      const newPosition = this.actualWordsData.findIndex((item) => item.userWord
+          && item.userWord.optional
+          && item.userWord.optional.playNextDate
+          && item.userWord.optional.playNextDate > nextRepeatUpdatedWord);
       if ((newPosition !== -1)
           && ((newPosition - this.wordPositionInResponse) > this.defaultWordInterval)) {
         this.actualWordsData.splice(newPosition, 0, this.wordData);
@@ -251,7 +248,7 @@ class Card {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -259,14 +256,16 @@ class Card {
     try {
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
       await Repository.markWordAsDeleted(wordId);
+      this.isMistake = true;
       this.nextCard();
+      this.isMistake = true;
     } catch (error) {
       const modalError = document.querySelector('.fetchWordsCollectionError');
       if (!modalError) {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -414,16 +413,12 @@ class Card {
         item.classList.remove('hidden-word');
       });
     }
-    this.todayStudiedWords = Number(this.todayStudiedWords) + 1;
-    localStorage.setItem('todayStudiedWords', this.todayStudiedWords);
-    if (!this.wordData.hasOwnProperty('userWord')) { // eslint-disable-line no-prototype-builtins
-      this.todayStudiedNewWords = Number(this.todayStudiedNewWords) + 1;
-      localStorage.setItem('todayStudiedNewWords', this.todayStudiedNewWords);
-    }
+
     if (!this.isAutoplayAudio && !this.isDifficultButtonVisible) {
       setTimeout(() => { this.nextCard(); }, 2000);
       return;
     }
+
     if (!this.isDifficultButtonVisible || this.isMistake) {
       this.nextCardButton.classList.remove('hidden');
     }
@@ -438,7 +433,7 @@ class Card {
     this.showAudio();
   }
 
-  checkWord() {
+  async checkWord() {
     const entryField = document.querySelector('.word-field');
     const hiddenRightWord = [...document.querySelectorAll('.word-wrapper span[index]')];
     if (this.word !== entryField.value) {
@@ -457,7 +452,7 @@ class Card {
         });
         entryField.focus();
       }, 1000);
-      this.repeatWrongWord();
+      await this.repeatWrongWord();
     } else {
       this.showRightAnswer();
       if (!this.isMistake) {
@@ -478,15 +473,17 @@ class Card {
     this.wordTextExampleTranslate.classList.add('d-none');
   }
 
-  nextCard() {
+  async nextCard() {
     if (this.audio) {
       this.audio.pause();
     }
+
     if (!this.isMistake) {
       const wordId = this.wordData._id; // eslint-disable-line no-underscore-dangle
       const difficultyLevel = this.wordLevel;
-      this.setWordDifficulty(wordId, difficultyLevel);
+      await this.setWordDifficulty(wordId, difficultyLevel);
     }
+
     this.isMarkedWordLevel = false;
     this.wordLevel = '2';
     this.isMistake = false;
@@ -501,13 +498,16 @@ class Card {
   async setWordDifficulty(wordId, difficultyLevel) { // eslint-disable-line class-methods-use-this
     try {
       await Repository.saveWordResult({ wordId, result: difficultyLevel });
+      this.updateTodayWords();
     } catch (error) {
       const modalError = document.querySelector('.fetchWordsCollectionError');
+
       if (!modalError) {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 
@@ -515,6 +515,7 @@ class Card {
     if (!event.target.classList.contains('difficulty-level') || this.isMarkedWordLevel) {
       return;
     }
+
     this.isMarkedWordLevel = true;
     this.wordLevel = event.target.value;
     this.nextCard();
@@ -549,7 +550,7 @@ class Card {
         const messageModal = new MessageModal();
         messageModal.appendSelf('fetchWordsCollectionError');
       }
-      MessageModal.showModal('Sorry, something went wrong. Try again, please.');
+      MessageModal.showModal('Sorry, something went wrong. Try again, please.', undefined, 'fetchWordsCollectionError');
     }
   }
 

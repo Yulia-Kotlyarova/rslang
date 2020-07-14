@@ -15,6 +15,9 @@ library.add(faMusic);
 dom.watch();
 
 window.onload = async function audioCall() {
+  library.add(faVolumeUp);
+  dom.watch();
+
   const header = new Header();
   header.run();
 
@@ -45,10 +48,6 @@ window.onload = async function audioCall() {
   const littleVolumeUp = document.querySelector('.a-c-little-volume');
 
   const audio = new Audio();
-  const levelNumb = document.querySelector('.a-c-level').options.selectedIndex;
-  const pageNumb = document.querySelector('.a-c-page').options.selectedIndex;
-  const userLevel = document.querySelector('.a-c-level').options[levelNumb].value - 1;
-  const userPage = document.querySelector('.a-c-page').options[pageNumb].value - 1;
 
   let isVictory;
   localStorage.cardNumber = 1;
@@ -242,6 +241,10 @@ window.onload = async function audioCall() {
 
   async function getWords() { // change link  get UserWords
     removeStartScreen();
+    const levelNumb = document.querySelector('.a-c-level').options.selectedIndex;
+    const pageNumb = document.querySelector('.a-c-page').options.selectedIndex;
+    const userLevel = document.querySelector('.a-c-level').options[levelNumb].value - 1;
+    const userPage = document.querySelector('.a-c-page').options[pageNumb].value - 1;
 
     try {
       const response = await Repository.getWordsFromGroupAndPage(userLevel, userPage);
@@ -273,6 +276,24 @@ window.onload = async function audioCall() {
 
   // result of game
 
+  function resultSound() {
+    const audioResultR = document.querySelectorAll('.a-c-result-li-right > audio');
+    const audioResultW = document.querySelectorAll('.a-c-result-li-wrong > audio');
+
+    audioResultR.forEach((el) => {
+      const elem = el;
+      elem.parentElement.onclick = () => {
+        elem.play();
+      };
+    });
+    audioResultW.forEach((el) => {
+      const elem = el;
+      elem.parentElement.onclick = () => {
+        elem.play();
+      };
+    });
+  }
+
   function gameResult() {
     loader.classList.add('hidden');
     wordContainer.classList.add('hidden');
@@ -295,6 +316,7 @@ window.onload = async function audioCall() {
     }
     document.querySelector('.a-c-result-right > a').textContent = document.querySelectorAll('.a-c-result-right > li').length;
     document.querySelector('.a-c-result-wrong > a').textContent = document.querySelectorAll('.a-c-result-wrong > li').length;
+    resultSound();
   }
 
   // change background
@@ -311,7 +333,7 @@ window.onload = async function audioCall() {
       el.classList.remove('li-pale-color');
       el.classList.add('li-hover');
     });
-    if (localStorage.cardNumber.length >= 20) {
+    if (localStorage.cardNumber.length >= 3) {
       gameResult();
     } else {
       dontKnowBtn.classList.remove('hidden');

@@ -162,6 +162,10 @@ class Repository {
     const userId = localStorage.getItem('userId');
     const token = await Authorization.getFreshToken();
 
+    const updates = { difficulty, optional: { ...optional, default: 'default' } };
+
+    Repository.updateWordInStorage(wordId, updates);
+
     const url = `${backendOrigin}/users/${userId}/words/${wordId}`;
 
     const rawResponse = await fetch(url, {
@@ -171,7 +175,7 @@ class Repository {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ difficulty, optional: { ...optional, default: 'default' } }),
+      body: JSON.stringify(updates),
     });
 
     return rawResponse.json();

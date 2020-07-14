@@ -1,10 +1,30 @@
 .dictionary {
+  color: $main_font_color;
+  .card {
+    border-radius: 15px;
+    box-shadow: 10px 10px 15px $shadow-color;
+  }
+  .nav-pills .nav-link.active,
+  .nav-pills .show > .nav-link {
+    color: $main_font_color;
+    background-color: #F8F8F8;
+  }
+  .nav-link {
+    color: white;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
   &__word-audio {
     cursor: pointer;
   }
 
   &__word-restore {
     cursor: pointer;
+  }
+
+  &__word-image {
+    max-width: 390px;
+    border-radius: 5px;
   }
 
   &__progress {

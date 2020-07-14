@@ -17,6 +17,7 @@ module.exports = {
     authorization: path.resolve(__dirname, '../src/js/blocks/Authorization/authorization.js'),
     cards: path.resolve(__dirname, '../src/js/blocks/Cards/cards.js'),
     dictionary: path.resolve(__dirname, '../src/js/blocks/Dictionary/dictionary.js'),
+    games: path.resolve(__dirname, '../src/js/blocks/Games/games.js'),
     index: path.resolve(__dirname, '../src/js/blocks/Index/index.js'),
     promo: path.resolve(__dirname, '../src/js/blocks/Promo/promo.js'),
     puzzle: path.resolve(__dirname, '../src/js/blocks/Puzzle/puzzle.js'),
@@ -64,6 +65,11 @@ module.exports = {
       filename: '../dist/cards.html',
       template: path.resolve(__dirname, '../src/cards.html'),
       chunks: ['cards'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: '../dist/games.html',
+      template: path.resolve(__dirname, '../src/games.html'),
+      chunks: ['games'],
     }),
     new HtmlWebpackPlugin({
       filename: '../dist/index.html',
