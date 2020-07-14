@@ -1,10 +1,18 @@
 .auth-forms {
   width: 100%;
   max-width: 330px;
+  margin: 20px 0 0 0;
 
   &__nav {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .nav-tabs .nav-link {
+    color: #274155;
+  }
+  input::placeholder {
+    background-color: #67697d15!important;
+    color: #274155!important;
   }
 }

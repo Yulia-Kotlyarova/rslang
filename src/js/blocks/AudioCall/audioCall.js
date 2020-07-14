@@ -3,12 +3,16 @@
 import '../../../sass/styles.scss';
 import 'bootstrap/js/dist/collapse';
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
-import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faVolumeUp, faMusic } from '@fortawesome/free-solid-svg-icons';
 import random from 'lodash/fp/random';
 import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
 import findSimilar from './similarWord';
+
+library.add(faVolumeUp);
+library.add(faMusic);
+dom.watch();
 
 window.onload = async function audioCall() {
   library.add(faVolumeUp);
