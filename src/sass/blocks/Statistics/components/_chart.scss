@@ -1,5 +1,6 @@
 .statistics {
 
+  box-sizing: border-box;
   .statistics__main__chart {
     padding: 30px;
     display: flex;
@@ -67,25 +68,28 @@
   }
 
   .chart-range-refresh {
-    width: 40px;
-    height: 40px;
     margin-left: 10px;
-    font-size: $size-font-basic * 2;
-    background-color: none;
-    color: $color-chart-stroke;
-    transition: all ease 0.5s;
-  }
-
-  .chart-range-refresh:focus {
-    box-shadow: none;
+    font-size: $font-size-basic * 1.4;
+    background-color: $color-background-main-light;
+    box-shadow: 0 0 10px #67697d66;
+    border-radius: $button-border-radius;
+    border: 1px solid $color-background-main-light;
+    color: #67697d94;
   }
 
   .chart-range-refresh:hover {
-    color: $color-text-shorstatistics-title;
+    box-shadow: 0 0 15px #67697d66;
+    color: $color-text-dark;
+    border: 1px solid $color-background-main-light;
+    svg {
+      transition: all ease 0.5s;
+      transform: rotate(360deg);
+    }
   }
 
-  .chart-range-refresh:active {
-    font-size: $size-font-basic * 2.3;
+  .chart-range-refresh:not(:hover) > svg {
+    transition: none;
+    transform: none;
   }
 
   .chart__number-of-words {
