@@ -5,10 +5,16 @@ import MessageModal from './MessageModal';
 import defaultSettings from '../constants/defaultSettings';
 import backendOrigin from '../constants/app';
 
+import { renderNewLanguageInElement } from '../helpers';
+
 class Authorization {
   constructor() {
-    this.signinForm = document.querySelector('.auth-forms__signin');
-    this.signupForm = document.querySelector('.auth-forms__signup');
+    this.formContainer = document.querySelector('.auth-forms');
+
+    this.signinForm = this.formContainer.querySelector('.auth-forms__signin');
+    this.signupForm = this.formContainer.querySelector('.auth-forms__signup');
+
+    this.languageButtons = this.formContainer.querySelectorAll('.auth-forms__language-button');
   }
 
   static getUserDataFromForm(form) {
@@ -223,7 +229,13 @@ class Authorization {
       }
 
       if (!window.location.href.endsWith('index.html')) {
-        window.location.href = 'index.html';
+        const hasBeenHereBefore = localStorage.getItem('hasBeenHereBefore');
+        if (hasBeenHereBefore) {
+          window.location.href = 'index.html';
+        } else {
+          localStorage.setItem('hasBeenHereBefore', 'true');
+          window.location.href = 'promo.html';
+        }
       }
     });
 
@@ -246,8 +258,38 @@ class Authorization {
       }
 
       if (!window.location.href.endsWith('index.html')) {
-        window.location.href = 'index.html';
+        const hasBeenHereBefore = localStorage.getItem('hasBeenHereBefore');
+        if (hasBeenHereBefore) {
+          window.location.href = 'index.html';
+        } else {
+          localStorage.setItem('hasBeenHereBefore', 'true');
+          window.location.href = 'promo.html';
+        }
       }
+    });
+
+    this.formContainer.addEventListener('click', (event) => {
+      const languageButton = event.target.closest('.auth-forms__language-button');
+
+      if (!languageButton) {
+        return;
+      }
+
+      const currentLanguage = localStorage.getItem('app-language');
+
+      let newLanguage;
+      if (currentLanguage === 'en') {
+        newLanguage = 'ru';
+      } else if (currentLanguage === 'ru') {
+        newLanguage = 'en';
+      }
+
+      localStorage.setItem('app-language', newLanguage);
+      this.languageButtons.forEach((button) => {
+        const buttonElement = button;
+        buttonElement.innerText = newLanguage;
+      });
+      renderNewLanguageInElement(this.formContainer, newLanguage);
     });
   }
 }

@@ -2,8 +2,8 @@ $size-text-basic: 10px;
 $color-font-main: #3F5D79;
 
 .games__main {
-  width: 60vw;
-  height: 75vh;
+  width: 80vw;
+  height: 80vh;
   margin: 20px auto;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr;
@@ -23,6 +23,7 @@ $color-font-main: #3F5D79;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     border-radius: 20px;
     box-shadow: 10px 10px 15px #67697d66;
     color: #f8f9fa;
@@ -30,12 +31,18 @@ $color-font-main: #3F5D79;
     cursor: pointer;
 
     & > span {
+      font-size: 20px;
       font-weight: 700;
     }
 
     & > p {
       text-align: center;
+      font-size: 18px;
     }
+  }
+
+  .game:hover {
+    filter: brightness(115%);
   }
 
   .savannah {

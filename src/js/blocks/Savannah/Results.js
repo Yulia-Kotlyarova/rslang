@@ -13,14 +13,16 @@ export default class Results {
   }
 
   defineNextlevelAndPage() {
-    if (this.savannahState.currentLevel === 5) {
-      this.savannahState.currentLevel = 0;
-      this.savannahState.currentRound = 0;
-    } else if (this.savannahState.currentRound < 29) {
-      this.savannahState.currentRound += 1;
+    if (this.savannahState.currentRound === 29) {
+      if (this.savannahState.currentLevel === 5) {
+        this.savannahState.currentLevel = 0;
+        this.savannahState.currentRound = 0;
+      } else {
+        this.savannahState.currentLevel += 1;
+        this.savannahState.currentRound = 0;
+      }
     } else {
-      this.savannahState.currentLevel += 1;
-      this.savannahState.currentRound = 0;
+      this.savannahState.currentRound += 1;
     }
   }
 
