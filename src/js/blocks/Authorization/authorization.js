@@ -18,6 +18,7 @@ window.onload = () => {
   }
 
   localStorage.clear();
+  localStorage.setItem('app-language', 'en');
 
   const authorization = new Authorization();
   authorization.setEventListeners();
