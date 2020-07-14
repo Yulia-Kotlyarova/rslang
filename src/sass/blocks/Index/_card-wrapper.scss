@@ -101,3 +101,15 @@
   color: $main_font_color;
   font-weight: 500;
 }
+
+.word-card__settings {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  outline: none;
+
+  &:focus, &:active {
+    outline: none;
+    box-shadow: none;
+  }
+}
