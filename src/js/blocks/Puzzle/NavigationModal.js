@@ -198,9 +198,7 @@ export default class NavigationModal {
       gameData.level = Number(level);
       gameData.page = Number(round);
       const modal = document.querySelector('.puzzle-navigation-modal');
-      const modalOverlay = document.querySelector('.modal-backdrop');
-      document.body.removeChild(modal);
-      document.body.removeChild(modalOverlay);
+      $(modal).modal('hide');
       const startPage = document.querySelector('.start__page');
       const gameBody = document.querySelector('body');
       startPage.classList.add('display-none');
@@ -215,9 +213,7 @@ export default class NavigationModal {
       } else {
         filteredUserWords.length = 10;
         const modal = document.querySelector('.puzzle-navigation-modal');
-        const modalOverlay = document.querySelector('.modal-backdrop');
-        document.body.removeChild(modal);
-        document.body.removeChild(modalOverlay);
+        $(modal).modal('hide');
         const startPage = document.querySelector('.start__page');
         const gameBody = document.querySelector('body');
         startPage.classList.add('display-none');
