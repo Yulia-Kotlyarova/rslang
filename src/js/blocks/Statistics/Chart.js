@@ -21,6 +21,7 @@ export default class Chart {
     if (localStorage.getItem('token')) {
       try {
         this.totalWordsNumber = await Chart.updateTotalWordsNumber();
+        this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
       } catch (error) {
         this.totalWordsNumber = 0;
         this.percentageOfWords = 0;
@@ -29,9 +30,11 @@ export default class Chart {
         messageModal.appendSelf('user-statistic-error');
         MessageModal.showModal('Sorry, something went wrong', deleteErrorModal);
       }
+    } else {
+      this.totalWordsNumber = 0;
+      this.percentageOfWords = 0;
     }
     this.chartRange.value = this.calculateChartRangeValue();
-    this.percentageOfWords = chartData[chartDataKeys[this.chartRange.value]];
     this.chartWordsNumber.innerText = `${this.totalWordsNumber}`;
     this.percentageOfWordsContainer.innerText = `${this.percentageOfWords}% `;
     this.drawChart();
