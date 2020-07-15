@@ -1,4 +1,4 @@
-// import 'bootstrap/js/dist/collapse';
+import 'bootstrap/js/dist/collapse';
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 import {
   faHeart, faVolumeUp, faVolumeMute, faMusic,
