@@ -8,6 +8,11 @@ import '../../../sass/styles.scss';
 import startTimer from './sprintStart';
 import { init } from './sprintGame';
 import { getWordsFromBackend } from './SprintBackend';
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
 
 library.add(faCheckCircle);
 library.add(faArrowLeft);

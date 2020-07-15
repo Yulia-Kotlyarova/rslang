@@ -9,6 +9,11 @@ import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
 import findSimilar from './similarWord';
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
 
 library.add(faVolumeUp);
 library.add(faMusic);
