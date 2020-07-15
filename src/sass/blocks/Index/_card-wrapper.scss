@@ -5,12 +5,19 @@
 
 .card-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   width: 90%;
-  min-height: 50%;
+  min-height: 592px;
   margin: 0 auto 30px;
   padding: 15px 0;
   border-radius: 15px!important;
+
+  @media (max-width: 650px) {
+    padding-top: 60px;
+  }
 }
 
 .word-settings {
@@ -44,8 +51,8 @@
   margin-top: 15px;
 
   @media (max-width: 650px) {
-    top: -15px;
-    right: 0;
+    top: 0;
+    right: 70px;;
   }
 }
 
@@ -65,6 +72,10 @@
   p {
     color: $main_font_color;
     font-weight: 500;
+  }
+
+  @media (max-width: 650px) {
+    flex-direction: column;
   }
 }
 
@@ -109,6 +120,7 @@
   top: 10px;
   right: 5px;
   outline: none;
+  z-index: 1;
 
   &:focus, &:active {
     outline: none;
