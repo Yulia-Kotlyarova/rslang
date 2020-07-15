@@ -1,6 +1,16 @@
 import '../../../sass/styles.scss';
 import 'bootstrap/js/dist/collapse';
+
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faGithubSquare,
+} from '@fortawesome/fontawesome-free-brands';
+
 import Header from '../../modules/Header';
+import MessageModal from '../../modules/MessageModal';
+
+library.add(faGithubSquare);
+dom.watch();
 
 const cursorSpan = document.querySelector('.cursor');
 
@@ -55,6 +65,21 @@ function init() {
 }
 
 window.onload = () => {
+  const messageModal = new MessageModal();
+  messageModal.appendSelf('unauthorized__modal');
+
+  const { hash } = window.location;
+
+  if (hash === '#unauthorized') {
+    const language = localStorage.getItem('app-language');
+    if (language === 'ru') {
+      MessageModal.showModal('Что-то пошло не так. Вы зарегистрировались?', undefined, 'unauthorized__modal');
+    } else {
+      MessageModal.showModal('Sorry, something went wrong. Did you log in?', undefined, 'unauthorized__modal');
+    }
+    window.location.hash = '';
+  }
+
   init();
   const header = new Header();
   header.run();

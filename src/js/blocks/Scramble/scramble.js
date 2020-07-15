@@ -12,6 +12,11 @@ import startTest from './test/scrCode8App';
 import { finishGame } from './scrCode9Stat';
 import 'bootstrap/js/dist/collapse';
 import Header from '../../modules/Header';
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
 
 library.add(faVolumeUp);
 library.add(faWindowClose);

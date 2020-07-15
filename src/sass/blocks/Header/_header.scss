@@ -13,7 +13,7 @@ $button-height: 52px;
 $button-border-radius-big: 25px;
 
 .hidden-for-header-render {
-  display: none;
+  display: none !important;
 }
 
 .app-header {
@@ -88,16 +88,10 @@ $button-border-radius-big: 25px;
     letter-spacing: 1px;
     color: $color-text;
     font-weight: 800;
-    cursor: pointer;
   }
 
   .header__logo > div {
     font-size: 26px;
-  }
-
-  .header__logo > div:hover {
-    color: $color-button-svg-hover;
-    font-size: 27px;
   }
 
   .header__button {
@@ -157,13 +151,13 @@ $button-border-radius-big: 25px;
     color: $color-button-authorization-text;
   }
 
-  .button_language {
+  .button_language, .button_promo {
     color: $color-text;
     font-size: 1.6em;
     font-weight: 900;
   }
 
-  .button_language:hover {
+  .button_language:hover, .button_promo:hover {
     color: $color-button-svg-hover;
     font-size: 1.8em;
   }
@@ -239,7 +233,7 @@ $button-border-radius-big: 25px;
     }
     .dropdown-content {
       top: 10px;
-      left: 120px;
+      left: 100%;
       box-shadow: 11px 4px 27px -7px $color-box-shadow;
       width: 210px;
       border-radius: 0px $header-border-radius $header-border-radius 0px;

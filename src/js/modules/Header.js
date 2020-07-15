@@ -1,6 +1,6 @@
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 import {
-  faBook, faChartLine, faDice, faSignOutAlt, faUsersCog,
+  faBook, faChartLine, faDice, faSignOutAlt, faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFileWord } from '@fortawesome/free-regular-svg-icons';
 
@@ -13,7 +13,7 @@ library.add(faFileWord);
 library.add(faChartLine);
 library.add(faDice);
 library.add(faSignOutAlt);
-library.add(faUsersCog);
+library.add(faUsers);
 
 library.add(faFileWord);
 
@@ -28,7 +28,7 @@ export default class Header {
     this.iconStatistics = '<i class="fas fa-chart-line fa-2x"></i>';
     this.iconGames = '<i class="fas fa-dice fa-2x"></i>';
     this.iconLogOut = '<i class="fas fa-sign-out-alt fa-2x"></i>';
-    this.iconTeam = '<i class="fas fa-users-cog fa-2x"></i>';
+    this.iconTeam = '<i class="fas fa-users fa-2x"></i>';
 
     this.userLoginName = '';
 
@@ -115,13 +115,13 @@ export default class Header {
     const headerBurger = `<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span></button>`;
 
-    const promoButton = `<div class="header__promo">
-     <a href=${this.promoURL}><div class="header__logo"><div>RS LANG</div></div></a>
+    const logo = `<div class="header__promo">
+     <div class="header__logo"><div>RS LANG</div></div>
      </div>`;
 
-    const cardsButton = `<a href=${this.mainURL}><button class="header__button button_cards">${this.iconCards}</button></a>`;
+    const cardsButton = `<a href=${this.mainURL} title="Learn words" data-en="Learn words" data-ru="Изучать слова"><button class="header__button button_cards">${this.iconCards}</button></a>`;
     const gamesButton = `<div class="header__dropdown">
-    <a href=${this.allGamesURL}><button class="header__button button_games">${this.iconGames}</button></a>
+    <a href=${this.allGamesURL} title="All games" title="All games" data-en="All games" data-ru="Все игры"><button class="header__button button_games">${this.iconGames}</button></a>
     <div class="dropdown-content">
       <a href=${this.gameSpeakItURL}>Speak It</a>
       <a href=${this.gamePuzzleURL}>English Puzzle</a>
@@ -133,17 +133,17 @@ export default class Header {
     </div>`;
 
     const dictionaryButton = `<div class="header__dropdown">
-    <a href=${this.dictionaryURL}><button class="header__button button_dictionary">${this.iconDictionary}</button></a>
+    <a href=${this.dictionaryURL}><button class="header__button button_dictionary" title="Dictionary" data-en="Dictionary" data-ru="Словарь">${this.iconDictionary}</button></a>
     <div class="dropdown-content">
         <a href="dictionary.html#words-user" data-en="Words in progress" data-ru="Изучаемые слова">Words in progress</a>
         <a href="dictionary.html#words-hard" data-en="Hard words" data-ru="Трудные слова">Hard words</a>
         <a href="dictionary.html#words-deleted" data-en="Deleted words" data-ru="Удаленные слова">Deleted words</a>
     </div>
     </div>`;
-    const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics">${this.iconStatistics}</button></a>`;
-    const teamButton = `<a href=${this.teamURL}><button class="header__button button_team">${this.iconTeam}</button></a>`;
-    const languageButton = '<button class="header__button button_language">EN</button>';
-    const cardsSettingsButton = '<button type="button" class="settings__button header__button d-none" data-toggle="modal" data-target="#settings__modal"><i class="fas fa-cog fa-2x"></i></button>';
+    const statisticsButton = `<a href=${this.statisticsURL}><button class="header__button button_statistics" title="Statistics" data-en="Statistics" data-ru="Статистика">${this.iconStatistics}</button></a>`;
+    const teamButton = `<a href=${this.teamURL}><button class="header__button button_team" title="Team" data-en="Team" data-ru="Команда">${this.iconTeam}</button></a>`;
+    const promoButton = `<a href=${this.promoURL}><button class="header__button button_promo" title="Promo" data-en="Promo" data-ru="Промо" data-change-text="false">P</button></a>`;
+    const languageButton = '<button class="header__button button_language" title="Change language" data-en="Change language" data-ru="Изменить язык" data-change-text="false">EN</button>';
     const logOutButtonMain = '<button class="header__button button_authorization" data-en="LOG OUT" data-ru="ВЫЙТИ">LOG OUT</button>';
     const logInButtonMain = '<button class="header__button button_authorization" data-en="LOG IN" data-ru="ВОЙТИ">LOG IN</button>';
     const userLoginName = `<div class="header__username"><span>${this.userLoginName}</span></div>`;
@@ -161,13 +161,13 @@ export default class Header {
         ${dictionaryButton}
         ${statisticsButton}
         ${teamButton}
+        ${promoButton}
         ${languageButton}
-        ${cardsSettingsButton}
         </div>`;
 
     const headerContainer = `<nav class="navbar navbar-expand-lg navbar-light bg-light app-header__container">
         ${headerBurger}
-        ${promoButton}
+        ${logo}
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav" id="navbar-nav-margin">
             ${buttonsGroup}

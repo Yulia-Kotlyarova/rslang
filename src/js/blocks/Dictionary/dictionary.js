@@ -10,6 +10,11 @@ import Header from '../../modules/Header';
 import MessageModal from '../../modules/MessageModal';
 
 import App from './modules/App';
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
 
 library.add(faVolumeDown);
 library.add(faTrashRestore);

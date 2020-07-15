@@ -1,18 +1,27 @@
 import 'bootstrap/js/dist/collapse';
 import '../../../sass/styles.scss';
 
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import { faCogs, faSync } from '@fortawesome/free-solid-svg-icons';
+
 import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import Card from './modules/Card';
 import SettingsModal from './modules/SettingsModal';
 
 import 'bootstrap/js/dist/modal';
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
+
+library.add(faCogs);
+library.add(faSync);
+
+dom.watch();
 
 window.onload = async () => {
-  // if (!localStorage.getItem('id')) {
-  //   document.location.href = 'authorization.html';
-  // }
-
   const header = new Header();
   header.run();
 

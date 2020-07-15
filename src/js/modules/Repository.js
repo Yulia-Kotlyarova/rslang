@@ -65,7 +65,7 @@ class Repository {
   }
 
   static async getCurrentSessionUserWords(group, wordsPerPage = 20) {
-    let words = await Repository.getWords('currentSession', group, wordsPerPage);
+    let words = await Repository.getWords('currentSession', group, 3600);
     words = sortBy(words, 'userWord.optional.playNextDate');
     if (words.length > wordsPerPage) {
       words.length = wordsPerPage;

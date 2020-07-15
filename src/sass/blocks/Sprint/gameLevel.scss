@@ -3,12 +3,12 @@
    display: flex;
    justify-content: center; 
    width: 20%;
-   
+   position: relative;
    
    select{
        background: #183949;
        color: #ffff;
-       padding: 5%;
+       padding: 15px 5px 25px 5px;
        width: 100%;
        border: none;
        font-size: 20px;
@@ -17,5 +17,18 @@
        border-bottom-left-radius: 16px;
        border-bottom-right-radius: 16px;
        text-align-last:center;
+       -moz-appearance: none;
+       -webkit-appearance: none;  
    }
+   
+   &::before {
+    content: "\2b9f";
+    position: absolute;
+    top: 56%;
+    left: 47%;
+    font-size: 23px;
+    color: white;
+
+  }
+   
 }

@@ -8,6 +8,11 @@ import '../../../sass/styles.scss';
 import startTimer from './sprintStart';
 import { init } from './sprintGame';
 import { getWordsFromBackend } from './SprintBackend';
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
 
 library.add(faCheckCircle);
 library.add(faArrowLeft);
@@ -23,12 +28,6 @@ const COLOR_CODES2 = {
   },
 
 };
-
-library.add(faCheckCircle);
-library.add(faArrowLeft);
-library.add(faArrowRight);
-
-dom.watch();
 
 const remainingPathColor2 = COLOR_CODES2.info.color;
 
