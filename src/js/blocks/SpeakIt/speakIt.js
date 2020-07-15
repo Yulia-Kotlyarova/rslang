@@ -20,6 +20,12 @@ import Result from './modules/Result';
 
 import MessageModal from '../../modules/MessageModal';
 
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
+
 window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 
 library.add(faUser);

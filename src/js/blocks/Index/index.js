@@ -10,6 +10,11 @@ import Card from './modules/Card';
 import SettingsModal from './modules/SettingsModal';
 
 import 'bootstrap/js/dist/modal';
+import Authorization from '../../modules/Authorization';
+
+if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+  window.location.href = 'promo.html#unauthorized';
+}
 
 library.add(faCogs);
 library.add(faSync);
