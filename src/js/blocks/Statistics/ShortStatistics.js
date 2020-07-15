@@ -3,6 +3,7 @@ import 'bootstrap/js/dist/modal';
 import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
 import MessageModal from '../../modules/MessageModal';
+import Header from '../../modules/Header';
 
 export default class ShortStatistics {
   constructor() {
@@ -47,7 +48,7 @@ export default class ShortStatistics {
                           <div class="data__numbers">${this.correctAswers}</div>
                       </div>
                       <div class="short-statictics__data new-words">
-                          <div class="data__title" data-en="New words" data-ru="Новых слов">New words</div>
+                          <div class="data__title" data-en="New words learned" data-ru="Изучено новых слов">New words learned</div>
                           <div class="data__numbers">${this.newWords}</div>
                       </div>
                       <div class="short-statictics__data longest-session">
@@ -74,6 +75,7 @@ export default class ShortStatistics {
       await this.updateTodayStatisticsData();
       this.modalHTML = this.createModalHTML();
       this.body.insertAdjacentHTML('beforeend', this.modalHTML);
+      Header.changeLanguage();
       const modal = document.querySelector('.modal-short-statistics');
       $(modal).modal('show');
       $(modal).on('hidden.bs.modal', () => {
