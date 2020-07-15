@@ -1,6 +1,15 @@
 import '../../../sass/styles.scss';
 import 'bootstrap/js/dist/collapse';
+
+import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import {
+  faGithubSquare,
+} from '@fortawesome/fontawesome-free-brands';
+
 import Header from '../../modules/Header';
+
+library.add(faGithubSquare);
+dom.watch();
 
 const cursorSpan = document.querySelector('.cursor');
 
