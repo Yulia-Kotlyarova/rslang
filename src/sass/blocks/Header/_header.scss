@@ -233,7 +233,7 @@ $button-border-radius-big: 25px;
     }
     .dropdown-content {
       top: 10px;
-      left: 120px;
+      left: 100%;
       box-shadow: 11px 4px 27px -7px $color-box-shadow;
       width: 210px;
       border-radius: 0px $header-border-radius $header-border-radius 0px;
