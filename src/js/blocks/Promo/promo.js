@@ -13,7 +13,8 @@ library.add(faGithubSquare);
 dom.watch();
 
 const cursorSpan = document.querySelector('.cursor');
-
+const dataWordsRu = ['Викторин', 'Игр', 'Статей'];
+const dataWordsEn = ['Quizzes', 'GAMES', 'articles'];
 class TypeWriter {
   constructor(txtElement, words, wait = 2000) {
     this.txtElement = txtElement;
@@ -56,13 +57,22 @@ class TypeWriter {
   }
 }
 
-function init() {
-  const txtElement = document.querySelector('.txt-type');
-  const words = JSON.parse(txtElement.getAttribute('data-words'));
-  const wait = txtElement.getAttribute('data-wait');
+const txtElement = document.querySelector('.txt-type');
+const wait = txtElement.getAttribute('data-wait');
+
+function init(txt, word, time) {
   // eslint-disable-next-line no-unused-vars
-  const typeWriter = new TypeWriter(txtElement, words, wait);
+  const typeWriter = new TypeWriter(txt, word, time);
 }
+
+const newLangChange = () => {
+  if (localStorage.getItem('app-language') === 'ru') {
+    init(txtElement, dataWordsRu, wait);
+  }
+  if (localStorage.getItem('app-language') === 'en') {
+    init(txtElement, dataWordsEn, wait);
+  }
+};
 
 window.onload = () => {
   const messageModal = new MessageModal();
@@ -80,7 +90,7 @@ window.onload = () => {
     window.location.hash = '';
   }
 
-  init();
   const header = new Header();
   header.run();
+  newLangChange();
 };

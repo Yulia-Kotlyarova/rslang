@@ -43,13 +43,17 @@
     }
 
     .promo-page__h1 {
-      color: #fff;
+      // color: #fff;
       font-family: 'Open Sans', sans-serif;
       font-weight: 800;
       font-size: calc(24px + (44 - 24) * ((100vw - 300px) / (1600 - 300)));
-      // letter-spacing: -2px;
+
       text-align: center;
       text-shadow: 1px 2px 1px rgba(0, 0, 0, .6);
+      
+      color: #f8f9fa;
+      letter-spacing: 1px;
+      
       &:after {
           display: block;
           color: #fff;
@@ -120,7 +124,7 @@
   .video {
 
     margin: 0 auto;
-    width: 72%;
+    width: 70%;
     height: 100vh;
 
 
@@ -135,7 +139,7 @@
       position: absolute;
       height: 100%;
       width: 100%;
-      top: 17%;
+      top: 16%;
     }
   }
   }
