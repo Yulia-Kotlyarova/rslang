@@ -26,11 +26,11 @@ export default class StatisticCalendar {
     if (language === 'ru') {
       theadDate = 'Дата';
       theadCards = 'Пройдено карточек';
-      theadWords = 'Новые слова';
+      theadWords = 'Изучено новых слов';
     } else {
       theadDate = 'Date';
-      theadCards = 'Cards Played';
-      theadWords = 'New Words';
+      theadCards = 'Cards played';
+      theadWords = 'New words learned';
     }
 
     let calendarTableHTML = `
