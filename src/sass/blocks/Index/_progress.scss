@@ -29,4 +29,8 @@
     border-radius: 12px;
     background: $main_font_color;
   }
+
+  @media (max-width: 500px) {
+    width: 180px;
+  }
 }
