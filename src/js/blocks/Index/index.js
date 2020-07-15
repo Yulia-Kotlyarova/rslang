@@ -12,8 +12,12 @@ import SettingsModal from './modules/SettingsModal';
 import 'bootstrap/js/dist/modal';
 import Authorization from '../../modules/Authorization';
 
-if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+if (!Authorization.isSignedUp()) {
   window.location.href = 'promo.html#unauthorized';
+} else {
+  (async () => {
+    await Authorization.getFreshToken();
+  })();
 }
 
 library.add(faCogs);
@@ -22,10 +26,6 @@ library.add(faSync);
 dom.watch();
 
 window.onload = async () => {
-  if (!localStorage.getItem('token')) {
-    document.location.href = 'authorization.html';
-  }
-
   const header = new Header();
   header.run();
 
