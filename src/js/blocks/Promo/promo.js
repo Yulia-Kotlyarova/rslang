@@ -15,7 +15,6 @@ dom.watch();
 const cursorSpan = document.querySelector('.cursor');
 const dataWordsRu = ['Викторин', 'Игр', 'Статей'];
 const dataWordsEn = ['Quizzes', 'GAMES', 'articles'];
-
 class TypeWriter {
   constructor(txtElement, words, wait = 2000) {
     this.txtElement = txtElement;
@@ -91,7 +90,6 @@ window.onload = () => {
     window.location.hash = '';
   }
 
-  // init();
   const header = new Header();
   header.run();
   newLangChange();
