@@ -112,8 +112,7 @@ class Card {
 
   async checkStudyProgress() {
     if (Number(this.todayStudiedWords) >= Number(this.numberOfCardsByDay)
-          || Number(this.todayStudiedNewWords) >= Number(this.numberOfNewWordsToStudy)
-          || (this.actualWordsData.length - 1) === this.wordPositionInResponse) {
+          || Number(this.todayStudiedNewWords) >= Number(this.numberOfNewWordsToStudy)) {
       this.showWarningWindow();
 
       try {
