@@ -3,17 +3,18 @@
 import '../../../sass/styles.scss';
 import 'bootstrap/js/dist/collapse';
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
-import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faVolumeUp, faMusic } from '@fortawesome/free-solid-svg-icons';
 import random from 'lodash/fp/random';
 import Header from '../../modules/Header';
 import Repository from '../../modules/Repository';
 import getTodayShort from '../../helpers';
 import findSimilar from './similarWord';
 
-window.onload = async function audioCall() {
-  library.add(faVolumeUp);
-  dom.watch();
+library.add(faVolumeUp);
+library.add(faMusic);
+dom.watch();
 
+window.onload = async function audioCall() {
   const header = new Header();
   header.run();
 
@@ -329,7 +330,7 @@ window.onload = async function audioCall() {
       el.classList.remove('li-pale-color');
       el.classList.add('li-hover');
     });
-    if (localStorage.cardNumber.length >= 3) {
+    if (localStorage.cardNumber.length >= 20) {
       gameResult();
     } else {
       dontKnowBtn.classList.remove('hidden');
