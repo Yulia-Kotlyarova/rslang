@@ -19,16 +19,16 @@
         <div class="container">
             <header class="header">
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-secondary select-words"><i class="fas fa-user"></i></button>
+                    <button class="btn btn-secondary select-words" title="Choose words to study" data-en="Choose words to study" data-ru="Выбрать, какие слова изучать"><i class="fas fa-user"></i></button>
                     <ul class="levels levels__hidden">
-                        <li class="levels__level" data-level="0"></li>
-                        <li class="levels__level" data-level="1"></li>
-                        <li class="levels__level" data-level="2"></li>
-                        <li class="levels__level" data-level="3"></li>
-                        <li class="levels__level" data-level="4"></li>
-                        <li class="levels__level" data-level="5"></li>
+                        <li class="levels__level" data-level="0" title="Level 1" data-en="Level 1" data-ru="Уровень 1"></li>
+                        <li class="levels__level" data-level="1" title="Level 2" data-en="Level 2" data-ru="Уровень 2"></li>
+                        <li class="levels__level" data-level="2" title="Level 3" data-en="Level 3" data-ru="Уровень 3"></li>
+                        <li class="levels__level" data-level="3" title="Level 4" data-en="Level 4" data-ru="Уровень 4"></li>
+                        <li class="levels__level" data-level="4" title="Level 5" data-en="Level 5" data-ru="Уровень 5"></li>
+                        <li class="levels__level" data-level="5" title="Level 6" data-en="Level 6" data-ru="Уровень 6"></li>
                     </ul>
-                    <input type="number" class="user-words-page user-words-page__hidden badge-pill" min="1" max="30" value="1">
+                    <input type="number" class="user-words-page user-words-page__hidden badge-pill" min="1" max="30" value="1" title="Page" data-en="Page" data-ru="Страница">
                 </div>
                 <div class="score"></div>
             </header>
@@ -40,11 +40,11 @@
                 </div>
                 <div class="cards"></div>
                 <div class="controls">
-                    <button class="button controls__restart" data-en="Restart" data-ru="Начать заново">
-                        Restart
+                    <button class="button controls__restart" data-en="Stop" data-ru="Стоп">
+                        Stop
                     </button>
-                    <button class="button controls__speak" data-en="Start / Stop" data-ru="Начать / Остановить">
-                        Start / Stop
+                    <button class="button controls__speak" data-en="Start" data-ru="Начать">
+                        Start
                     </button>
                     <button class="button controls__result" data-en="Results" data-ru="Результаты">
                         Results
