@@ -3,8 +3,6 @@
 @import './test.scss';
 @import './scrGameLevel.scss';
 @import './modal.scss';
-@import './scramble-back';
-@import './scramble-const';
 
 .scramble {
     margin: 0;
@@ -12,11 +10,12 @@
     box-sizing: border-box;
 }
 .scramble-body{
+    background: url(mainPage.PNG) no-repeat center center fixed;
+    background-size: cover;
     height: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
-    color: $main_font_color;
 }
 
 .sectionStart{
@@ -77,6 +76,7 @@
             margin: 0;
             bottom: 8%;
             transform: translate(0, -50%);
+            color: #ffff;
             font-size: 1.1rem;
             font-weight: bold;
             text-align: center;
@@ -98,6 +98,7 @@
             text-align: center;
             font-size: calc(15px + (36 - 15) * ((100vw - 300px) / (1600 - 300)));
             margin-top: 40px;
+            color: #ffff;
             margin-bottom: 15px;
         }
 
@@ -119,11 +120,10 @@
                 padding: 8px 0;
                 text-align: center;
                 border-radius: 25px;
-                box-shadow: 0 0 10px $shadow-color;
                 outline: none;
                 border: none;
-                background-color: $card-background-day;
-                color: $main_font_color;
+                background-color: #ffff;
+                color: black;
                 margin: 2rem 0;
                 font-size: 2rem;
                 @media screen and (min-width: 1px) and (max-width: 900px) {
@@ -136,14 +136,12 @@
                 font-size: calc(10px + (17 - 10) * ((100vw - 300px) / (1600 - 300)));
                 cursor: pointer;
                 outline: none;
+                border: 1px solid #2f3542;
                 margin-top: 20px;
-                color: $main_font_color;
-                border: 1px solid $card-background-day;
-                background-color: $card-background-day;
-                border-radius: $btn-radius;
-                box-shadow: 0 0 10px $shadow-color;
+                color: #fff;
                 font-weight: 600;
                 padding: 1rem 2rem;
+                background-color: #1d1d1d00;
                 text-transform: uppercase;
                 transition-duration: 0.5s;
                 transition-property: all;

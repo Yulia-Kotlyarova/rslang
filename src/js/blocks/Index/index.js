@@ -22,10 +22,6 @@ library.add(faSync);
 dom.watch();
 
 window.onload = async () => {
-  if (!localStorage.getItem('token')) {
-    document.location.href = 'authorization.html';
-  }
-
   const header = new Header();
   header.run();
 
