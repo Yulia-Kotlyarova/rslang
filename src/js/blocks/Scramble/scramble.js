@@ -14,8 +14,12 @@ import 'bootstrap/js/dist/collapse';
 import Header from '../../modules/Header';
 import Authorization from '../../modules/Authorization';
 
-if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+if (!Authorization.isSignedUp()) {
   window.location.href = 'promo.html#unauthorized';
+} else {
+  (async () => {
+    await Authorization.getFreshToken();
+  })();
 }
 
 library.add(faVolumeUp);

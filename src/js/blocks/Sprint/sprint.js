@@ -10,8 +10,12 @@ import { init } from './sprintGame';
 import { getWordsFromBackend } from './SprintBackend';
 import Authorization from '../../modules/Authorization';
 
-if (!Authorization.isSignedUp() || Authorization.isTokenExpired()) {
+if (!Authorization.isSignedUp()) {
   window.location.href = 'promo.html#unauthorized';
+} else {
+  (async () => {
+    await Authorization.getFreshToken();
+  })();
 }
 
 library.add(faCheckCircle);
