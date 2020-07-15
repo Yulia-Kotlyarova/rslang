@@ -23,11 +23,11 @@ class MainPage {
   }
 
   hide() {
-    this.mainPageElement.classList.add('results_hide');
+    this.mainPageElement.classList.add('d-none');
   }
 
   show() {
-    this.mainPageElement.classList.remove('results_hide');
+    this.mainPageElement.classList.remove('d-none');
   }
 
   startListening() {

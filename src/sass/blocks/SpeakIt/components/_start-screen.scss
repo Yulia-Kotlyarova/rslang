@@ -1,7 +1,7 @@
 @import "../abstract/constants";
 
 .start-screen {
-  z-index: 1060;
+  z-index: 20;
   position: fixed;
   top: 0;
   left: 0;
@@ -13,8 +13,20 @@
   align-items: center;
   padding: $start-screen-padding;
   text-align: center;
-  background-image: url(./img/bg.png);
   background-size: cover;
+
+  &__container {
+    width: 80vw;
+    max-width: 600px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #274155;
+    background-color: #F1F1F1;
+    box-shadow: 10px 10px 15px #67697d66;
+    border-radius: 15px;
+  }
 
   &_hide {
     display: none;
@@ -23,7 +35,7 @@
 
   &__title {
     margin-bottom: $start-screen-indent;
-    color: $font-color-2;
+    color: #00C49D;
     font-size: $title-font-size;
     text-transform: uppercase;
     letter-spacing: $title-letter-spacing;
@@ -32,7 +44,6 @@
   &__intro {
     max-width: $start-screen-intro-width;
     margin: $start-screen-intro-margin;
-    color: $font-color-1;
     font-size: $intro-font-size;
     line-height: $intro-line-height;
     letter-spacing: $intro-letter-spacing;
