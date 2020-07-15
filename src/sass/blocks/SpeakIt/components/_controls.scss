@@ -14,7 +14,7 @@
 
   & button {
     flex-basis: 20%;
-    margin-right: $controls-button-indent;
+    margin: 0 $controls-button-indent ;
     font-size: $font-size-base * 1.1;
 
     @media (max-width: 550px) {
