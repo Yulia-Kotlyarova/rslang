@@ -49,7 +49,7 @@
      display: flex;
      justify-content: center;
      margin: 10px 0 0 0;
-     padding: 5%;
+     padding: 5% 5% 6% 5%;
      width: 100%;
      border: none;
      border-radius: $btn-radius;
@@ -67,13 +67,14 @@
       margin: 40px;
       background-color: $btn-color;
       filter: brightness(115%);
+      cursor: pointer;
     }
  }
  
  &::before {
   content: "\2b9f";
   position: absolute;
-  top: 60%;
+  top: 57%;
   left: 48%;
   font-size: 30px;
   color: #274155;
