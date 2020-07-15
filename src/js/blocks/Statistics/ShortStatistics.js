@@ -1,9 +1,8 @@
 import $ from 'jquery';
 import 'bootstrap/js/dist/modal';
 import Repository from '../../modules/Repository';
-import getTodayShort from '../../helpers';
+import getTodayShort, { renderNewLanguageInElement } from '../../helpers';
 import MessageModal from '../../modules/MessageModal';
-import Header from '../../modules/Header';
 
 export default class ShortStatistics {
   constructor() {
@@ -75,8 +74,8 @@ export default class ShortStatistics {
       await this.updateTodayStatisticsData();
       this.modalHTML = this.createModalHTML();
       this.body.insertAdjacentHTML('beforeend', this.modalHTML);
-      Header.changeLanguage();
       const modal = document.querySelector('.modal-short-statistics');
+      renderNewLanguageInElement(modal, localStorage.getItem('app-language') || 'en');
       $(modal).modal('show');
       $(modal).on('hidden.bs.modal', () => {
         document.body.removeChild(modal);
