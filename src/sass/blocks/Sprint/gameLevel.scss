@@ -12,7 +12,7 @@
        padding: 15px 5px 30px 5px;
        width: 100%;
        border: none;
-       font-size: 20px;
+       font-size:  calc(10px + (20 - 10) * ((100vw - 300px) / (1600 - 300)));
        box-shadow: 0 5px 25px rgba(0,0,0,.5);
        outline: none;
        border-bottom-left-radius: 16px;
@@ -27,7 +27,7 @@
     position: absolute;
     top: 56%;
     left: 47%;
-    font-size: 23px;
+    font-size: calc(14px + (23 - 14) * ((100vw - 300px) / (1600 - 300)));
     color: white;
 
   }
