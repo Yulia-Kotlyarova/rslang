@@ -76,7 +76,7 @@
   position: absolute;
   top: 57%;
   left: 48%;
-  font-size: 30px;
+  font-size: calc(13px + (30 - 13) * ((100vw - 300px) / (1600 - 300)));
   color: #274155;
  
 }
